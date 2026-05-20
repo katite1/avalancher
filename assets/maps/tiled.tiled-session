@@ -40,7 +40,7 @@
         "test.json"
     ],
     "project": "tiled.tiled-project",
-    "property.type": "bool",
+    "property.type": "terrain",
     "recentFiles": [
         "test.json",
         "C:/Users/Kate/Documents/Programming/avalancher/assets/testing.tsx",

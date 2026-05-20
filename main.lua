@@ -3,7 +3,7 @@ M = require("util.m")
 local Draw = require("core.draw")
 local Input = require("core.input")
 local InputButton = require("core.input-button")
-local MapLoader = require("core.map-loader")
+local MapLoader = require("core.map.map-loader")
 local Camera = require("core.camera")
 local Player = require("game.player")
 
@@ -32,7 +32,11 @@ init()
 
 local camera = Camera:new()
 
-local tileMap = MapLoader:load("assets/maps/", "test.json")
+local mapLoader = MapLoader:new(
+	"assets/maps/",
+	love.graphics.newImage("assets/maps/world_tileset.png")
+)
+local tileMap = mapLoader:load("test.json")
 if not tileMap then
 	return
 end

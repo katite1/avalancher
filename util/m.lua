@@ -13,4 +13,17 @@ function m.clamp(v, min, max)
     return math.min(math.max(v, min), max)
 end
 
+-- https://love2d.org/forums/viewtopic.php?t=9395 @ Ref
+---@param rgb string
+---@return number
+---@return number
+---@return number
+function m.hex_to_rgb(rgb)
+    local _, _, r, g, b, a = rgb:find('(%x%x)(%x%x)(%x%x)')
+    r = tonumber(r, 16) / 255
+    g = tonumber(g, 16) / 255
+    b = tonumber(b, 16) / 255
+    return r, g, b
+end
+
 return m

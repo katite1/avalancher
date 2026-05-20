@@ -16,12 +16,17 @@
             "id": 2,
             "members": [
                 {
+                    "name": "ladder",
+                    "type": "bool",
+                    "value": false
+                },
+                {
                     "name": "solid",
                     "type": "bool",
-                    "value": true
+                    "value": false
                 }
             ],
-            "name": "solid",
+            "name": "terrain",
             "type": "class",
             "useAs": [
                 "property",
