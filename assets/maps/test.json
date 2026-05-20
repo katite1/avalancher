@@ -23,6 +23,16 @@
          "id":4,
          "name":"background",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"layer",
+                 "propertytype":"layer",
+                 "type":"class",
+                 "value":
+                    {
+                     "decorative":true
+                    }
+                }],
          "tintcolor":"#717171",
          "type":"tilelayer",
          "visible":true,
@@ -51,6 +61,16 @@
          "id":1,
          "name":"main",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"layer",
+                 "propertytype":"layer",
+                 "type":"class",
+                 "value":
+                    {
+
+                    }
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":16,

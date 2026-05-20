@@ -24,6 +24,10 @@ function TileMap:draw()
     end
 end
 
+---@param x number
+---@param y number
+---@param w number
+---@param h number
 ---@return Tile[]
 function TileMap:getTilesInRectangle(x, y, w, h)
     local theTiles = {}

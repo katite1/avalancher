@@ -6,7 +6,7 @@
     "fileStates": {
         "": {
             "scaleInDock": 1,
-            "scaleInEditor": 5.5
+            "scaleInEditor": 4
         },
         "C:/Users/Kate/Documents/Programming/avalancher/assets/testing.tsx": {
             "dynamicWrapping": false,
@@ -14,15 +14,15 @@
             "scaleInEditor": 5.5
         },
         "test.json": {
-            "scale": 5.5,
-            "selectedLayer": 0,
+            "scale": 3,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 161.27272727272728,
-                "y": 96.18181818181819
+                "x": 164.66666666666669,
+                "y": 139
             }
         },
         "test.json#testing": {
-            "scaleInDock": 1,
+            "scaleInDock": 2,
             "scaleInEditor": 1
         },
         "test.tmx": {
@@ -40,7 +40,7 @@
         "test.json"
     ],
     "project": "tiled.tiled-project",
-    "property.type": "terrain",
+    "property.type": "layer",
     "recentFiles": [
         "test.json",
         "C:/Users/Kate/Documents/Programming/avalancher/assets/testing.tsx",

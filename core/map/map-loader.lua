@@ -1,7 +1,6 @@
 local json      = require("lib.json")
 local TileMap   = require("core.map.tile-map")
 local TileLayer = require("core.map.tile-map-layer")
-local Tile      = require("core.map.tile")
 
 
 ---@class MapLoader

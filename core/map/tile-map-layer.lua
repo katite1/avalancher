@@ -1,3 +1,4 @@
+local TiledHelper = require("core.map.tiled-helper")
 local Tile = require("core.map.tile")
 
 ---@class TileMapLayer
@@ -6,6 +7,7 @@ local Tile = require("core.map.tile")
 ---@field tileMap TileMap tilemap this layer belongs to
 ---@field tiles number[][]
 ---@field tint [number, number, number]
+---@field decorative boolean
 local TileMapLayer = {}
 
 ---@param layer table
@@ -16,7 +18,10 @@ function TileMapLayer:new(layer, tileMap)
     t.width = layer.width
     t.height = layer.height
     t.tileMap = tileMap
+    t.decorative = false
     t.tint = { 1, 1, 1 }
+
+    t.decorative = TiledHelper.hasProperty(layer.properties, "decorative")
     if layer.tintcolor then
         t.tint = { M.hex_to_rgb(layer.tintcolor) }
     end
@@ -74,14 +79,17 @@ end
 ---@param h number
 ---@return Tile[]
 function TileMapLayer:getTilesInRectangle(x, y, w, h)
+    if self.decorative then
+        return {}
+    end
     local tileSize = self.tileMap.tileSize
     local theTiles = {}
-    local relativeX = math.floor((x - 0) / tileSize) -- TODO: tile lays might have x, y position. Can replace the 0s here when that's added
-    local relativeY = math.floor((y - 0) / tileSize)
-    local xCellCount = math.floor(w / tileSize)
-    local yCellCount = math.floor(h / tileSize)
-    for row = relativeY, yCellCount + relativeY, 1 do
-        for column = relativeX, xCellCount + relativeX, 1 do
+    local startX = math.floor(x / tileSize)
+    local startY = math.floor(y / tileSize)
+    local xCells = math.floor((x % tileSize + w) / tileSize)
+    local yCells = math.floor((y % tileSize + h) / tileSize)
+    for row = startY, yCells + startY, 1 do
+        for column = startX, xCells + startX, 1 do
             if row > 0 and column > 0 and row <= self.height and column <= self.width then
                 local value = self.tiles[row][column]
                 if value ~= 0 and self.tileMap:tileHasProp(value, "solid") then

@@ -42,23 +42,23 @@ if not tileMap then
 end
 
 local player = Player:new()
-player.x = 20
-player.y = 20
+player.x = 30
+player.y = 30
 
 function love.update()
 	input:update()
 
 	if buttons.left.pressed then
-		player.x = player.x - 4
+		player.x = player.x - 1
 	end
 	if buttons.right.pressed then
-		player.x = player.x + 4
+		player.x = player.x + 1
 	end
 	if buttons.up.pressed then
-		player.y = player.y - 4
+		player.y = player.y - 1
 	end
 	if buttons.down.pressed then
-		player.y = player.y + 4
+		player.y = player.y + 1
 	end
 	camera.x = player.x - SCREEN.WIDTH / 2
 	camera.y = player.y - SCREEN.HEIGHT / 2
