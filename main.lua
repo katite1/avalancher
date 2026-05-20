@@ -1,4 +1,5 @@
 F = require("util.f")
+M = require("util.m")
 local Draw = require("core.draw")
 local Input = require("core.input")
 local InputButton = require("core.input-button")
@@ -31,7 +32,7 @@ init()
 
 local camera = Camera:new()
 
-local tileMap = MapLoader:load("assets/maps/test.json")
+local tileMap = MapLoader:load("assets/maps/", "test.json")
 if not tileMap then
 	return
 end
@@ -68,12 +69,14 @@ function love.draw()
 	love.graphics.rectangle("fill", 0, 0, SCREEN.WIDTH, SCREEN.HEIGHT)
 	love.graphics.pop()
 	camera:drawStart()
-	-- F.iforEach({ 12, 213, 64, 264, 5 }, function(v, i)
-	-- 	love.graphics.print(v, 40, 50 + 20 * i)
-	-- end)
 	tileMap:draw()
 	player:draw()
+	local tiles = tileMap:getTilesInRectangle(player.x, player.y, 32, 24)
 	camera:drawEnd()
+	love.graphics.print(#tiles, 10, 10)
+	if #tiles > 0 then
+		love.graphics.print("collision", 10, 10)
+	end
 	Draw.stop()
 end
 

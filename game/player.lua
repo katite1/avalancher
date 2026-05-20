@@ -11,7 +11,7 @@ function Player:new()
 end
 
 function Player:draw()
-    love.graphics.rectangle("line", self.x, self.y, 8, 16)
+    love.graphics.rectangle("line", self.x, self.y, 32, 24)
 end
 
 return Player
