@@ -1,4 +1,7 @@
+---@class Draw
 local Draw = {}
+Draw.__index = Draw
+
 function Draw.start()
     local w, h = love.graphics.getDimensions()
     local fitW = w / SCREEN.WIDTH

@@ -1,5 +1,6 @@
 ---@class TiledHelper
 local TiledHelper = {}
+TiledHelper.__index = TiledHelper
 
 ---Returns whether the property table has this entry in the value field
 ---@param properties table properties table from tiled

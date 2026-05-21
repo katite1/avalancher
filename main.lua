@@ -6,6 +6,7 @@ local InputButton = require("core.input-button")
 local MapLoader = require("core.map.map-loader")
 local Camera = require("core.camera")
 local Player = require("game.player")
+local EntityManager = require("game.entity-manager")
 
 SCREEN = {}
 SCREEN.WIDTH = 240
@@ -41,12 +42,15 @@ if not tileMap then
 	return
 end
 
-local player = Player:new()
+local entityManager = EntityManager:new()
+local player = entityManager:make(Player)
 player.x = 30
 player.y = 30
 
 function love.update()
 	input:update()
+
+	entityManager:update()
 
 	if buttons.left.pressed then
 		player.x = player.x - 1
@@ -74,7 +78,7 @@ function love.draw()
 	love.graphics.pop()
 	camera:drawStart()
 	tileMap:draw()
-	player:draw()
+	entityManager:draw()
 	local tiles = tileMap:getTilesInRectangle(player.x, player.y, 32, 24)
 	camera:drawEnd()
 	love.graphics.print(#tiles, 10, 10)

@@ -9,6 +9,7 @@ local Tile = require("core.map.tile")
 ---@field tint [number, number, number]
 ---@field decorative boolean
 local TileMapLayer = {}
+TileMapLayer.__index = TileMapLayer
 
 ---@param layer table
 ---@param tileMap TileMap
@@ -94,7 +95,7 @@ function TileMapLayer:getTilesInRectangle(x, y, w, h)
                 local value = self.tiles[row][column]
                 if value ~= 0 and self.tileMap:tileHasProp(value, "solid") then
                     love.graphics.rectangle("fill", column * tileSize, row * tileSize, tileSize, tileSize)
-                    table.insert(theTiles, Tile:new(row, column, value))
+                    table.insert(theTiles, Tile:new(row, column, tileSize, tileSize, value))
                 end
             end
         end

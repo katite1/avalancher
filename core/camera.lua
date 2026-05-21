@@ -2,6 +2,7 @@
 ---@field x integer
 ---@field y integer
 local Camera = {}
+Camera.__index = Camera
 
 ---@return Camera
 function Camera:new()

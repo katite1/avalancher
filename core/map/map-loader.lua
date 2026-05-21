@@ -1,12 +1,12 @@
-local json      = require("lib.json")
-local TileMap   = require("core.map.tile-map")
-local TileLayer = require("core.map.tile-map-layer")
-
+local json        = require("lib.json")
+local TileMap     = require("core.map.tile-map")
+local TileLayer   = require("core.map.tile-map-layer")
 
 ---@class MapLoader
 ---@field directory string
 ---@field tileset love.Image
-local MapLoader = {}
+local MapLoader   = {}
+MapLoader.__index = MapLoader
 
 ---@param directory string
 ---@param tileset love.Image

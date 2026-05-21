@@ -26,4 +26,8 @@ function m.hex_to_rgb(rgb)
     return r, g, b
 end
 
+function m.sign(number)
+    return number > 0 and 1 or (number == 0 and 0 or -1)
+end
+
 return m

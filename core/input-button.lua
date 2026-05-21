@@ -6,6 +6,7 @@
 ---@field justReleased boolean
 ---@field released boolean
 local InputButton = {}
+InputButton.__index = InputButton
 
 ---@param keys string[]
 ---@return InputButton
