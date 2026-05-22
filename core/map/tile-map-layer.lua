@@ -83,12 +83,18 @@ function TileMapLayer:getTilesInRectangle(x, y, w, h)
     if self.decorative then
         return {}
     end
+    -- not sure how the math adds up here but seems like we need to extend the hitbox a bit to avoid collision.
+    -- i'm too sleepy to understand this but it fixes it for now!!
+    x = x - 1
+    y = y - 1
+    w = w + 1
+    h = h + 1
     local tileSize = self.tileMap.tileSize
     local theTiles = {}
-    local startX = math.floor(x / tileSize)
-    local startY = math.floor(y / tileSize)
-    local xCells = math.floor((x % tileSize + w) / tileSize)
-    local yCells = math.floor((y % tileSize + h) / tileSize)
+    local startX = math.floor((x) / tileSize)
+    local startY = math.floor((y) / tileSize)
+    local xCells = math.floor((x % tileSize + w - 1) / tileSize)
+    local yCells = math.floor((y % tileSize + h - 1) / tileSize)
     for row = startY, yCells + startY, 1 do
         for column = startX, xCells + startX, 1 do
             if row > 0 and column > 0 and row <= self.height and column <= self.width then

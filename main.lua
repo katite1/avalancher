@@ -5,31 +5,38 @@ local Input = require("core.input")
 local InputButton = require("core.input-button")
 local MapLoader = require("core.map.map-loader")
 local Camera = require("core.camera")
+local World = require("game.world")
 local Player = require("game.player")
-local EntityManager = require("game.entity-manager")
-
-SCREEN = {}
-SCREEN.WIDTH = 240
-SCREEN.HEIGHT = 136
-
-local buttons = {
-	left = InputButton:new({ "left", "a" }),
-	right = InputButton:new({ "right", "d" }),
-	up = InputButton:new({ "up", "w" }),
-	down = InputButton:new({ "down", "s" }),
-}
-local input = Input:new()
-F.forEach(buttons, function(_, button)
-	input:register(button)
-end)
 
 local function init()
 	love.graphics.setDefaultFilter("nearest", "nearest")
+	love.graphics.setLineStyle("rough")
 	local font = love.graphics.newFont("assets/font/monogram.ttf", 16)
 	love.graphics.setFont(font)
 end
 
 init()
+
+SCREEN = {}
+SCREEN.WIDTH = 240
+SCREEN.HEIGHT = 136
+
+SPRITES_PATH = "assets/sprites/"
+SPRITES = {}
+SPRITES.PLAYER = love.graphics.newImage(SPRITES_PATH .. "player.png")
+
+Buttons = {
+	left = InputButton:new({ "left", "a" }),
+	right = InputButton:new({ "right", "d" }),
+	up = InputButton:new({ "up", "w" }),
+	down = InputButton:new({ "down", "s" }),
+	jump = InputButton:new({ "z", "j" }),
+}
+local input = Input:new()
+F.forEach(Buttons, function(_, button)
+	input:register(button)
+end)
+
 
 local camera = Camera:new()
 
@@ -42,28 +49,15 @@ if not tileMap then
 	return
 end
 
-local entityManager = EntityManager:new()
-local player = entityManager:make(Player)
-player.x = 30
-player.y = 30
+local world = World:new(tileMap)
+local player = world.entityManager:make(Player)
+player.x = 100
 
 function love.update()
 	input:update()
 
-	entityManager:update()
+	world.entityManager:update()
 
-	if buttons.left.pressed then
-		player.x = player.x - 1
-	end
-	if buttons.right.pressed then
-		player.x = player.x + 1
-	end
-	if buttons.up.pressed then
-		player.y = player.y - 1
-	end
-	if buttons.down.pressed then
-		player.y = player.y + 1
-	end
 	camera.x = player.x - SCREEN.WIDTH / 2
 	camera.y = player.y - SCREEN.HEIGHT / 2
 
@@ -78,13 +72,8 @@ function love.draw()
 	love.graphics.pop()
 	camera:drawStart()
 	tileMap:draw()
-	entityManager:draw()
-	local tiles = tileMap:getTilesInRectangle(player.x, player.y, 32, 24)
+	world.entityManager:draw()
 	camera:drawEnd()
-	love.graphics.print(#tiles, 10, 10)
-	if #tiles > 0 then
-		love.graphics.print("collision", 10, 10)
-	end
 	Draw.stop()
 end
 
