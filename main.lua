@@ -54,6 +54,8 @@ local player = world.entityManager:make(Player)
 player.x = 100
 
 function love.update()
+	require("lib.lurker").update()
+
 	input:update()
 
 	world.entityManager:update()

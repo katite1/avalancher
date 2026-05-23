@@ -24,11 +24,11 @@ function PhysicsEntity:new()
     t.xRemainder = 0
     t.yRemainder = 0
 
-    t.walkSpeed = 2
+    t.walkSpeed = 0.5
     t.maxHorizontalSpeed = 10
     t.friction = 0.8
 
-    t.jumpStrength = 5
+    t.jumpStrength = 3
     t.maxFallSpeed = 10
     return t
 end
