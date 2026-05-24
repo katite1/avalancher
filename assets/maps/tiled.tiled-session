@@ -14,11 +14,11 @@
             "scaleInEditor": 5.5
         },
         "test.json": {
-            "scale": 3,
-            "selectedLayer": 1,
+            "scale": 4,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 164.66666666666669,
-                "y": 139
+                "x": 149.75,
+                "y": 62.5
             }
         },
         "test.json#testing": {

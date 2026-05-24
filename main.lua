@@ -1,5 +1,6 @@
 F = require("util.f")
 M = require("util.m")
+O = require("util.o")
 local Draw = require("core.draw")
 local Input = require("core.input")
 local InputButton = require("core.input-button")
@@ -40,28 +41,27 @@ end)
 
 local camera = Camera:new()
 
+local world = World:new()
+
 local mapLoader = MapLoader:new(
 	"assets/maps/",
-	love.graphics.newImage("assets/maps/world_tileset.png")
+	love.graphics.newImage("assets/maps/world_tileset.png"),
+	world
 )
-local tileMap = mapLoader:load("test.json")
-if not tileMap then
-	return
-end
-
-local world = World:new(tileMap)
-local player = world.entityManager:make(Player)
-player.x = 100
+mapLoader:load("test.json")
 
 function love.update()
-	require("lib.lurker").update()
+	-- require("lib.lurker").update()
 
 	input:update()
 
 	world.entityManager:update()
 
-	camera.x = player.x - SCREEN.WIDTH / 2
-	camera.y = player.y - SCREEN.HEIGHT / 2
+	local players = world.entityManager:getAll(Player)
+	if players then
+		camera.x = players[1].x - SCREEN.WIDTH / 2
+		camera.y = players[1].y - SCREEN.HEIGHT / 2
+	end
 
 	input:updateEnd()
 end
@@ -73,7 +73,7 @@ function love.draw()
 	love.graphics.rectangle("fill", 0, 0, SCREEN.WIDTH, SCREEN.HEIGHT)
 	love.graphics.pop()
 	camera:drawStart()
-	tileMap:draw()
+	world.tileMap:draw()
 	world.entityManager:draw()
 	camera:drawEnd()
 	Draw.stop()

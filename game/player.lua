@@ -4,10 +4,10 @@ local PhysicsEntity = require("game.physics-entity")
 ---@field sprite love.Image
 local Player = {}
 Player.__index = Player
+setmetatable(Player, PhysicsEntity)
 
 ---@return Player
 function Player:new()
-    setmetatable(Player, { __index = PhysicsEntity })
     local t = setmetatable(PhysicsEntity:new(), self)
     t.bb = { x = 2, y = 4, w = 12, h = 12 }
     t.sprite = SPRITES.PLAYER

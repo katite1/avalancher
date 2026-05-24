@@ -11,7 +11,8 @@ local Entity = require("game.entity")
 ---@field jumpStrength number
 ---@field maxFallSpeed number
 local PhysicsEntity = {}
-setmetatable(PhysicsEntity, { __index = Entity })
+PhysicsEntity.__index = PhysicsEntity
+setmetatable(PhysicsEntity, Entity)
 
 function PhysicsEntity:new()
     local t = setmetatable(Entity:new(), self)

@@ -36,4 +36,14 @@ function EntityManager:draw()
     end
 end
 
+function EntityManager:getAll(class)
+    local entities = {}
+    for _, entity in pairs(self.entities) do
+        if O.isInstance(entity, class) then
+            table.insert(entities, entity)
+        end
+    end
+    return entities
+end
+
 return EntityManager
