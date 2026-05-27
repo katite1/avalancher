@@ -8,6 +8,7 @@
 ---@field h number
 ---@field bb BoundingBox
 ---@field update function
+---@field dialogueReference string | nil
 ---@field draw function | nil
 local Entity = {}
 Entity.__index = Entity

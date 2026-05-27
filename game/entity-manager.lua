@@ -36,6 +36,9 @@ function EntityManager:draw()
     end
 end
 
+---@generic T
+---@param class T
+---@return T[]
 function EntityManager:getAll(class)
     local entities = {}
     for _, entity in pairs(self.entities) do
@@ -44,6 +47,38 @@ function EntityManager:getAll(class)
         end
     end
     return entities
+end
+
+---@generic T
+---@param class T
+---@return T | nil
+function EntityManager:getFirst(class)
+    for _, entity in pairs(self.entities) do
+        if O.isInstance(entity, class) then
+            return entity
+        end
+    end
+    return nil
+end
+
+---@generic T
+---@param x integer
+---@param y integer
+---@param class T
+---@return T | nil
+function EntityManager:getClosest(x, y, class)
+    local closestEntity = nil
+    local closestDistance = 9999999999 -- i don't know if lua has an infinite value
+    for _, entity in pairs(self.entities) do
+        if O.isInstance(entity, class) then
+            local distance = M.distance(x, y, entity.x, entity.y)
+            if distance < closestDistance then
+                closestDistance = distance
+                closestEntity = entity
+            end
+        end
+    end
+    return closestEntity
 end
 
 return EntityManager

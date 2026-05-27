@@ -17,8 +17,8 @@
             "scale": 4,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 149.75,
-                "y": 62.5
+                "x": 213.625,
+                "y": 77.5
             }
         },
         "test.json#testing": {
@@ -40,7 +40,7 @@
         "test.json"
     ],
     "project": "tiled.tiled-project",
-    "property.type": "layer",
+    "property.type": "dialogue",
     "recentFiles": [
         "test.json",
         "C:/Users/Kate/Documents/Programming/avalancher/assets/testing.tsx",

@@ -1,6 +1,9 @@
 F = require("util.f")
 M = require("util.m")
 O = require("util.o")
+Inspect = require("lib.inspect")
+LANG = require("assets.i18n.en")
+DialogueItems = require("game.dialogue-items")
 local Draw = require("core.draw")
 local Input = require("core.input")
 local InputButton = require("core.input-button")
@@ -25,6 +28,7 @@ SCREEN.HEIGHT = 136
 SPRITES_PATH = "assets/sprites/"
 SPRITES = {}
 SPRITES.PLAYER = love.graphics.newImage(SPRITES_PATH .. "player.png")
+SPRITES.SIGN = love.graphics.newImage(SPRITES_PATH .. "sign.png")
 
 Buttons = {
 	left = InputButton:new({ "left", "a" }),
@@ -32,6 +36,7 @@ Buttons = {
 	up = InputButton:new({ "up", "w" }),
 	down = InputButton:new({ "down", "s" }),
 	jump = InputButton:new({ "z", "j" }),
+	talk = InputButton:new({ "up" })
 }
 local input = Input:new()
 F.forEach(Buttons, function(_, button)
@@ -55,7 +60,7 @@ function love.update()
 
 	input:update()
 
-	world.entityManager:update()
+	world.fsm:update()
 
 	local players = world.entityManager:getAll(Player)
 	if players then

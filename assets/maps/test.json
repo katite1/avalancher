@@ -94,6 +94,29 @@
                  "width":16,
                  "x":144,
                  "y":32
+                }, 
+                {
+                 "gid":57,
+                 "height":16,
+                 "id":10,
+                 "name":"",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"dialogue",
+                         "propertytype":"dialogue",
+                         "type":"class",
+                         "value":
+                            {
+                             "reference":"signBob"
+                            }
+                        }],
+                 "rotation":0,
+                 "type":"sign",
+                 "visible":true,
+                 "width":16,
+                 "x":192,
+                 "y":80
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -102,7 +125,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":8,
+ "nextobjectid":11,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",

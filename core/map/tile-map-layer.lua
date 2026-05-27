@@ -22,7 +22,7 @@ function TileMapLayer:new(layer, tileMap)
     t.decorative = false
     t.tint = { 1, 1, 1 }
 
-    t.decorative = TiledHelper.hasProperty(layer.properties, "decorative")
+    t.decorative = TiledHelper.hasPropertyValue(layer.properties, "layer", "decorative")
     if layer.tintcolor then
         t.tint = { M.hex_to_rgb(layer.tintcolor) }
     end

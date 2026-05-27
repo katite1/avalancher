@@ -30,7 +30,6 @@ end
 
 function Player:draw()
     love.graphics.draw(self.sprite, self.x, self.y)
-    love.graphics.rectangle("line", self.x + self.bb.x, self.y + self.bb.y, self.bb.w, self.bb.h)
 end
 
 return Player
