@@ -108,7 +108,7 @@
                          "type":"class",
                          "value":
                             {
-                             "reference":"signBob"
+                             "reference":"jumpTutorialSign"
                             }
                         }],
                  "rotation":0,

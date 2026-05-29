@@ -11,6 +11,7 @@ local MapLoader = require("core.map.map-loader")
 local Camera = require("core.camera")
 local World = require("game.world")
 local Player = require("game.player")
+local Panel = require("game.ui.panel")
 
 local function init()
 	love.graphics.setDefaultFilter("nearest", "nearest")
@@ -22,13 +23,14 @@ end
 init()
 
 SCREEN = {}
-SCREEN.WIDTH = 240
-SCREEN.HEIGHT = 136
+SCREEN.WIDTH = 320
+SCREEN.HEIGHT = 180
 
 SPRITES_PATH = "assets/sprites/"
 SPRITES = {}
 SPRITES.PLAYER = love.graphics.newImage(SPRITES_PATH .. "player.png")
 SPRITES.SIGN = love.graphics.newImage(SPRITES_PATH .. "sign.png")
+SPRITES.PANEL = love.graphics.newImage(SPRITES_PATH .. "test-9-panel.png")
 
 Buttons = {
 	left = InputButton:new({ "left", "a" }),
@@ -55,8 +57,10 @@ local mapLoader = MapLoader:new(
 )
 mapLoader:load("test.json")
 
+local testPanel = Panel:new(SPRITES.PANEL, 8)
+
 function love.update()
-	-- require("lib.lurker").update()
+	require("lib.lurker").update()
 
 	input:update()
 
@@ -71,7 +75,9 @@ function love.update()
 	input:updateEnd()
 end
 
+local t = 0
 function love.draw()
+	t = t + 1
 	Draw.start()
 	love.graphics.push("all")
 	love.graphics.setColor(0.2, 0.2, 0.2)
@@ -81,6 +87,9 @@ function love.draw()
 	world.tileMap:draw()
 	world.entityManager:draw()
 	camera:drawEnd()
+	-- testPanel:draw(SCREEN.WIDTH - 16, 32)
+	-- testPanel:draw(SCREEN.WIDTH, 100 + math.sin(t / 10) * 30)
+	world.fsm:draw()
 	Draw.stop()
 end
 

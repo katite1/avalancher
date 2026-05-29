@@ -1,9 +1,11 @@
 local FSMState        = require("core.fsm-state")
+local Panel           = require("game.ui.panel")
 
 ---@class DialogueState: FSMState
 ---@field world World
 ---@field progress integer
 ---@field previousState FSMState
+---@field dialogPanel Panel
 local DialogueState   = {}
 DialogueState.__index = DialogueState
 setmetatable(DialogueState, FSMState)
@@ -12,8 +14,9 @@ setmetatable(DialogueState, FSMState)
 ---@return DialogueState
 function DialogueState:new(world)
     local t = setmetatable(FSMState:new(), self)
-    t.progress = 0
+    t.progress = 1
     t.world = world
+    t.dialogPanel = Panel:new(SPRITES.PANEL, 8)
     ---@cast t DialogueState
 
     return t
@@ -28,17 +31,24 @@ end
 
 function DialogueState:update()
     if Buttons.down.justPressed then
-        self.progress = self.progress + 1
-        print(self.dialogue.steps[self.progress])
         if (self.progress == #self.dialogue.steps) then
             self.world.fsm:gotoState(self.previousState)
             return
         end
+        self.progress = self.progress + 1
     end
 end
 
+function DialogueState:draw()
+    self.dialogPanel:draw(SCREEN.WIDTH, 48)
+    love.graphics.printf(
+        self.dialogue.steps[self.progress],
+        8, 8, SCREEN.WIDTH - 16
+    )
+end
+
 function DialogueState:exit()
-    self.progress = 0
+    self.progress = 1
     self.dialogue = nil
     return true
 end

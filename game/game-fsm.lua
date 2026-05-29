@@ -41,4 +41,10 @@ function GameFSM:new(world)
     return t
 end
 
+function GameFSM:draw()
+    if self.currentState.draw then
+        self.currentState:draw()
+    end
+end
+
 return GameFSM
