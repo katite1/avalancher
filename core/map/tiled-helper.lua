@@ -9,7 +9,7 @@ TiledHelper.__index = TiledHelper
 ---@return boolean
 function TiledHelper.hasPropertyValue(properties, propertyType, propertyValue)
     for _, property in ipairs(properties) do
-        if property.propertyType == propertyType then
+        if property.propertytype == propertyType then
             for value, _ in pairs(property.value) do
                 if value == propertyValue then
                     return true

@@ -12,7 +12,7 @@ function Text:new()
     return t
 end
 
-function Text:draw(x, y, w, h)
+function Text:draw(x, y, w)
     love.graphics.printf(
         self.content,
         8, 8, SCREEN.WIDTH - 16

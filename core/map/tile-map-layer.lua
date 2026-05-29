@@ -100,7 +100,6 @@ function TileMapLayer:getTilesInRectangle(x, y, w, h)
             if row > 0 and column > 0 and row <= self.height and column <= self.width then
                 local value = self.tiles[row][column]
                 if value ~= 0 and self.tileMap:tileHasProp(value, "solid") then
-                    love.graphics.rectangle("fill", column * tileSize, row * tileSize, tileSize, tileSize)
                     table.insert(theTiles, Tile:new(row, column, tileSize, tileSize, value))
                 end
             end
