@@ -55,13 +55,14 @@ function TileMapLayer:draw(tileset)
 
     local width, height = tileset:getDimensions()
     width = math.floor(width / tileSize)
-    height = math.floor(height / tileSize - 1)
+    height = math.floor(height / tileSize)
 
     for y, row in ipairs(self.tiles) do
+        local line = ""
         for x, tileValue in ipairs(row) do
             if tileValue ~= 0 then
-                local tileX = (tileValue - 1) % width + 1
-                local tileY = math.floor((tileValue - 1) / height) + 1
+                local tileX = math.floor((tileValue - 1) % width + 1)
+                local tileY = math.floor((tileValue - 1) / width) + 1
                 local quad = love.graphics.newQuad(
                     tileX * tileSize - tileSize, tileY * tileSize - tileSize,
                     tileSize, tileSize,

@@ -41,7 +41,9 @@ function MapLoader:load(mapName)
             end
         end
     end
-    for _, tile in ipairs(map.tilesets[1].tiles) do
+    local tileSource = map.tilesets[1].source
+    local tileset = json.decode(love.filesystem.read(self.directory .. tileSource))
+    for _, tile in ipairs(tileset.tiles) do
         local props = {}
         for prop, _ in pairs(tile.properties[1].value) do
             table.insert(props, prop)

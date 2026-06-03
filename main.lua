@@ -57,7 +57,7 @@ local camera = Camera:new()
 local world = World:new()
 local mapLoader = MapLoader:new(
 	"assets/maps/",
-	love.graphics.newImage("assets/maps/world_tileset.png"),
+	love.graphics.newImage("assets/maps/tileset.png"),
 	world
 )
 mapLoader:load("test.json")
@@ -66,7 +66,7 @@ local function restart()
 	world = World:new()
 	mapLoader = MapLoader:new(
 		"assets/maps/",
-		love.graphics.newImage("assets/maps/world_tileset.png"),
+		love.graphics.newImage("assets/maps/tileset.png"),
 		world
 	)
 	mapLoader:load("test.json")
