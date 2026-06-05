@@ -1,7 +1,8 @@
 {
-    "activeFile": "rules.tmx",
+    "activeFile": "test.json",
     "automapping.whileDrawing": false,
     "expandedProjectPaths": [
+        "rules",
         "."
     ],
     "fileStates": {
@@ -10,6 +11,7 @@
             "scaleInEditor": 4
         },
         ":/automap-tiles.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "C:/Users/Kate/Documents/Programming/avalancher/assets/testing.tsx": {
@@ -17,36 +19,96 @@
             "scaleInDock": 1,
             "scaleInEditor": 5.5
         },
+        "grass.tsj": {
+            "dynamicWrapping": false,
+            "scaleInDock": 3,
+            "scaleInEditor": 5.5
+        },
         "rules - Copy.tmx": {
             "scale": 0.71546875,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 320.069884254204,
-                "y": 319.3710417121643
+                "x": 288.62196986241537,
+                "y": 171.21642279973793
             }
         },
         "rules.tmx": {
-            "scale": 8,
-            "selectedLayer": 1,
+            "scale": 2,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 47.3125,
-                "y": 34.4375
+                "x": 188,
+                "y": 281
             }
         },
-        "rules_background.tmx": {
-            "scale": 1,
-            "selectedLayer": -1,
+        "rules/grass.tmx": {
+            "scale": 3,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 315,
-                "y": 246
+                "x": 214.5,
+                "y": 106.99999999999999
             }
+        },
+        "rules/grass_background.tmx": {
+            "scale": 1.3359375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 203.2280701754386,
+                "y": 319.62573099415204
+            }
+        },
+        "rules/grass_background.tmx.tmx": {
+            "scale": 1.3359375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 319.62573099415204,
+                "y": 319.62573099415204
+            }
+        },
+        "rules/rules.tmx": {
+            "scale": 0.9143749999999999,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 320.4374572795626,
+                "y": 320.4374572795626
+            }
+        },
+        "rules/snow.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 261.75,
+                "y": 240
+            }
+        },
+        "rules/snow_background.tmx": {
+            "scale": 0.975234375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 281.47080028839224,
+                "y": 297.3644156052231
+            }
+        },
+        "rules/tileset.tsj": {
+            "scaleInDock": 1
+        },
+        "rules_background.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 239,
+                "y": 168.5
+            }
+        },
+        "snow.tsj": {
+            "scaleInDock": 3,
+            "scaleInEditor": 1
         },
         "test.json": {
             "scale": 3,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 128,
-                "y": 127.83333333333331
+                "x": 69.16666666666666,
+                "y": 136.33333333333331
             }
         },
         "test.json#testing": {
@@ -62,43 +124,51 @@
             }
         },
         "tileset.tsj": {
+            "dynamicWrapping": true,
             "scaleInDock": 2,
             "scaleInEditor": 5.5
         },
         "tileset.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1
         },
         "tileset2.tsj": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 3
         }
     },
     "last.exportedFilePath": "C:/Users/Kate/Documents/Programming/avalancher/assets/maps",
-    "last.externalTilesetPath": "C:/Users/Kate/Documents/Programming/avalancher/assets/maps",
+    "last.externalTilesetPath": "C:/Users/Katite/Documents/programming/avalancher/assets/maps",
     "last.imagePath": "C:/Users/Kate/Documents/Programming/avalancher/assets/maps",
     "map.lastUsedExportFilter": "All Files (*)",
     "map.lastUsedFormat": "tmx",
     "openFiles": [
         "test.json",
-        "rules.tmx",
-        "rules_background.tmx",
-        "tileset2.tsj",
-        "rules - Copy.tmx"
+        "rules/grass.tmx",
+        "rules/grass_background.tmx",
+        "rules/snow_background.tmx",
+        "rules/snow.tmx"
     ],
     "project": "tiled.tiled-project",
     "property.type": "terrain",
     "recentFiles": [
+        "rules/snow.tmx",
+        "rules/snow_background.tmx",
+        "rules/grass_background.tmx",
+        "rules/grass.tmx",
         "test.json",
-        "rules - Copy.tmx",
-        "tileset2.tsj",
-        "rules_background.tmx",
-        "rules.tmx",
+        "snow.tsj",
+        "grass.tsj",
         "tileset.tsj",
-        "C:/Users/Kate/Documents/Programming/avalancher/assets/testing.tsx",
-        "test.tmx"
+        "rules/grass_background.tmx.tmx",
+        "rules.tmx",
+        "rules_background.tmx",
+        "rules/rules.tmx"
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedExportFilter": "All Files (*)",
+    "tileset.lastUsedFilter": "JSON tileset files (*.tsj *.json)",
     "tileset.lastUsedFormat": "json",
     "tileset.tileSize": {
         "height": 16,
