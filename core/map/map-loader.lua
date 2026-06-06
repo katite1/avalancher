@@ -4,22 +4,18 @@ local TileLayer   = require("core.map.tile-map-layer")
 local TiledHelper = require("core.map.tiled-helper")
 local Player      = require("game.player")
 local Sign        = require("game.sign")
-local Dialogue    = require("game.dialogue")
 
 ---@class MapLoader
 ---@field directory string
----@field tileset love.Image
 ---@field world World
 local MapLoader   = {}
 MapLoader.__index = MapLoader
 
 ---@param directory string
----@param tileset love.Image
 ---@return MapLoader
-function MapLoader:new(directory, tileset, world)
+function MapLoader:new(directory, world)
     local t = setmetatable({}, { __index = self })
     t.directory = directory
-    t.tileset = tileset
     t.world = world
     return t
 end
@@ -27,32 +23,34 @@ end
 ---@param mapName string
 function MapLoader:load(mapName)
     local map = json.decode(love.filesystem.read(self.directory .. mapName))
-    local tileMap = TileMap:new(map.tilewidth, self.tileset)
+    local tileMap = TileMap:new(map.tilewidth, self)
     if map.layers then
         for _, layer in ipairs(map.layers) do
             if layer.type == "tilelayer" then
-                table.insert(
-                    tileMap.layers,
-                    TileLayer:new(layer, tileMap)
-                )
+                tileMap:addLayer(layer)
             end
             if layer.type == "objectgroup" then
                 self:createObjects(layer)
             end
         end
     end
-    local tileSource = map.tilesets[1].source
-    local tileset = json.decode(love.filesystem.read(self.directory .. tileSource))
-    for _, tile in ipairs(tileset.tiles) do
-        local props = {}
-        for prop, _ in pairs(tile.properties[1].value) do
-            table.insert(props, prop)
+    if map.tilesets then
+        for _, tilesetData in ipairs(map.tilesets) do
+            local tileSource = tilesetData.source
+            local tileset = json.decode(love.filesystem.read(self.directory .. tileSource))
+            for _, tile in ipairs(tileset.tiles) do
+                local props = {}
+                for prop, _ in pairs(tile.properties[1].value) do
+                    table.insert(props, prop)
+                end
+                table.insert(
+                    tileMap.tileProperties,
+                    tile.id + 1,
+                    props
+                )
+                tileMap:addTileset(tilesetData.firstgid, TILESETS[tileset.image])
+            end
         end
-        table.insert(
-            tileMap.tileProperties,
-            tile.id + 1,
-            props
-        )
     end
     self.world.tileMap = tileMap
 end

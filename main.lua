@@ -30,6 +30,10 @@ SPRITES = {}
 SPRITES.PLAYER = love.graphics.newImage(SPRITES_PATH .. "player.png")
 SPRITES.SIGN = love.graphics.newImage(SPRITES_PATH .. "sign.png")
 SPRITES.PANEL = love.graphics.newImage(SPRITES_PATH .. "test-9-panel.png")
+TILESETS_PATH = "assets/maps/"
+TILESETS = {}
+TILESETS["grass.png"] = love.graphics.newImage(TILESETS_PATH .. "grass.png")
+TILESETS["snow.png"] = love.graphics.newImage(TILESETS_PATH .. "snow.png")
 
 TICK = {}
 TICK.rate = 1
@@ -57,7 +61,6 @@ local camera = Camera:new()
 local world = World:new()
 local mapLoader = MapLoader:new(
 	"assets/maps/",
-	love.graphics.newImage("assets/maps/tileset.png"),
 	world
 )
 mapLoader:load("test.json")
@@ -66,7 +69,6 @@ local function restart()
 	world = World:new()
 	mapLoader = MapLoader:new(
 		"assets/maps/",
-		love.graphics.newImage("assets/maps/tileset.png"),
 		world
 	)
 	mapLoader:load("test.json")

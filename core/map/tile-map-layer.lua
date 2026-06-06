@@ -46,21 +46,22 @@ function TileMapLayer:new(layer, tileMap)
     return t
 end
 
----@param tileset love.Image
-function TileMapLayer:draw(tileset)
+function TileMapLayer:draw()
     local tileSize = self.tileMap.tileSize
 
     love.graphics.push("all")
     love.graphics.setColor(self.tint)
 
-    local width, height = tileset:getDimensions()
-    width = math.floor(width / tileSize)
-    height = math.floor(height / tileSize)
-
     for y, row in ipairs(self.tiles) do
         local line = ""
         for x, tileValue in ipairs(row) do
             if tileValue ~= 0 then
+                local tileValueOffset, tileset = self.tileMap:getImageForTile(tileValue)
+                tileValue = tileValue - tileValueOffset + 1
+                local width, height = tileset:getDimensions()
+                width = math.floor(width / tileSize)
+                height = math.floor(height / tileSize)
+
                 local tileX = math.floor((tileValue - 1) % width + 1)
                 local tileY = math.floor((tileValue - 1) / width) + 1
                 local quad = love.graphics.newQuad(

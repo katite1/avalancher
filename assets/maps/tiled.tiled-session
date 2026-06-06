@@ -44,16 +44,16 @@
             "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 214.5,
-                "y": 106.99999999999999
+                "x": 320.16666666666663,
+                "y": 320.16666666666663
             }
         },
         "rules/grass_background.tmx": {
             "scale": 1.3359375,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 203.2280701754386,
-                "y": 319.62573099415204
+                "x": 320,
+                "y": 320
             }
         },
         "rules/grass_background.tmx.tmx": {
@@ -76,16 +76,16 @@
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 261.75,
-                "y": 240
+                "x": 320.25,
+                "y": 320.25
             }
         },
         "rules/snow_background.tmx": {
             "scale": 0.975234375,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 281.47080028839224,
-                "y": 297.3644156052231
+                "x": 320.4357926780421,
+                "y": 320.43579267804216
             }
         },
         "rules/tileset.tsj": {
@@ -107,8 +107,8 @@
             "scale": 3,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 69.16666666666666,
-                "y": 136.33333333333331
+                "x": 128.16666666666669,
+                "y": 127.83333333333331
             }
         },
         "test.json#testing": {

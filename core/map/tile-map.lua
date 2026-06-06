@@ -1,8 +1,11 @@
+local TileLayer = require("core.map.tile-map-layer")
+local Tileset = require("core.map.tileset")
+
 ---@class TileMap
 ---@field tileSize number
----@field tileset love.Image
 ---@field tileProperties string[][]
 ---@field layers TileMapLayer[]
+---@field tilesets Tileset[]
 local TileMap = {}
 
 ---@param tileSize number
@@ -13,15 +16,38 @@ function TileMap:new(tileSize, tileset)
     t.tileSize = tileSize
     t.tiles = {}
     t.tileProperties = {}
-    t.tileset = tileset
+    t.tilesets = {}
     t.layers = {}
     return t
 end
 
 function TileMap:draw()
     for _, layer in ipairs(self.layers) do
-        layer:draw(self.tileset)
+        layer:draw()
     end
+end
+
+---@param data table Tiled layer data
+function TileMap:addLayer(data)
+    local layer = TileLayer:new(data, self)
+    table.insert(self.layers, layer)
+end
+
+---@param firstID integer
+---@param image love.Image
+function TileMap:addTileset(firstID, image)
+    table.insert(self.tilesets, Tileset:new(firstID, image))
+end
+
+---@param id integer
+---@return integer, love.Image
+function TileMap:getImageForTile(id)
+    for i = #self.tilesets, 1, -1 do
+        if id >= self.tilesets[i].firstID then
+            return self.tilesets[i].firstID, self.tilesets[i].image
+        end
+    end
+    error("no tileset for tile of id " .. id)
 end
 
 ---@param x number
