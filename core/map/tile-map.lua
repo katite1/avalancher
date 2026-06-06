@@ -40,11 +40,11 @@ function TileMap:addTileset(firstID, image)
 end
 
 ---@param id integer
----@return integer, love.Image
-function TileMap:getImageForTile(id)
+---@return Tileset
+function TileMap:getTilemapForTIle(id)
     for i = #self.tilesets, 1, -1 do
         if id >= self.tilesets[i].firstID then
-            return self.tilesets[i].firstID, self.tilesets[i].image
+            return self.tilesets[i]
         end
     end
     error("no tileset for tile of id " .. id)

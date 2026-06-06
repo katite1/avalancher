@@ -52,27 +52,25 @@ function TileMapLayer:draw()
     love.graphics.push("all")
     love.graphics.setColor(self.tint)
 
+    local drawCalls = 0
+    -- local batch = love.graphics.newSpriteBatch()
+
     for y, row in ipairs(self.tiles) do
-        local line = ""
         for x, tileValue in ipairs(row) do
             if tileValue ~= 0 then
-                local tileValueOffset, tileset = self.tileMap:getImageForTile(tileValue)
-                tileValue = tileValue - tileValueOffset + 1
-                local width, height = tileset:getDimensions()
+                local tileset = self.tileMap:getTilemapForTIle(tileValue)
+                tileValue = tileValue - tileset.firstID + 1
+                local width, height = tileset.image:getDimensions()
                 width = math.floor(width / tileSize)
                 height = math.floor(height / tileSize)
 
-                local tileX = math.floor((tileValue - 1) % width + 1)
-                local tileY = math.floor((tileValue - 1) / width) + 1
-                local quad = love.graphics.newQuad(
-                    tileX * tileSize - tileSize, tileY * tileSize - tileSize,
-                    tileSize, tileSize,
-                    tileset
-                )
-                love.graphics.draw(tileset, quad, x * tileSize, y * tileSize)
+                local quad = tileset.quads[tileValue]
+                love.graphics.draw(tileset.image, quad, x * tileSize, y * tileSize)
+                drawCalls = drawCalls + 1
             end
         end
     end
+    print(drawCalls)
     love.graphics.pop()
 end
 
