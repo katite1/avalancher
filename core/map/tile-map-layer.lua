@@ -52,25 +52,31 @@ function TileMapLayer:draw()
     love.graphics.push("all")
     love.graphics.setColor(self.tint)
 
-    local drawCalls = 0
     -- local batch = love.graphics.newSpriteBatch()
+    local batches = {}
+    ---@cast batches love.SpriteBatch[]
 
     for y, row in ipairs(self.tiles) do
         for x, tileValue in ipairs(row) do
             if tileValue ~= 0 then
-                local tileset = self.tileMap:getTilemapForTIle(tileValue)
+                local tileset = self.tileMap:getTilemapForTile(tileValue)
+                if batches[tileset.firstID] == nil then
+                    batches[tileset.firstID] = love.graphics.newSpriteBatch(tileset.image)
+                end
+
                 tileValue = tileValue - tileset.firstID + 1
                 local width, height = tileset.image:getDimensions()
                 width = math.floor(width / tileSize)
                 height = math.floor(height / tileSize)
 
                 local quad = tileset.quads[tileValue]
-                love.graphics.draw(tileset.image, quad, x * tileSize, y * tileSize)
-                drawCalls = drawCalls + 1
+                batches[tileset.firstID]:add(quad, x * tileSize, y * tileSize)
             end
         end
     end
-    print(drawCalls)
+    for _, batch in pairs(batches) do
+        love.graphics.draw(batch)
+    end
     love.graphics.pop()
 end
 

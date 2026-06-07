@@ -41,7 +41,7 @@ end
 
 ---@param id integer
 ---@return Tileset
-function TileMap:getTilemapForTIle(id)
+function TileMap:getTilemapForTile(id)
     for i = #self.tilesets, 1, -1 do
         if id >= self.tilesets[i].firstID then
             return self.tilesets[i]
