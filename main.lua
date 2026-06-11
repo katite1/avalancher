@@ -34,10 +34,19 @@ TILESETS_PATH = "assets/maps/"
 TILESETS = {}
 TILESETS["grass.png"] = love.graphics.newImage(TILESETS_PATH .. "grass.png")
 TILESETS["snow.png"] = love.graphics.newImage(TILESETS_PATH .. "snow.png")
+BACKGROUNDS_PATH = "assets/backgrounds/"
+BACKGROUNDS = {}
+BACKGROUNDS.PLAINS = love.graphics.newImage(BACKGROUNDS_PATH .. "plains.png")
+BACKGROUNDS.PLAINS:setWrap('repeat', 'repeat')
+
 
 TICK = {}
 TICK.rate = 1
 TICK.current = 0
+
+
+local shader = love.graphics.newShader("assets/test-shader.fs")
+
 
 Buttons = {
 	left = InputButton:new({ "left", "a" }),
@@ -121,11 +130,14 @@ end
 local t = 0
 function love.draw()
 	t = t + 1
+	-- love.graphics.setShader(shader)
 	Draw.start()
 	love.graphics.push("all")
 	love.graphics.setColor(0.2, 0.2, 0.2)
 	love.graphics.rectangle("fill", 0, 0, SCREEN.WIDTH, SCREEN.HEIGHT)
 	love.graphics.pop()
+	local bgQuad = love.graphics.newQuad(0, 0, SCREEN.WIDTH, SCREEN.HEIGHT, BACKGROUNDS.PLAINS)
+	love.graphics.draw(BACKGROUNDS.PLAINS, bgQuad, 0, 0)
 	camera:drawStart()
 	world.tileMap:draw()
 	world.entityManager:draw()
@@ -134,4 +146,5 @@ function love.draw()
 	-- testPanel:draw(SCREEN.WIDTH, 100 + math.sin(t / 10) * 30)
 	world.fsm:draw()
 	Draw.stop()
+	love.graphics.setShader()
 end
