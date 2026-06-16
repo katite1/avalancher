@@ -1,4 +1,4 @@
-local TileLayer = require("core.map.tile-map-layer")
+local TileMapLayer = require("core.map.tile-map-layer")
 local Tileset = require("core.map.tileset")
 
 ---@class TileMap
@@ -9,9 +9,8 @@ local Tileset = require("core.map.tileset")
 local TileMap = {}
 
 ---@param tileSize number
----@param tileset love.Image
 ---@return TileMap
-function TileMap:new(tileSize, tileset)
+function TileMap:new(tileSize)
     local t = setmetatable({}, { __index = self })
     t.tileSize = tileSize
     t.tiles = {}
@@ -29,7 +28,7 @@ end
 
 ---@param data table Tiled layer data
 function TileMap:addLayer(data)
-    local layer = TileLayer:new(data, self)
+    local layer = TileMapLayer:new(data, self)
     table.insert(self.layers, layer)
 end
 

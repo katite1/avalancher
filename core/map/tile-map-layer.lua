@@ -39,7 +39,7 @@ function TileMapLayer:new(layer, tileMap)
     for tileIndex = 1, tileCount, 1 do
         local tile = layer.data[tileIndex]
         local x = (tileIndex - 1) % t.width + 1
-        local y = math.floor((tileIndex - 1) / t.height) + 1
+        local y = math.ceil(tileIndex / t.width)
         t.tiles[y][x] = tile
     end
 

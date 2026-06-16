@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <tileset firstgid="1" source="../world-objects.tsj"/>
+ <object gid="2" width="16" height="16">
+  <properties>
+   <property name="dialogue" type="class" propertytype="dialogue">
+    <properties>
+     <property name="reference" value="jumpTutorialSign"/>
+    </properties>
+   </property>
+  </properties>
+ </object>
+</template>

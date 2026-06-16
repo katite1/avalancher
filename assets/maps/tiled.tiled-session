@@ -1,9 +1,10 @@
 {
-    "activeFile": "test.json",
+    "activeFile": "one.tmx",
     "automapping.whileDrawing": false,
     "expandedProjectPaths": [
-        "rules",
-        "."
+        "templates",
+        ".",
+        "rules"
     ],
     "fileStates": {
         "": {
@@ -19,10 +20,42 @@
             "scaleInDock": 1,
             "scaleInEditor": 5.5
         },
+        "another-screen.json": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 242.5,
+                "y": 183
+            }
+        },
         "grass.tsj": {
             "dynamicWrapping": false,
             "scaleInDock": 3,
             "scaleInEditor": 5.5
+        },
+        "one.json": {
+            "scale": 1.4658203125,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 255.8294470353098,
+                "y": 255.8294470353098
+            }
+        },
+        "one.tmx": {
+            "scale": 2,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 207,
+                "y": 236.5
+            }
+        },
+        "pme.tmx": {
+            "scale": 4,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 112.25,
+                "y": 115
+            }
         },
         "rules - Copy.tmx": {
             "scale": 0.71546875,
@@ -44,7 +77,7 @@
             "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 320.16666666666663,
+                "x": 320,
                 "y": 320.16666666666663
             }
         },
@@ -52,7 +85,7 @@
             "scale": 1.3359375,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 320,
+                "x": 320.37426900584796,
                 "y": 320
             }
         },
@@ -76,7 +109,7 @@
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 320.25,
+                "x": 320,
                 "y": 320.25
             }
         },
@@ -84,7 +117,7 @@
             "scale": 0.975234375,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 320.4357926780421,
+                "x": 319.92309540975725,
                 "y": 320.43579267804216
             }
         },
@@ -101,14 +134,14 @@
         },
         "snow.tsj": {
             "scaleInDock": 3,
-            "scaleInEditor": 1
+            "scaleInEditor": 3
         },
         "test.json": {
-            "scale": 2,
+            "scale": 4,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 256.25,
-                "y": 255.75
+                "x": 256,
+                "y": 255.875
             }
         },
         "test.json#testing": {
@@ -136,36 +169,63 @@
             "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 3
+        },
+        "two.json": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 236,
+                "y": 179.33333333333337
+            }
+        },
+        "two.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 256,
+                "y": 239.66666666666663
+            }
+        },
+        "world-objects.tsj": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
-    "last.exportedFilePath": "C:/Users/Kate/Documents/Programming/avalancher/assets/maps",
+    "last.exportedFilePath": "C:/Users/Katite/Documents/programming/avalancher/assets/maps",
     "last.externalTilesetPath": "C:/Users/Katite/Documents/programming/avalancher/assets/maps",
-    "last.imagePath": "C:/Users/Kate/Documents/Programming/avalancher/assets/maps",
-    "map.lastUsedExportFilter": "All Files (*)",
+    "last.imagePath": "C:/Users/Katite/Documents/programming/avalancher/assets/maps",
+    "last.objectTemplatePath": "C:/Users/Katite/Documents/programming/avalancher/assets/maps/templates",
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
     "openFiles": [
-        "test.json",
-        "rules/grass.tmx",
-        "rules/grass_background.tmx",
-        "rules/snow_background.tmx",
-        "rules/snow.tmx"
+        "two.tmx",
+        "one.tmx"
     ],
     "project": "tiled.tiled-project",
-    "property.type": "terrain",
+    "property.type": "portal",
     "recentFiles": [
+        "two.tmx",
+        "one.tmx",
+        "world-objects.tsj",
+        "two.json",
+        "snow.tsj",
         "rules/snow.tmx",
         "rules/snow_background.tmx",
         "rules/grass_background.tmx",
         "rules/grass.tmx",
-        "test.json",
-        "snow.tsj",
-        "grass.tsj",
-        "tileset.tsj",
-        "rules/grass_background.tmx.tmx",
-        "rules.tmx",
-        "rules_background.tmx",
-        "rules/rules.tmx"
+        "pme.tmx",
+        "one.json",
+        "test.json"
     ],
+    "resizeMap.removeObjects": false,
     "tileset.embedInMap": false,
     "tileset.lastUsedExportFilter": "All Files (*)",
     "tileset.lastUsedFilter": "JSON tileset files (*.tsj *.json)",

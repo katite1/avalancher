@@ -23,13 +23,21 @@ end
 ---Returns first property value from property type or nil
 ---@param properties table properties table from tiled
 ---@param propertyType string
----@param key string
+---@param key string | nil
 ---@return string | nil
 function TiledHelper:getPropertyValue(properties, propertyType, key)
-    for _, property in ipairs(properties) do
-        if property.propertytype == propertyType then
-            if property.value[key] then
-                return property.value[key]
+    if key == nil then
+        for _, property in ipairs(properties) do
+            if property.name == propertyType then
+                return property.value
+            end
+        end
+    else
+        for _, property in ipairs(properties) do
+            if property.propertytype == propertyType then
+                if property.value[key] then
+                    return property.value[key]
+                end
             end
         end
     end

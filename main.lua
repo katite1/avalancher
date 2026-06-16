@@ -30,6 +30,7 @@ SPRITES = {}
 SPRITES.PLAYER = love.graphics.newImage(SPRITES_PATH .. "player.png")
 SPRITES.SIGN = love.graphics.newImage(SPRITES_PATH .. "sign.png")
 SPRITES.PANEL = love.graphics.newImage(SPRITES_PATH .. "test-9-panel.png")
+SPRITES.PORTAL = love.graphics.newImage(SPRITES_PATH .. "portal.png")
 TILESETS_PATH = "assets/maps/"
 TILESETS = {}
 TILESETS["grass.png"] = love.graphics.newImage(TILESETS_PATH .. "grass.png")
@@ -72,7 +73,7 @@ local mapLoader = MapLoader:new(
 	"assets/maps/",
 	world
 )
-mapLoader:load("test.json")
+mapLoader:load("one.json")
 local function restart()
 	camera = Camera:new()
 	world = World:new()
@@ -80,7 +81,7 @@ local function restart()
 		"assets/maps/",
 		world
 	)
-	mapLoader:load("test.json")
+	mapLoader:load("two.json")
 end
 
 

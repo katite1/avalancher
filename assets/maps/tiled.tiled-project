@@ -62,6 +62,25 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
+            "id": 11,
+            "members": [
+                {
+                    "name": "target",
+                    "type": "file",
+                    "value": ""
+                }
+            ],
+            "name": "portal",
+            "type": "class",
+            "useAs": [
+                "property",
+                "object",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
             "id": 7,
             "members": [
             ],
