@@ -73,7 +73,7 @@ local mapLoader = MapLoader:new(
 	"assets/maps/",
 	world
 )
-mapLoader:load("one.json")
+mapLoader:load("maps/Plains_1.ldtkl")
 local function restart()
 	camera = Camera:new()
 	world = World:new()
@@ -81,7 +81,7 @@ local function restart()
 		"assets/maps/",
 		world
 	)
-	mapLoader:load("two.json")
+	mapLoader:load("maps/Plains_1.ldtkl")
 end
 
 

@@ -3,16 +3,22 @@ local Tileset = require("core.map.tileset")
 
 ---@class TileMap
 ---@field tileSize number
+---@field width integer
+---@field height integer
 ---@field tileProperties string[][]
 ---@field layers TileMapLayer[]
 ---@field tilesets Tileset[]
 local TileMap = {}
 
 ---@param tileSize number
+---@param width integer
+---@param height integer
 ---@return TileMap
-function TileMap:new(tileSize)
+function TileMap:new(tileSize, width, height)
     local t = setmetatable({}, { __index = self })
     t.tileSize = tileSize
+    t.width = width
+    t.height = height
     t.tiles = {}
     t.tileProperties = {}
     t.tilesets = {}
@@ -28,25 +34,35 @@ end
 
 ---@param data table Tiled layer data
 function TileMap:addLayer(data)
-    local layer = TileMapLayer:new(data, self)
+    local layer = TileMapLayer:new(data, self.width, self.height, self)
     table.insert(self.layers, layer)
 end
 
----@param firstID integer
+---@param name string
 ---@param image love.Image
-function TileMap:addTileset(firstID, image)
-    table.insert(self.tilesets, Tileset:new(firstID, image))
+function TileMap:addTileset(name, image)
+    self.tilesets[name] = Tileset:new(image)
 end
 
----@param id integer
+-- ---@param id integer
+-- ---@return Tileset
+-- function TileMap:getTilemapForTile(id)
+--     for i = #self.tilesets, 1, -1 do
+--         if id >= self.tilesets[i].firstID then
+--             return self.tilesets[i]
+--         end
+--     end
+--     error("no tileset for tile of id " .. id)
+-- end
+
+---@param name string
 ---@return Tileset
-function TileMap:getTilemapForTile(id)
-    for i = #self.tilesets, 1, -1 do
-        if id >= self.tilesets[i].firstID then
-            return self.tilesets[i]
-        end
+function TileMap:getTileset(name)
+    if self.tilesets[name] then
+        return self.tilesets[name]
     end
-    error("no tileset for tile of id " .. id)
+
+    error("no tileset for tile of name: " .. name)
 end
 
 ---@param x number

@@ -9,6 +9,7 @@
 ---@field bb BoundingBox
 ---@field update function
 ---@field dialogueReference string | nil
+---@field deserializeLdtk nil | fun(data): Entity
 ---@field draw function | nil
 local Entity = {}
 Entity.__index = Entity

@@ -15,12 +15,20 @@ end
 
 ---@generic T : Entity
 ---@param entity T
+---@param ldtkEntity table | nil
 ---@return T
-function EntityManager:make(entity)
+function EntityManager:makeFromLdtk(entity, ldtkEntity)
     ---@cast entity Entity
-    local e = entity:new()
+    local e = nil
+    if ldtkEntity and entity.deserializeLdtk then
+        e = entity.deserializeLdtk(ldtkEntity)
+    else
+        e = entity:new()
+    end
+
     e.world = self.world
     table.insert(self.entities, e)
+
     return e
 end
 
@@ -38,7 +46,7 @@ end
 
 ---@generic T
 ---@param class T
----@return T[]
+---@return T[] | false
 function EntityManager:getAll(class)
     local entities = {}
     for _, entity in pairs(self.entities) do
@@ -46,7 +54,7 @@ function EntityManager:getAll(class)
             table.insert(entities, entity)
         end
     end
-    return entities
+    return #entities ~= 0 and entities
 end
 
 ---@generic T

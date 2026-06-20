@@ -5,6 +5,7 @@ local Tile = require("core.map.tile")
 ---@field width number
 ---@field height number
 ---@field tileMap TileMap tilemap this layer belongs to
+---@field tileset Tileset
 ---@field tiles number[][]
 ---@field tint [number, number, number]
 ---@field decorative boolean
@@ -12,35 +13,36 @@ local TileMapLayer = {}
 TileMapLayer.__index = TileMapLayer
 
 ---@param layer table
+---@param width integer
+---@param height integer
 ---@param tileMap TileMap
 ---@return TileMapLayer
-function TileMapLayer:new(layer, tileMap)
+function TileMapLayer:new(layer, width, height, tileMap)
     local t = setmetatable({}, { __index = self })
-    t.width = layer.width
-    t.height = layer.height
     t.tileMap = tileMap
+    t.tileset = t.tileMap:getTileset(layer.__tilesetRelPath)
     t.decorative = false
     t.tint = { 1, 1, 1 }
+    t.width = width
+    t.height = height
 
-    t.decorative = TiledHelper.hasPropertyValue(layer.properties, "layer", "decorative")
-    if layer.tintcolor then
-        t.tint = { M.hex_to_rgb(layer.tintcolor) }
-    end
-    local tileCount = t.width * t.height
+    -- t.decorative = TiledHelper.hasPropertyValue(layer.properties, "layer", "decorative")
+    -- if layer.tintcolor then
+    --     t.tint = { M.hex_to_rgb(layer.tintcolor) }
+    -- end
+    -- local tileCount = t.width * t.height
 
     t.tiles = {}
     for i = 1, t.height, 1 do
         table.insert(t.tiles, {})
         for _ = 1, t.width, 1 do
-            table.insert(t.tiles[i], 0)
+            table.insert(t.tiles[i], -1)
         end
     end
 
-    for tileIndex = 1, tileCount, 1 do
-        local tile = layer.data[tileIndex]
-        local x = (tileIndex - 1) % t.width + 1
-        local y = math.ceil(tileIndex / t.width)
-        t.tiles[y][x] = tile
+    for i = 1, #layer.autoLayerTiles, 1 do
+        local tile = layer.autoLayerTiles[i]
+        t.tiles[tile.px[2] / 16 + 1][tile.px[1] / 16 + 1] = tile.t
     end
 
     return t
@@ -52,31 +54,21 @@ function TileMapLayer:draw()
     love.graphics.push("all")
     love.graphics.setColor(self.tint)
 
-    -- local batch = love.graphics.newSpriteBatch()
-    local batches = {}
-    ---@cast batches love.SpriteBatch[]
+    local spriteBatch = love.graphics.newSpriteBatch(self.tileset.image)
 
     for y, row in ipairs(self.tiles) do
         for x, tileValue in ipairs(row) do
-            if tileValue ~= 0 then
-                local tileset = self.tileMap:getTilemapForTile(tileValue)
-                if batches[tileset.firstID] == nil then
-                    batches[tileset.firstID] = love.graphics.newSpriteBatch(tileset.image)
-                end
-
-                tileValue = tileValue - tileset.firstID + 1
-                local width, height = tileset.image:getDimensions()
+            if tileValue ~= -1 then
+                local width, height = self.tileset.image:getDimensions()
                 width = math.floor(width / tileSize)
                 height = math.floor(height / tileSize)
 
-                local quad = tileset.quads[tileValue]
-                batches[tileset.firstID]:add(quad, x * tileSize, y * tileSize)
+                local quad = self.tileset.quads[tileValue + 1]
+                spriteBatch:add(quad, x * tileSize, y * tileSize)
             end
         end
     end
-    for _, batch in pairs(batches) do
-        love.graphics.draw(batch)
-    end
+    love.graphics.draw(spriteBatch)
     love.graphics.pop()
 end
 
@@ -105,7 +97,8 @@ function TileMapLayer:getTilesInRectangle(x, y, w, h)
         for column = startX, xCells + startX, 1 do
             if row > 0 and column > 0 and row <= self.height and column <= self.width then
                 local value = self.tiles[row][column]
-                if value ~= 0 and self.tileMap:tileHasProp(value, "solid") then
+                -- if value ~= -1 and self.tileMap:tileHasProp(value, "solid") then
+                if value ~= -1 then
                     table.insert(theTiles, Tile:new(row, column, tileSize, tileSize, value))
                 end
             end

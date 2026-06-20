@@ -19,4 +19,14 @@ function Sign:draw()
     love.graphics.draw(self.sprite, self.x, self.y)
 end
 
+function Sign.deserializeLdtk(ldtkEntity)
+    local sign = Sign:new()
+    for _, field in ipairs(ldtkEntity.fieldInstances) do
+        if field.__identifier == "dialogue_reference" then
+            sign.dialogueReference = field.__value
+        end
+    end
+    return sign
+end
+
 return Sign
