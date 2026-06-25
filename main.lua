@@ -117,6 +117,8 @@ function love.update()
 		if players then
 			camera.x = players[1].x - SCREEN.WIDTH / 2
 			camera.y = players[1].y - SCREEN.HEIGHT / 2
+			camera.x = M.clamp(camera.x, 0, world.tileMap.width - SCREEN.WIDTH)
+			camera.y = M.clamp(camera.y, 0, world.tileMap.height - SCREEN.HEIGHT)
 		end
 
 		if Buttons.restart.justPressed then

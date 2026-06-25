@@ -86,8 +86,8 @@ function TileMapLayer:draw()
 
                     self.spriteBatch:add(
                         quad,
-                        x * tileSize + tile.offsetX + originOffset,
-                        y * tileSize + tile.offsetY + originOffset,
+                        x * tileSize - tileSize + tile.offsetX + originOffset,
+                        y * tileSize - tileSize + tile.offsetY + originOffset,
                         0,
                         scaleX,
                         scaleY,
@@ -123,8 +123,8 @@ function TileMapLayer:getTilesInRectangle(x, y, w, h)
     end
     -- not sure how the math adds up here but seems like we need to extend the hitbox a bit to avoid collision.
     -- i'm too sleepy to understand this but it fixes it for now!!
-    x = x - 1
-    y = y - 1
+    x = x - 1 + 16
+    y = y - 1 + 16
     w = w + 1
     h = h + 1
     local tileSize = self.tileMap.tileSize
