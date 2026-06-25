@@ -39,18 +39,24 @@ function TileMapLayer:new(layer, width, height, tags, tileMap)
 
     for i = 1, #layer.autoLayerTiles, 1 do
         local tileData = layer.autoLayerTiles[i]
-        local tile = t.tileGrid[tileData.px[2] / 16 + 1][tileData.px[1] / 16 + 1]
+        local gridX = M.round(tileData.px[1] / 16 + 1)
+        local gridY = M.round(tileData.px[2] / 16 + 1)
+        local x = (gridX - 1) * 16
+        local y = (gridY - 1) * 16
+        local offsetX = tileData.px[1] - x
+        local offsetY = tileData.px[2] - y
+        local tile = t.tileGrid[gridY][gridX]
         if tile ~= nil then
             if tile.value ~= -1 then -- this means there is a tile at this coord already
-                local newTile = Tile:new(tile.x, tile.y, tile.width, tile.height, tileData.t)
+                local newTile = Tile:new(x, y, tile.width, tile.height, tileData.t, offsetX, offsetY)
                 if #tile > 1 then
                     table.insert(tile, newTile)
                 else
+                    -- so we store both tiles in a table now
                     local tiles = {}
                     table.insert(tiles, tile)
                     table.insert(tiles, newTile)
-                    t.tileGrid[tileData.px[2] / 16 + 1][tileData.px[1] / 16 + 1] = tiles
-                    -- so we store both tiles in a table now
+                    t.tileGrid[gridY][gridX] = tiles
                     newTile.value = tileData.t
                     if tileData.f == 1 then
                         newTile.flipX = true
@@ -63,6 +69,10 @@ function TileMapLayer:new(layer, width, height, tags, tileMap)
                 end
             else
                 tile.value = tileData.t
+                tile.x = x
+                tile.y = y
+                tile.offsetX = offsetX
+                tile.offsetY = offsetY
                 if tileData.f == 1 then
                     tile.flipX = true
                 elseif tileData.f == 2 then
@@ -89,7 +99,7 @@ function TileMapLayer:draw()
     for y, row in ipairs(self.tileGrid) do
         for x, tile in ipairs(row) do
             local tiles = {}
-            if tile[1] ~= nil then
+            if tile.value == nil then -- TODO: this wastes a lot of CPU for some reason
                 tiles = tile
             else
                 tiles = { tile }
@@ -105,7 +115,12 @@ function TileMapLayer:draw()
                         originOffset = tileSize / 2
                     end
 
-                    self.spriteBatch:add(quad, x * tileSize + originOffset, y * tileSize + originOffset, 0, scaleX,
+                    self.spriteBatch:add(
+                        quad,
+                        x * tileSize + tile.offsetX + originOffset,
+                        y * tileSize + tile.offsetY + originOffset,
+                        0,
+                        scaleX,
                         scaleY,
                         originOffset,
                         originOffset)

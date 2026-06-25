@@ -37,7 +37,7 @@ end
 ---@return TileMapLayer
 function TileMap:addLayer(data, tags)
     local layer = TileMapLayer:new(data, self.width, self.height, tags, self)
-    table.insert(self.layers, layer)
+    table.insert(self.layers, 1, layer)
     return layer
 end
 
@@ -46,17 +46,6 @@ end
 function TileMap:addTileset(name, image)
     self.tilesets[name] = Tileset:new(image)
 end
-
--- ---@param id integer
--- ---@return Tileset
--- function TileMap:getTilemapForTile(id)
---     for i = #self.tilesets, 1, -1 do
---         if id >= self.tilesets[i].firstID then
---             return self.tilesets[i]
---         end
---     end
---     error("no tileset for tile of id " .. id)
--- end
 
 ---@param name string
 ---@return Tileset

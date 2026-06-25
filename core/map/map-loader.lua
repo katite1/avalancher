@@ -77,14 +77,6 @@ function MapLoader:createObjects(layer)
             e = self.world.entityManager:makeFromLdtk(Player)
         end
 
-        -- if entity.__identifier == "portal" then
-        --     e = self.world.entityManager:make(Portal)
-        --     local target = TiledHelper:getPropertyValue(object.properties, "target")
-        --     if not target then
-        --         error("No target defined for portal!")
-        --     end
-        --     e.target = target
-        -- end
         if entity.__identifier == "Sign" then
             e = self.world.entityManager:makeFromLdtk(Sign, entity)
         end
