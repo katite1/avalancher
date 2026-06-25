@@ -89,4 +89,8 @@ function EntityManager:getClosest(x, y, class)
     return closestEntity
 end
 
+function EntityManager:clearAll()
+    self.entities = {}
+end
+
 return EntityManager

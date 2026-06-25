@@ -3,6 +3,7 @@ local FSMState      = require("core.fsm-state")
 local DialogueState = require("game.dialogue-state")
 local Player        = require("game.player")
 local Sign          = require("game.sign")
+local Portal        = require("game.portal")
 
 ---@class GameFSM: FSM
 ---@field world World
@@ -30,6 +31,14 @@ function GameFSM:new(world)
                 if t.world.collisionManager:areOverlapping(player, sign) then
                     if Buttons.talk.justPressed then
                         t:gotoState(t.dialogueState, DialogueItems[sign.dialogueReference])
+                    end
+                end
+            end
+            local portal = t.world.entityManager:getClosest(player.x, player.y, Portal)
+            if portal then
+                if t.world.collisionManager:areOverlapping(player, portal) then
+                    if Buttons.talk.justPressed then
+                        t.world:travel(portal.target)
                     end
                 end
             end

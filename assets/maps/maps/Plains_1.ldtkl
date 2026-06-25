@@ -86,6 +86,25 @@
 					}] }],
 					"__worldX": 240,
 					"__worldY": 224
+				},
+				{
+					"__identifier": "Portal",
+					"__grid": [4,16],
+					"__pivot": [0,0],
+					"__tags": [],
+					"__tile": { "tilesetUid": 90, "x": 224, "y": 0, "w": 16, "h": 16 },
+					"__smartColor": "#EAD4AA",
+					"iid": "7b5b96f0-6fc0-11f1-a26c-0d397107629c",
+					"width": 16,
+					"height": 16,
+					"defUid": 189,
+					"px": [64,256],
+					"fieldInstances": [{ "__identifier": "level", "__type": "String", "__value": "Plains_2", "__tile": null, "defUid": 190, "realEditorValues": [{
+						"id": "V_String",
+						"params": ["Plains_2"]
+					}] }],
+					"__worldX": 64,
+					"__worldY": 256
 				}
 			]
 		},

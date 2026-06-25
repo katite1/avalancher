@@ -75,12 +75,14 @@ local mapLoader = MapLoader:new(
 	"maps.ldtk",
 	world
 )
+world.mapLoader = mapLoader
 mapLoader:load("maps/Plains_1.ldtkl")
 local function restart()
 	camera = Camera:new()
 	world = World:new()
 	mapLoader = MapLoader:new(
 		"assets/maps/",
+		"maps.ldtk",
 		world
 	)
 	mapLoader:load("maps/Plains_1.ldtkl")

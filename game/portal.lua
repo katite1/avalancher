@@ -21,4 +21,14 @@ function Portal:draw()
     love.graphics.draw(self.sprite, self.x, self.y)
 end
 
+function Portal.deserializeLdtk(ldtkEntity)
+    local portal = Portal:new()
+    for _, field in ipairs(ldtkEntity.fieldInstances) do
+        if field.__identifier == "level" then
+            portal.target = field.__value
+        end
+    end
+    return portal
+end
+
 return Portal

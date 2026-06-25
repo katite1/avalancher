@@ -1,8 +1,10 @@
 local EntityManager = require("game.entity-manager")
 local CollisionManager = require("game.collision-manager")
 local GameFSM = require("game.game-fsm")
+local MapLoader = require("core.map.map-loader")
 
 ---@class World
+---@field mapLoader MapLoader
 ---@field entityManager EntityManager
 ---@field collisionManager CollisionManager
 ---@field fsm GameFSM
@@ -22,6 +24,13 @@ function World:new()
     t.properties = {}
     t.properties.gravity = 0.1
     return t
+end
+
+---@param target string
+function World:travel(target)
+    self.entityManager:clearAll()
+    self.tileMap = nil
+    self.mapLoader:load("maps/" .. target .. ".ldtkl")
 end
 
 return World

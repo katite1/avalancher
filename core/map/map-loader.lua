@@ -2,6 +2,7 @@ local json        = require("lib.json")
 local TileMap     = require("core.map.tile-map")
 local Player      = require("game.player")
 local Sign        = require("game.sign")
+local Portal      = require("game.portal")
 
 ---@class MapLoader
 ---@field directory string
@@ -46,26 +47,7 @@ function MapLoader:load(mapName)
             end
         end
     end
-    -- if map.tilesets then
-    --     for _, tilesetData in ipairs(map.tilesets) do
-    --         local tileSource = tilesetData.source
-    --         local tileset = json.decode(love.filesystem.read(self.directory .. tileSource))
-    --         if tileset.tiles then
-    --             for _, tile in ipairs(tileset.tiles) do
-    --                 local props = {}
-    --                 for prop, _ in pairs(tile.properties[1].value) do
-    --                     table.insert(props, prop)
-    --                 end
-    --                 table.insert(
-    --                     tileMap.tileProperties,
-    --                     tile.id + 1,
-    --                     props
-    --                 )
-    --                 tileMap:addTileset(tilesetData.firstgid, TILESETS[tileset.image])
-    --             end
-    --         end
-    --     end
-    -- end
+
     self.world.tileMap = tileMap
 end
 
@@ -79,6 +61,9 @@ function MapLoader:createObjects(layer)
 
         if entity.__identifier == "Sign" then
             e = self.world.entityManager:makeFromLdtk(Sign, entity)
+        end
+        if entity.__identifier == "Portal" then
+            e = self.world.entityManager:makeFromLdtk(Portal, entity)
         end
         if e then
             e.x = entity.px[1]
