@@ -5,6 +5,7 @@ S = require("util.s")
 Inspect = require("lib.inspect")
 LANG = require("assets.i18n.en")
 DialogueItems = require("game.dialogue-items")
+local Asseter = require("core.asseter")
 local Draw = require("core.draw")
 local Input = require("core.input")
 local InputButton = require("core.input-button")
@@ -26,20 +27,18 @@ SCREEN = {}
 SCREEN.WIDTH = 320
 SCREEN.HEIGHT = 180
 
-SPRITES_PATH = "assets/sprites/"
+local spritesAsseter = Asseter:new("assets/sprites/")
 SPRITES = {}
-SPRITES.PLAYER = love.graphics.newImage(SPRITES_PATH .. "player.png")
-SPRITES.SIGN = love.graphics.newImage(SPRITES_PATH .. "sign.png")
-SPRITES.PANEL = love.graphics.newImage(SPRITES_PATH .. "test-9-panel.png")
-SPRITES.PORTAL = love.graphics.newImage(SPRITES_PATH .. "portal.png")
-TILESETS_PATH = "assets/maps/"
-TILESETS = {}
-TILESETS["grass.png"] = love.graphics.newImage(TILESETS_PATH .. "grass.png")
-TILESETS["snow.png"] = love.graphics.newImage(TILESETS_PATH .. "snow.png")
-BACKGROUNDS_PATH = "assets/backgrounds/"
+SPRITES.PLAYER = spritesAsseter:load("player.png")
+SPRITES.PORTAL = spritesAsseter:load("portal.png")
+SPRITES.SIGN = spritesAsseter:load("sign.png")
+SPRITES.PANEL = spritesAsseter:load("test-9-panel.png")
+
+local backgroundsAsseter = Asseter:new("assets/backgrounds/")
 BACKGROUNDS = {}
-BACKGROUNDS.PLAINS = love.graphics.newImage(BACKGROUNDS_PATH .. "plains.png")
-BACKGROUNDS.PLAINS:setWrap('repeat', 'repeat')
+BACKGROUNDS.PLAINS = {}
+BACKGROUNDS.PLAINS.BASE = backgroundsAsseter:load("plains/plains-base.png", true)
+BACKGROUNDS.PLAINS.PARALLAX = backgroundsAsseter:load("plains/plains-parallax.png", true)
 
 
 TICK = {}
@@ -70,6 +69,8 @@ end)
 
 local camera = Camera:new()
 local world = World:new()
+world.background:register("Plains", require("assets.backgrounds.plains.background"))
+
 local mapLoader = MapLoader:new(
 	"assets/maps/",
 	"maps.ldtk",
@@ -121,6 +122,7 @@ function love.update()
 			camera.y = players[1].y - SCREEN.HEIGHT / 2
 			camera.x = M.clamp(camera.x, 0, world.tileMap.width - SCREEN.WIDTH)
 			camera.y = M.clamp(camera.y, 0, world.tileMap.height - SCREEN.HEIGHT)
+			world.background.parallaxX = -camera.x
 		end
 
 		if Buttons.restart.justPressed then
@@ -135,13 +137,12 @@ function love.update()
 end
 
 local t = 0
-local bgQuad = love.graphics.newQuad(0, 0, SCREEN.WIDTH, SCREEN.HEIGHT, BACKGROUNDS.PLAINS)
 Draw.init()
 function love.draw()
 	t = t + 1
 	-- love.graphics.setShader(shader)
 	Draw.start()
-	love.graphics.draw(BACKGROUNDS.PLAINS, bgQuad, 0, 0)
+	world.background:draw()
 	camera:drawStart()
 	world.tileMap:draw()
 	world.entityManager:draw()

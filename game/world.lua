@@ -1,10 +1,11 @@
 local EntityManager = require("game.entity-manager")
 local CollisionManager = require("game.collision-manager")
 local GameFSM = require("game.game-fsm")
-local MapLoader = require("core.map.map-loader")
+local Background = require("game.background")
 
 ---@class World
 ---@field mapLoader MapLoader
+---@field background Background
 ---@field entityManager EntityManager
 ---@field collisionManager CollisionManager
 ---@field fsm GameFSM
@@ -17,6 +18,7 @@ World.__index = World
 ---@return World
 function World:new()
     local t = setmetatable({}, { __index = self })
+    t.background = Background:new()
     t.entityManager = EntityManager:new(t)
     t.collisionManager = CollisionManager:new(t)
     t.fsm = GameFSM:new(t)

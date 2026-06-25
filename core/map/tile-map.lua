@@ -73,19 +73,4 @@ function TileMap:getTilesInRectangle(x, y, w, h)
     return theTiles
 end
 
----@param tile number
----@param property string
----@return boolean
-function TileMap:tileHasProp(tile, property)
-    if self.tileProperties[tile] == nil then
-        return false
-    end
-    for _, value in ipairs(self.tileProperties[tile]) do
-        if value == property then
-            return true
-        end
-    end
-    return false
-end
-
 return TileMap

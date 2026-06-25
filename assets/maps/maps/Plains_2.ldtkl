@@ -26,7 +26,10 @@
 	"__smartColor": "#ADADB5",
 	"__bgPos": null,
 	"externalRelPath": null,
-	"fieldInstances": [],
+	"fieldInstances": [{ "__identifier": "Background", "__type": "LocalEnum.Background", "__value": "Plains", "__tile": null, "defUid": 192, "realEditorValues": [{
+		"id": "V_String",
+		"params": ["Plains"]
+	}] }],
 	"layerInstances": [
 		{
 			"__identifier": "Entities",

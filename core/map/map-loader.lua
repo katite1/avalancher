@@ -25,6 +25,13 @@ end
 function MapLoader:load(mapName)
     local map = json.decode(love.filesystem.read(self.directory .. mapName))
     local tileMap = TileMap:new(16, map.pxWid, map.pxHei)
+    if map.fieldInstances then
+        for _, fieldInstance in ipairs(map.fieldInstances) do
+            if fieldInstance.__identifier == "Background" then
+                self.world.background:set(fieldInstance.__value)
+            end
+        end
+    end
     if map.layerInstances then
         for _, layer in ipairs(map.layerInstances) do
             if layer.__tilesetRelPath then
