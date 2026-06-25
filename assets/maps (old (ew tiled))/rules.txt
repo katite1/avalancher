@@ -1,5 +1,0 @@
-rules/grass.tmx
-rules/grass_background.tmx
-
-rules/snow.tmx
-rules/snow_background.tmx

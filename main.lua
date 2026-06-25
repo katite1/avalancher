@@ -1,6 +1,7 @@
 F = require("util.f")
 M = require("util.m")
 O = require("util.o")
+S = require("util.s")
 Inspect = require("lib.inspect")
 LANG = require("assets.i18n.en")
 DialogueItems = require("game.dialogue-items")
@@ -71,6 +72,7 @@ local camera = Camera:new()
 local world = World:new()
 local mapLoader = MapLoader:new(
 	"assets/maps/",
+	"maps.ldtk",
 	world
 )
 mapLoader:load("maps/Plains_1.ldtkl")
@@ -106,7 +108,7 @@ function love.update()
 		TICK.current = TICK.current % 1
 	end
 
-	for i = 1, iterations, 1 do
+	for _ = 1, iterations, 1 do
 		input:update()
 
 		world.fsm:update()
@@ -129,23 +131,18 @@ function love.update()
 end
 
 local t = 0
+local bgQuad = love.graphics.newQuad(0, 0, SCREEN.WIDTH, SCREEN.HEIGHT, BACKGROUNDS.PLAINS)
+Draw.init()
 function love.draw()
 	t = t + 1
 	-- love.graphics.setShader(shader)
 	Draw.start()
-	love.graphics.push("all")
-	love.graphics.setColor(0.2, 0.2, 0.2)
-	love.graphics.rectangle("fill", 0, 0, SCREEN.WIDTH, SCREEN.HEIGHT)
-	love.graphics.pop()
-	local bgQuad = love.graphics.newQuad(0, 0, SCREEN.WIDTH, SCREEN.HEIGHT, BACKGROUNDS.PLAINS)
 	love.graphics.draw(BACKGROUNDS.PLAINS, bgQuad, 0, 0)
 	camera:drawStart()
 	world.tileMap:draw()
 	world.entityManager:draw()
 	camera:drawEnd()
-	-- testPanel:draw(SCREEN.WIDTH - 16, 32)
-	-- testPanel:draw(SCREEN.WIDTH, 100 + math.sin(t / 10) * 30)
 	world.fsm:draw()
 	Draw.stop()
-	love.graphics.setShader()
+	-- love.graphics.setShader()
 end

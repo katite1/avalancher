@@ -33,9 +33,12 @@ function TileMap:draw()
 end
 
 ---@param data table Tiled layer data
-function TileMap:addLayer(data)
-    local layer = TileMapLayer:new(data, self.width, self.height, self)
+---@param tags table<string>
+---@return TileMapLayer
+function TileMap:addLayer(data, tags)
+    local layer = TileMapLayer:new(data, self.width, self.height, tags, self)
     table.insert(self.layers, layer)
+    return layer
 end
 
 ---@param name string

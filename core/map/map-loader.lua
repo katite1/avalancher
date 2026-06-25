@@ -1,21 +1,20 @@
 local json        = require("lib.json")
 local TileMap     = require("core.map.tile-map")
-local TileLayer   = require("core.map.tile-map-layer")
-local TiledHelper = require("core.map.tiled-helper")
 local Player      = require("game.player")
-local Portal      = require("game.portal")
 local Sign        = require("game.sign")
 
 ---@class MapLoader
 ---@field directory string
+---@field rootMap table
 ---@field world World
 local MapLoader   = {}
 MapLoader.__index = MapLoader
 
 ---@param directory string
 ---@return MapLoader
-function MapLoader:new(directory, world)
+function MapLoader:new(directory, rootMap, world)
     local t = setmetatable({}, { __index = self })
+    t.rootMap = json.decode(love.filesystem.read(directory .. rootMap))
     t.directory = directory
     t.world = world
     return t
@@ -32,7 +31,15 @@ function MapLoader:load(mapName)
                 tileMap:addTileset(layer.__tilesetRelPath, image)
             end
             if layer.__type == "AutoLayer" then
-                tileMap:addLayer(layer)
+                local tags = {}
+                for _, layerDef in ipairs(self.rootMap.defs.layers) do
+                    if layerDef.identifier == layer.__identifier then
+                        if layerDef.doc ~= nil then
+                            tags = S.split(layerDef.doc, ",")
+                        end
+                    end
+                end
+                tileMap:addLayer(layer, tags)
             end
             if layer.__type == "Entities" then
                 self:createObjects(layer)
