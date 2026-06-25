@@ -5,7 +5,7 @@ local Tile = require("core.map.tile")
 ---@field height number
 ---@field tileMap TileMap tilemap this layer belongs to
 ---@field tileset Tileset
----@field tileGrid Tile[][]|Tile[][][]
+---@field cells Tile[][]|Tile[][][]
 ---@field spriteBatch love.SpriteBatch
 ---@field tint [number, number, number]
 ---@field tags string[]
@@ -28,12 +28,12 @@ function TileMapLayer:new(layer, width, height, tags, tileMap)
     t.tags = tags
     t.spriteBatch = love.graphics.newSpriteBatch(t.tileset.image)
 
-    t.tileGrid = {}
+    t.cells = {}
 
     for i = 1, t.height, 1 do
-        table.insert(t.tileGrid, {})
+        table.insert(t.cells, {})
         for j = 1, t.width, 1 do
-            table.insert(t.tileGrid[i], Tile:new(i * 16 - 16, j * 16 - 16, 16, 16, -1))
+            table.insert(t.cells[i], {})
         end
     end
 
@@ -45,43 +45,18 @@ function TileMapLayer:new(layer, width, height, tags, tileMap)
         local y = (gridY - 1) * 16
         local offsetX = tileData.px[1] - x
         local offsetY = tileData.px[2] - y
-        local tile = t.tileGrid[gridY][gridX]
-        if tile ~= nil then
-            if tile.value ~= -1 then -- this means there is a tile at this coord already
-                local newTile = Tile:new(x, y, tile.width, tile.height, tileData.t, offsetX, offsetY)
-                if #tile > 1 then
-                    table.insert(tile, newTile)
-                else
-                    -- so we store both tiles in a table now
-                    local tiles = {}
-                    table.insert(tiles, tile)
-                    table.insert(tiles, newTile)
-                    t.tileGrid[gridY][gridX] = tiles
-                    newTile.value = tileData.t
-                    if tileData.f == 1 then
-                        newTile.flipX = true
-                    elseif tileData.f == 2 then
-                        newTile.flipY = true
-                    elseif tileData.f == 3 then
-                        newTile.flipX = true
-                        newTile.flipY = true
-                    end
-                end
-            else
-                tile.value = tileData.t
-                tile.x = x
-                tile.y = y
-                tile.offsetX = offsetX
-                tile.offsetY = offsetY
-                if tileData.f == 1 then
-                    tile.flipX = true
-                elseif tileData.f == 2 then
-                    tile.flipY = true
-                elseif tileData.f == 3 then
-                    tile.flipX = true
-                    tile.flipY = true
-                end
-            end
+        local cell = t.cells[gridY][gridX]
+        local newTile = Tile:new(x, y, 16, 16, tileData.t, offsetX, offsetY)
+        table.insert(cell, newTile)
+        -- so we store both tiles in a table now
+        newTile.value = tileData.t
+        if tileData.f == 1 then
+            newTile.flipX = true
+        elseif tileData.f == 2 then
+            newTile.flipY = true
+        elseif tileData.f == 3 then
+            newTile.flipX = true
+            newTile.flipY = true
         end
     end
 
@@ -96,15 +71,9 @@ function TileMapLayer:draw()
 
     self.spriteBatch:clear()
 
-    for y, row in ipairs(self.tileGrid) do
-        for x, tile in ipairs(row) do
-            local tiles = {}
-            if tile.value == nil then -- TODO: this wastes a lot of CPU for some reason
-                tiles = tile
-            else
-                tiles = { tile }
-            end
-            for _, tile in ipairs(tiles) do
+    for y, row in ipairs(self.cells) do
+        for x, cell in ipairs(row) do
+            for _, tile in ipairs(cell) do
                 if tile.value ~= -1 then
                     local quad = self.tileset.quads[tile.value + 1]
 
@@ -167,10 +136,11 @@ function TileMapLayer:getTilesInRectangle(x, y, w, h)
     for row = startY, yCells + startY, 1 do
         for column = startX, xCells + startX, 1 do
             if row > 0 and column > 0 and row <= self.height and column <= self.width then
-                local tile = self.tileGrid[row][column]
-                -- if value ~= -1 and self.tileMap:tileHasProp(value, "solid") then
-                if tile.value ~= -1 then
-                    table.insert(tilesInRectangle, tile)
+                local cell = self.cells[row][column]
+                for _, tile in ipairs(cell) do
+                    if tile.value ~= -1 then
+                        table.insert(tilesInRectangle, tile)
+                    end
                 end
             end
         end
