@@ -1,23 +1,9 @@
--- return {
---     static = {
---         {
---             source = "grass-background-base.png",
---             repeatX = true,
---             repeatY = true
---         }
---     },
---     parallax = {
---         {
---             source = "grass-background-parallax.png",
---             scaleX = 0.25,
---             scaleY = 0.25
---         }
---     }
--- } --[[@as BackgroundData]]
-
-
 ---@type BackgroundData
 local background = {
+    fillColor = { 0.3, 0.3, 0.5 },
+    opacity = 0.7,
+    -- fillColor = { 1, 1, 1 },
+    -- opacity = 1,
     static = {
         {
             image = BACKGROUNDS.PLAINS.BASE,
@@ -27,9 +13,14 @@ local background = {
     },
     parallax = {
         {
-            image = BACKGROUNDS.PLAINS.PARALLAX,
-            scaleX = 0.25,
-            scaleY = 0.25
+            image = BACKGROUNDS.PLAINS.MOUNTAINS,
+            scaleX = 0.05,
+            scaleY = 0
+        },
+        {
+            image = BACKGROUNDS.PLAINS.GRASS,
+            scaleX = 0.1,
+            scaleY = 0
         }
     }
 }

@@ -38,7 +38,8 @@ local backgroundsAsseter = Asseter:new("assets/backgrounds/")
 BACKGROUNDS = {}
 BACKGROUNDS.PLAINS = {}
 BACKGROUNDS.PLAINS.BASE = backgroundsAsseter:load("plains/plains-base.png", true)
-BACKGROUNDS.PLAINS.PARALLAX = backgroundsAsseter:load("plains/plains-parallax.png", true)
+BACKGROUNDS.PLAINS.MOUNTAINS = backgroundsAsseter:load("plains/mountains.png", true)
+BACKGROUNDS.PLAINS.GRASS = backgroundsAsseter:load("plains/grass.png", true)
 
 
 TICK = {}
@@ -123,6 +124,7 @@ function love.update()
 			camera.x = M.clamp(camera.x, 0, world.tileMap.width - SCREEN.WIDTH)
 			camera.y = M.clamp(camera.y, 0, world.tileMap.height - SCREEN.HEIGHT)
 			world.background.parallaxX = -camera.x
+			world.background.parallaxY = -camera.y
 		end
 
 		if Buttons.restart.justPressed then

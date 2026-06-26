@@ -11,8 +11,8 @@
 	"identifier": "Plains_2",
 	"iid": "9be10b00-48b0-11f1-a504-f3d8f9623ed7",
 	"uid": 95,
-	"worldX": 528,
-	"worldY": 0,
+	"worldX": 1824,
+	"worldY": 80,
 	"worldDepth": 0,
 	"pxWid": 256,
 	"pxHei": 256,
@@ -68,8 +68,8 @@
 					"defUid": 89,
 					"px": [144,16],
 					"fieldInstances": [],
-					"__worldX": 672,
-					"__worldY": 16
+					"__worldX": 1968,
+					"__worldY": 96
 				},
 				{
 					"__identifier": "Sign",
@@ -87,8 +87,8 @@
 						"id": "V_String",
 						"params": ["jumpTutorialSign"]
 					}] }],
-					"__worldX": 608,
-					"__worldY": 144
+					"__worldX": 1904,
+					"__worldY": 224
 				},
 				{
 					"__identifier": "Portal",
@@ -106,8 +106,8 @@
 						"id": "V_String",
 						"params": ["Plains_1"]
 					}] }],
-					"__worldX": 720,
-					"__worldY": 128
+					"__worldX": 2016,
+					"__worldY": 208
 				}
 			]
 		},
@@ -381,5 +381,5 @@
 			"entityInstances": []
 		}
 	],
-	"__neighbours": [{ "levelIid": "fb9c2bf0-48b0-11f1-a504-1747124ce570", "dir": "w" }]
+	"__neighbours": []
 }
