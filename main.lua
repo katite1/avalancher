@@ -3,16 +3,16 @@ M = require("util.m")
 O = require("util.o")
 S = require("util.s")
 Inspect = require("lib.inspect")
+require("data.images")
 LANG = require("assets.i18n.en")
 DialogueItems = require("game.dialogue-items")
-local Asseter = require("core.asseter")
 local Draw = require("core.draw")
 local Input = require("core.input")
 local InputButton = require("core.input-button")
 local MapLoader = require("core.map.map-loader")
 local Camera = require("core.camera")
 local World = require("game.world")
-local Player = require("game.player")
+local Player = require("game.entities.player")
 
 local function init()
 	love.graphics.setDefaultFilter("nearest", "nearest")
@@ -27,19 +27,6 @@ SCREEN = {}
 SCREEN.WIDTH = 320
 SCREEN.HEIGHT = 180
 
-local spritesAsseter = Asseter:new("assets/sprites/")
-SPRITES = {}
-SPRITES.PLAYER = spritesAsseter:load("player.png")
-SPRITES.PORTAL = spritesAsseter:load("portal.png")
-SPRITES.SIGN = spritesAsseter:load("sign.png")
-SPRITES.PANEL = spritesAsseter:load("test-9-panel.png")
-
-local backgroundsAsseter = Asseter:new("assets/backgrounds/")
-BACKGROUNDS = {}
-BACKGROUNDS.PLAINS = {}
-BACKGROUNDS.PLAINS.BASE = backgroundsAsseter:load("plains/plains-base.png", true)
-BACKGROUNDS.PLAINS.MOUNTAINS = backgroundsAsseter:load("plains/mountains.png", true)
-BACKGROUNDS.PLAINS.GRASS = backgroundsAsseter:load("plains/grass.png", true)
 
 
 TICK = {}

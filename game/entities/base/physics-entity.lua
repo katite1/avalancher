@@ -1,4 +1,4 @@
-local Entity = require("game.entity")
+local Entity = require("game.entities.base.entity")
 
 ---@class PhysicsEntity : Entity
 ---@field vx number

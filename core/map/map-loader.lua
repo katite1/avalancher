@@ -1,8 +1,9 @@
 local json        = require("lib.json")
 local TileMap     = require("core.map.tile-map")
-local Player      = require("game.player")
-local Sign        = require("game.sign")
-local Portal      = require("game.portal")
+local Player      = require("game.entities.player")
+local Sign        = require("game.entities.sign")
+local Portal      = require("game.entities.portal")
+local Item        = require("game.entities.item")
 
 ---@class MapLoader
 ---@field directory string
@@ -65,13 +66,16 @@ function MapLoader:createObjects(layer)
         if entity.__identifier == "Player" then
             e = self.world.entityManager:makeFromLdtk(Player)
         end
-
         if entity.__identifier == "Sign" then
             e = self.world.entityManager:makeFromLdtk(Sign, entity)
         end
         if entity.__identifier == "Portal" then
             e = self.world.entityManager:makeFromLdtk(Portal, entity)
         end
+        if entity.__identifier == "Item" then
+            e = self.world.entityManager:makeFromLdtk(Item, entity)
+        end
+
         if e then
             e.x = entity.px[1]
             e.y = entity.px[2]

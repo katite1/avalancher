@@ -1,4 +1,4 @@
-local PhysicsEntity = require("game.physics-entity")
+local PhysicsEntity = require("game.entities.base.physics-entity")
 
 ---@class Player: PhysicsEntity
 ---@field sprite love.Image

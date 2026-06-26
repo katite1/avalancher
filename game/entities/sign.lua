@@ -1,4 +1,4 @@
-local Entity = require("game.entity")
+local Entity = require("game.entities.base.entity")
 
 ---@class Sign: Entity
 ---@field sprite love.Image

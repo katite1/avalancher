@@ -1,9 +1,9 @@
 local FSM           = require("core.fsm")
 local FSMState      = require("core.fsm-state")
 local DialogueState = require("game.dialogue-state")
-local Player        = require("game.player")
-local Sign          = require("game.sign")
-local Portal        = require("game.portal")
+local Player        = require("game.entities.player")
+local Sign          = require("game.entities.sign")
+local Portal        = require("game.entities.portal")
 
 ---@class GameFSM: FSM
 ---@field world World
