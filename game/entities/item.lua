@@ -1,5 +1,5 @@
 local PhysicsEntity = require("game.entities.base.physics-entity")
-local Items = require("game.items.items")
+local Items = require("data.items.items")
 
 ---@class ItemData
 ---@field sprite love.Image

@@ -1,5 +1,8 @@
 local Asseter = require("core.asseter")
 
+love.graphics.setDefaultFilter("nearest", "nearest")
+love.graphics.setLineStyle("rough")
+
 local spritesAsseter = Asseter:new("assets/sprites/")
 SPRITES = {}
 SPRITES.PLAYER = spritesAsseter:load("player.png")

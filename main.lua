@@ -15,8 +15,6 @@ local World = require("game.world")
 local Player = require("game.entities.player")
 
 local function init()
-	love.graphics.setDefaultFilter("nearest", "nearest")
-	love.graphics.setLineStyle("rough")
 	local font = love.graphics.newFont("assets/font/monogram.ttf", 16)
 	love.graphics.setFont(font)
 end
@@ -57,7 +55,7 @@ end)
 
 local camera = Camera:new()
 local world = World:new()
-world.background:register("Plains", require("assets.backgrounds.plains.background"))
+world.background:register("Plains", require("data.backgrounds.plains"))
 
 local mapLoader = MapLoader:new(
 	"assets/maps/",
