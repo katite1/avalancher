@@ -11,6 +11,7 @@
 ---@field dialogueReference string | nil
 ---@field deserializeLdtk nil | fun(data): Entity
 ---@field draw function | nil
+---@field queuedDeletion boolean
 local Entity = {}
 Entity.__index = Entity
 
@@ -22,6 +23,7 @@ function Entity:new()
     t.h = 16
     t.bb = { x = t.x, y = t.y, w = t.w, h = t.h }
     t.world = nil
+    t.queuedDeletion = false
     return t
 end
 

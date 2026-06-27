@@ -1,5 +1,6 @@
 local EntityManager = require("game.entity-manager")
 local CollisionManager = require("game.collision-manager")
+local Inventory = require("game.inventory")
 local GameFSM = require("game.game-fsm")
 local Background = require("game.background")
 
@@ -8,6 +9,7 @@ local Background = require("game.background")
 ---@field background Background
 ---@field entityManager EntityManager
 ---@field collisionManager CollisionManager
+---@field inventory Inventory
 ---@field fsm GameFSM
 ---@field tileMap TileMap
 ---@field properties {gravity: number}
@@ -21,6 +23,7 @@ function World:new()
     t.background = Background:new()
     t.entityManager = EntityManager:new(t)
     t.collisionManager = CollisionManager:new(t)
+    t.inventory = Inventory:new()
     t.fsm = GameFSM:new(t)
     t.tileMap = nil
     t.properties = {}
@@ -33,6 +36,12 @@ function World:travel(target)
     self.entityManager:clearAll()
     self.tileMap = nil
     self.mapLoader:load("maps/" .. target .. ".ldtkl")
+end
+
+---@param item Item
+function World:pickUp(item)
+    self.entityManager:delete(item)
+    self.inventory:add(item)
 end
 
 return World

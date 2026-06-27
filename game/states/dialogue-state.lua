@@ -5,7 +5,7 @@ local Panel           = require("game.ui.panel")
 ---@field world World
 ---@field progress integer
 ---@field previousState FSMState
----@field dialogPanel Panel
+---@field dialoguePanel Panel
 local DialogueState   = {}
 DialogueState.__index = DialogueState
 setmetatable(DialogueState, FSMState)
@@ -16,7 +16,7 @@ function DialogueState:new(world)
     local t = setmetatable(FSMState:new(), self)
     t.progress = 1
     t.world = world
-    t.dialogPanel = Panel:new(SPRITES.PANEL, 8)
+    t.dialoguePanel = Panel:new(SPRITES.PANEL, 8)
     ---@cast t DialogueState
 
     return t
@@ -40,7 +40,7 @@ function DialogueState:update()
 end
 
 function DialogueState:draw()
-    self.dialogPanel:draw(SCREEN.WIDTH, 48)
+    self.dialoguePanel:draw(SCREEN.WIDTH, 48)
     love.graphics.printf(
         self.dialogue.steps[self.progress],
         8, 8, SCREEN.WIDTH - 16

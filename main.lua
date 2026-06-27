@@ -13,6 +13,7 @@ local MapLoader = require("core.map.map-loader")
 local Camera = require("core.camera")
 local World = require("game.world")
 local Player = require("game.entities.player")
+local Inventory = require("game.inventory")
 
 local function init()
 	local font = love.graphics.newFont("assets/font/monogram.ttf", 16)
@@ -36,12 +37,13 @@ local shader = love.graphics.newShader("assets/test-shader.fs")
 
 
 Buttons = {
-	left = InputButton:new({ "left", "a" }),
-	right = InputButton:new({ "right", "d" }),
-	up = InputButton:new({ "up", "w" }),
-	down = InputButton:new({ "down", "s" }),
-	jump = InputButton:new({ "z", "j" }),
-	talk = InputButton:new({ "up" }),
+	left = InputButton:new({ "left" }),
+	right = InputButton:new({ "right" }),
+	up = InputButton:new({ "up" }),
+	down = InputButton:new({ "down" }),
+	jump = InputButton:new({ "z" }),
+	action = InputButton:new({ "x" }),
+	inventory = InputButton:new({ "f" }),
 	restart = InputButton:new({ "r" }),
 	quit = InputButton:new({ "escape" }),
 	debugSpeedDown = InputButton:new({ "1" }),

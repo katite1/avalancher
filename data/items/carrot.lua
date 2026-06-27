@@ -1,3 +1,4 @@
+---@type ItemTemplate
 local carrot = {
     name = "carrot",
     sprite = SPRITES.ITEMS.CARROT

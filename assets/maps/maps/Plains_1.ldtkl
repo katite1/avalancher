@@ -146,6 +146,44 @@
 					}] }],
 					"__worldX": 448,
 					"__worldY": 272
+				},
+				{
+					"__identifier": "Item",
+					"__grid": [29,14],
+					"__pivot": [0,0],
+					"__tags": [],
+					"__tile": { "tilesetUid": 90, "x": 336, "y": 112, "w": 16, "h": 16 },
+					"__smartColor": "#E4A672",
+					"iid": "65046e10-6fc0-11f1-b520-d73d3ae76d7c",
+					"width": 16,
+					"height": 16,
+					"defUid": 193,
+					"px": [464,224],
+					"fieldInstances": [{ "__identifier": "type", "__type": "LocalEnum.Item", "__value": "Key", "__tile": { "tilesetUid": 90, "x": 336, "y": 112, "w": 16, "h": 16 }, "defUid": 196, "realEditorValues": [{
+						"id": "V_String",
+						"params": ["Key"]
+					}] }],
+					"__worldX": 464,
+					"__worldY": 224
+				},
+				{
+					"__identifier": "Item",
+					"__grid": [16,15],
+					"__pivot": [0,0],
+					"__tags": [],
+					"__tile": { "tilesetUid": 90, "x": 176, "y": 288, "w": 16, "h": 16 },
+					"__smartColor": "#E4A672",
+					"iid": "683e3c50-6fc0-11f1-b520-a323a328cb5d",
+					"width": 16,
+					"height": 16,
+					"defUid": 193,
+					"px": [256,240],
+					"fieldInstances": [{ "__identifier": "type", "__type": "LocalEnum.Item", "__value": "Carrot", "__tile": { "tilesetUid": 90, "x": 176, "y": 288, "w": 16, "h": 16 }, "defUid": 196, "realEditorValues": [{
+						"id": "V_String",
+						"params": ["Carrot"]
+					}] }],
+					"__worldX": 256,
+					"__worldY": 240
 				}
 			]
 		},

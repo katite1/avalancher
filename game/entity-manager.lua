@@ -36,6 +36,13 @@ function EntityManager:update()
     for _, entity in pairs(self.entities) do
         entity:update()
     end
+
+    local entityCount = #self.entities
+    for i = entityCount, 1, -1 do
+        if self.entities[i].queuedDeletion then
+            table.remove(self.entities, i)
+        end
+    end
 end
 
 function EntityManager:draw()
@@ -87,6 +94,11 @@ function EntityManager:getClosest(x, y, class)
         end
     end
     return closestEntity
+end
+
+---@param entity Entity
+function EntityManager:delete(entity)
+    entity.queuedDeletion = true
 end
 
 function EntityManager:clearAll()

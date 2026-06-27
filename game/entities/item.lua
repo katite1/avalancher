@@ -1,7 +1,7 @@
 local PhysicsEntity = require("game.entities.base.physics-entity")
 local Items = require("data.items.items")
 
----@class ItemData
+---@class ItemTemplate
 ---@field sprite love.Image
 ---@field name string
 
@@ -12,14 +12,14 @@ local Item = {}
 Item.__index = Item
 setmetatable(Item, PhysicsEntity)
 
----@param data ItemData
+---@param template ItemTemplate
 ---@return Item
-function Item:new(data)
+function Item:new(template)
     local t = setmetatable(PhysicsEntity:new(), self)
     ---@cast t Item
 
-    t.name = data.name
-    t.sprite = data.sprite
+    t.name = template.name
+    t.sprite = template.sprite
 
     return t
 end

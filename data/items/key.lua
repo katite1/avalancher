@@ -1,3 +1,4 @@
+---@type ItemTemplate
 local key = {
     name = "key",
     sprite = SPRITES.ITEMS.KEY
