@@ -1,5 +1,5 @@
 local PhysicsEntity = require("game.entities.base.physics-entity")
-local Items = require("data.items.items")
+local ItemTemplates = require("data.items.item-templates")
 
 ---@class ItemTemplate
 ---@field sprite love.Image
@@ -35,7 +35,7 @@ function Item.deserializeLdtk(ldtkEntity)
             type = string.lower(field.__value)
         end
     end
-    return Item:new(Items[type])
+    return Item:new(ItemTemplates[type])
 end
 
 return Item

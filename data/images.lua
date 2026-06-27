@@ -15,6 +15,10 @@ SPRITES.ITEMS = {}
 SPRITES.ITEMS.CARROT = itemAsseter:load("carrot.png")
 SPRITES.ITEMS.KEY = itemAsseter:load("key.png")
 
+local npcAsseter = Asseter:new("assets/sprites/npcs/")
+SPRITES.NPCS = {}
+SPRITES.NPCS.BUNNY = npcAsseter:load("bunny/bunny.png")
+
 local backgroundsAsseter = Asseter:new("assets/backgrounds/")
 BACKGROUNDS = {}
 BACKGROUNDS.PLAINS = {}

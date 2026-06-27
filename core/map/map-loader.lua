@@ -3,7 +3,8 @@ local TileMap     = require("core.map.tile-map")
 local Player      = require("game.entities.player")
 local Sign        = require("game.entities.sign")
 local Portal      = require("game.entities.portal")
-local Item        = require("game.entities.item")
+local Item        = require("game.entities.base.item")
+local Npc         = require("game.entities.base.npc")
 
 ---@class MapLoader
 ---@field directory string
@@ -74,6 +75,9 @@ function MapLoader:createObjects(layer)
         end
         if entity.__identifier == "Item" then
             e = self.world.entityManager:makeFromLdtk(Item, entity)
+        end
+        if entity.__identifier == "Npc" then
+            e = self.world.entityManager:makeFromLdtk(Npc, entity)
         end
 
         if e then

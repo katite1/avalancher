@@ -184,6 +184,31 @@
 					}] }],
 					"__worldX": 256,
 					"__worldY": 240
+				},
+				{
+					"__identifier": "Npc",
+					"__grid": [19,18],
+					"__pivot": [0,0],
+					"__tags": [],
+					"__tile": { "tilesetUid": 90, "x": 224, "y": 880, "w": 16, "h": 16 },
+					"__smartColor": "#733E39",
+					"iid": "011b0130-6fc0-11f1-b520-9b2074837831",
+					"width": 16,
+					"height": 16,
+					"defUid": 197,
+					"px": [304,288],
+					"fieldInstances": [
+						{ "__identifier": "npc", "__type": "LocalEnum.Npc", "__value": "Bunny", "__tile": { "tilesetUid": 90, "x": 224, "y": 880, "w": 16, "h": 16 }, "defUid": 200, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["Bunny"]
+						}] },
+						{ "__identifier": "dialogue_reference", "__type": "String", "__value": "misterBunny", "__tile": null, "defUid": 199, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["misterBunny"]
+						}] }
+					],
+					"__worldX": 304,
+					"__worldY": 288
 				}
 			]
 		},
