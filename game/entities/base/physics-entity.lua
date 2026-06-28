@@ -9,6 +9,10 @@ local Entity = require("game.entities.base.entity")
 ---@field maxHorizontalSpeed number
 ---@field friction number
 ---@field jumpStrength number
+---@field jumpHoldStrength number
+---@field jumpHoldMaxFrames number
+---@field jumpHoldCurrentFrame number
+---@field isJumping boolean
 ---@field maxFallSpeed number
 local PhysicsEntity = {}
 PhysicsEntity.__index = PhysicsEntity
@@ -25,21 +29,33 @@ function PhysicsEntity:new()
     t.xRemainder = 0
     t.yRemainder = 0
 
-    t.walkSpeed = 0.5
+    t.walkSpeed = 0.45
     t.maxHorizontalSpeed = 10
-    t.friction = 0.8
+    t.friction = 0.75
 
-    t.jumpStrength = 3
+    t.jumpStrength = 2
+    t.jumpHoldStrength = 0.2
+    t.jumpHoldCurrentFrame = 0
+    t.jumpHoldMaxFrames = 8
     t.maxFallSpeed = 10
     return t
 end
 
 function PhysicsEntity:update()
     Entity.update(self)
+
+    if self.vy >= 0 then
+        self.isJumping = false
+        self.jumpHoldCurrentFrame = 1
+    end
     if self:onFloor() then
         self.vy = math.min(0, self.vy)
     else
         self.vy = self.vy + self.world.properties.gravity
+    end
+
+    if self:onCeiling() and self.vy < 0 then
+        self.vy = -self.vy * 0.5
     end
 
     self.vx = self.vx * self.friction
@@ -58,9 +74,25 @@ function PhysicsEntity:onFloor()
     return collisions
 end
 
+---@return boolean
+function PhysicsEntity:onCeiling()
+    self.y = self.y - 1;
+    local collisions = self.world.collisionManager:getCollisions(self)
+    self.y = self.y + 1;
+    return collisions
+end
+
 function PhysicsEntity:jump()
     if self:onFloor() then
+        self.isJumping = true
         self.vy = self.vy - self.jumpStrength
+    end
+end
+
+function PhysicsEntity:jumpHold()
+    if self.isJumping and self:onFloor() == false and self.jumpHoldCurrentFrame < self.jumpHoldMaxFrames then
+        self.vy = self.vy - self.jumpHoldStrength
+        self.jumpHoldCurrentFrame = self.jumpHoldCurrentFrame + 1
     end
 end
 

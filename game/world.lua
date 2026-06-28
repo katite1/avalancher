@@ -29,7 +29,7 @@ function World:new()
     t.fsm = GameFSM:new(t)
     t.tileMap = nil
     t.properties = {}
-    t.properties.gravity = 0.1
+    t.properties.gravity = 0.15
     t.progressEntries = progressEntries
     return t
 end

@@ -26,6 +26,9 @@ function Player:update()
     if Buttons.jump.justPressed then
         self:jump()
     end
+    if not Buttons.jump.justPressed and Buttons.jump.pressed then
+        self:jumpHold()
+    end
 end
 
 function Player:draw()
