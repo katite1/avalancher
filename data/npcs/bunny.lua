@@ -1,7 +1,23 @@
 ---@type NpcTemplate
 local bunny = {
     name = "mr. bunny",
-    sprite = SPRITES.NPCS.BUNNY
+    sprite = SPRITES.NPCS.BUNNY,
+    dialogue = function(world, self)
+        if world.progressEntries.bunny:isCompleted() then
+            return { LANG.misterBunny.goAway }
+        end
+        if world.inventory:get("carrot") then
+            world.inventory:remove("carrot")
+            world.progressEntries.bunny.progress = true
+            return { LANG.misterBunny.carrots }
+        end
+
+        return {
+            LANG.misterBunny.greeting,
+            LANG.misterBunny.desperation,
+            LANG.misterBunny.thankyou,
+        }
+    end
 }
 
 return bunny

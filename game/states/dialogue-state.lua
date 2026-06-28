@@ -31,7 +31,7 @@ end
 
 function DialogueState:update()
     if Buttons.down.justPressed then
-        if (self.progress == #self.dialogue.steps) then
+        if (self.progress == #self.dialogue) then
             self.world.fsm:gotoState(self.previousState)
             return
         end
@@ -42,7 +42,7 @@ end
 function DialogueState:draw()
     self.dialoguePanel:draw(SCREEN.WIDTH, 48)
     love.graphics.printf(
-        self.dialogue.steps[self.progress],
+        self.dialogue[self.progress],
         8, 8, SCREEN.WIDTH - 16
     )
 end

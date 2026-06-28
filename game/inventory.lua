@@ -36,6 +36,30 @@ function Inventory:add(template)
 end
 
 ---@param itemByName string
+---@param quantity integer | nil
+function Inventory:remove(itemByName, quantity)
+    quantity = quantity or 1
+    local item = self:get(itemByName)
+    if not item then
+        error("Item " .. item .. " does not exist")
+    end
+    if item.quantity >= 1 then
+        item.quantity = item.quantity - quantity
+    end
+
+    if item.quantity > 0 then
+        return
+    end
+
+    local itemCount = #self.items
+    for i = itemCount, 1, -1 do
+        if self.items[i] == item then
+            table.remove(self.items, i)
+        end
+    end
+end
+
+---@param itemByName string
 ---@return InventoryItem | nil
 function Inventory:get(itemByName)
     for _, item in ipairs(self.items) do

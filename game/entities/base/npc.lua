@@ -4,10 +4,12 @@ local NpcTemplates = require("data.npcs.npc-templates")
 ---@class NpcTemplate
 ---@field name string
 ---@field sprite love.Image
+---@field dialogue fun(world: World, self: Npc): string[]
 
 ---@class Npc: Entity
 ---@field name string
 ---@field sprite love.Image
+---@field dialogue fun(): string[]
 local Npc = {}
 Npc.__index = Npc
 setmetatable(Npc, Entity)
@@ -20,6 +22,9 @@ function Npc:new(template)
     ---@cast t Npc
     t.name = template.name
     t.sprite = template.sprite
+    t.dialogue = function()
+        return template.dialogue(t.world, t)
+    end
     return t
 end
 
@@ -34,12 +39,12 @@ function Npc.deserializeLdtk(ldtkEntity)
         if field.__identifier == "npc" then
             npcType = string.lower(field.__value)
         end
-        if field.__identifier == "dialogue_reference" then
-            dialogueReference = field.__value
-        end
+        -- if field.__identifier == "dialogue_reference" then
+        --     dialogueReference = field.__value
+        -- end
     end
     local npc = Npc:new(NpcTemplates[npcType])
-    npc.dialogueReference = dialogueReference
+    -- npc.dialogueReference = dialogueReference
     return npc
 end
 

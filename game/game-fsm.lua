@@ -39,18 +39,19 @@ function GameFSM:new(world)
             if npc then
                 if t.world.collisionManager:areOverlapping(player, npc) then
                     if Buttons.action.justPressed then
-                        t:gotoState(t.dialogueState, DialogueItems[npc.dialogueReference])
+                        -- t:gotoState(t.dialogueState, DialogueItems[npc.dialogueReference])
+                        t:gotoState(t.dialogueState, npc.dialogue())
                     end
                 end
             end
-            local sign = t.world.entityManager:getClosest(player.x, player.y, Sign)
-            if sign then
-                if t.world.collisionManager:areOverlapping(player, sign) then
-                    if Buttons.action.justPressed then
-                        t:gotoState(t.dialogueState, DialogueItems[sign.dialogueReference])
-                    end
-                end
-            end
+            -- local sign = t.world.entityManager:getClosest(player.x, player.y, Sign)
+            -- if sign then
+            --     if t.world.collisionManager:areOverlapping(player, sign) then
+            --         if Buttons.action.justPressed then
+            --             t:gotoState(t.dialogueState, DialogueItems[sign.dialogueReference])
+            --         end
+            --     end
+            -- end
             local portal = t.world.entityManager:getClosest(player.x, player.y, Portal)
             if portal then
                 if t.world.collisionManager:areOverlapping(player, portal) then

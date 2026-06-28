@@ -3,6 +3,7 @@ local CollisionManager = require("game.collision-manager")
 local Inventory = require("game.inventory")
 local GameFSM = require("game.game-fsm")
 local Background = require("game.background")
+local progressEntries = require("data.progression-entries")
 
 ---@class World
 ---@field mapLoader MapLoader
@@ -14,6 +15,7 @@ local Background = require("game.background")
 ---@field tileMap TileMap
 ---@field properties {gravity: number}
 ---@field update function
+---@field progressEntries ProgressionEntries
 local World = {}
 World.__index = World
 
@@ -28,6 +30,7 @@ function World:new()
     t.tileMap = nil
     t.properties = {}
     t.properties.gravity = 0.1
+    t.progressEntries = progressEntries
     return t
 end
 
@@ -41,7 +44,7 @@ end
 ---@param item Item
 function World:pickUp(item)
     self.entityManager:delete(item)
-    self.inventory:add(item)
+    self.inventory:add(item.template)
 end
 
 return World

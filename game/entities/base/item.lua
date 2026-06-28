@@ -8,6 +8,7 @@ local ItemTemplates = require("data.items.item-templates")
 ---@class Item: PhysicsEntity
 ---@field sprite love.Image
 ---@field name string
+---@field template ItemTemplate
 local Item = {}
 Item.__index = Item
 setmetatable(Item, PhysicsEntity)
@@ -20,6 +21,7 @@ function Item:new(template)
 
     t.name = template.name
     t.sprite = template.sprite
+    t.template = template
 
     return t
 end
