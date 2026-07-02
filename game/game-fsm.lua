@@ -28,6 +28,13 @@ function GameFSM:new(world)
     t.inventoryState = InventoryState:new(t.world)
 
     function t.playState:update()
+        if Buttons.save.justPressed then
+            t.world:save()
+        end
+        if Buttons.load.justPressed then
+            t.world:load()
+        end
+
         t.world.entityManager:update()
         if Buttons.inventory.justPressed then
             t:gotoState(t.inventoryState)

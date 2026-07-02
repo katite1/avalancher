@@ -49,6 +49,8 @@ Buttons = {
 	debugSpeedDown = InputButton:new({ "1" }),
 	debugSpeedUp = InputButton:new({ "2" }),
 	debugSpeedReset = InputButton:new({ "3" }),
+	save = InputButton:new({ "-" }),
+	load = InputButton:new({ "=" })
 }
 local input = Input:new()
 F.forEach(Buttons, function(_, button)

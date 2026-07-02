@@ -1,9 +1,10 @@
-local EntityManager = require("game.entity-manager")
+local EntityManager    = require("game.entity-manager")
 local CollisionManager = require("game.collision-manager")
-local Inventory = require("game.inventory")
-local GameFSM = require("game.game-fsm")
-local Background = require("game.background")
-local progressEntries = require("data.progression-entries")
+local Inventory        = require("game.inventory")
+local GameFSM          = require("game.game-fsm")
+local Background       = require("game.background")
+local ProgressEntries  = require("data.progression-entries")
+local json             = require("lib.json")
 
 ---@class World
 ---@field mapLoader MapLoader
@@ -16,8 +17,8 @@ local progressEntries = require("data.progression-entries")
 ---@field properties {gravity: number}
 ---@field update function
 ---@field progressEntries ProgressionEntries
-local World = {}
-World.__index = World
+local World            = {}
+World.__index          = World
 
 ---@return World
 function World:new()
@@ -30,7 +31,7 @@ function World:new()
     t.tileMap = nil
     t.properties = {}
     t.properties.gravity = 0.15
-    t.progressEntries = progressEntries
+    t.progressEntries = ProgressEntries
     return t
 end
 
@@ -44,7 +45,24 @@ end
 ---@param item Item
 function World:pickUp(item)
     self.entityManager:delete(item)
-    self.inventory:add(item.template)
+    self.inventory:add(item.name)
+end
+
+function World:save()
+    local saveData = {}
+    saveData.inventory = self.inventory:serialize()
+    saveData.progressEntries = self.progressEntries:serialize()
+    love.filesystem.write("save", json.encode(saveData))
+end
+
+function World:load()
+    local saveFile = love.filesystem.read("save")
+    if not saveFile then
+        return
+    end
+    local saveData = json.decode(saveFile)
+    self.inventory = Inventory.deserialize(saveData.inventory)
+    self.progressEntries = ProgressEntries.deserialize(saveData.progressEntries)
 end
 
 return World

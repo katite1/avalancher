@@ -81,6 +81,7 @@ function MapLoader:createObjects(layer)
         end
 
         if e then
+            e.uid = entity.iid
             e.x = entity.px[1]
             e.y = entity.px[2]
         end

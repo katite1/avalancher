@@ -1,6 +1,7 @@
 ---@alias BoundingBox {x: number, y: number, w: number, h: number}
 
 ---@class Entity
+---@field uid string
 ---@field world World
 ---@field x number
 ---@field y number

@@ -30,6 +30,15 @@ function Item:draw()
     love.graphics.draw(self.sprite, self.x, self.y)
 end
 
+---@param itemData {x: integer, y: integer, name: string}
+function Item.deserialize(itemData)
+    local item = Item:new(ItemTemplates[itemData.name])
+    item.x = itemData.x
+    item.y = itemData.y
+
+    return item
+end
+
 function Item.deserializeLdtk(ldtkEntity)
     local type = nil
     for _, field in ipairs(ldtkEntity.fieldInstances) do
@@ -37,7 +46,14 @@ function Item.deserializeLdtk(ldtkEntity)
             type = string.lower(field.__value)
         end
     end
-    return Item:new(ItemTemplates[type])
+    if type == nil then
+        error("No item type specified for item in LDtk!")
+    end
+    return Item.deserialize({
+        x = 0,
+        y = 0,
+        name = type
+    })
 end
 
 return Item

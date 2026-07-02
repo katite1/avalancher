@@ -25,14 +25,23 @@ function Inventory:draw()
     end
 end
 
----@param template ItemTemplate
-function Inventory:add(template)
-    local existingItem = self:get(template.name)
+-- ---@param template ItemTemplate
+-- function Inventory:add(template)
+--     local existingItem = self:get(template.name)
+--     if existingItem then
+--         existingItem.quantity = existingItem.quantity + 1
+--         return
+--     end
+--     table.insert(self.items, InventoryItem:fromTemplate(template))
+-- end
+---@param itemByName string
+function Inventory:add(itemByName, quantity)
+    local existingItem = self:get(itemByName)
     if existingItem then
         existingItem.quantity = existingItem.quantity + 1
         return
     end
-    table.insert(self.items, InventoryItem:new(template))
+    table.insert(self.items, InventoryItem:new(itemByName, quantity))
 end
 
 ---@param itemByName string
@@ -68,6 +77,26 @@ function Inventory:get(itemByName)
         end
     end
     return nil
+end
+
+---@return table
+function Inventory:serialize()
+    local inventory = {}
+    for _, item in ipairs(self.items) do
+        -- table.insert(inventory, { name = item.name, quantity = item.quantity })
+        table.insert(inventory, item:serialize())
+    end
+    return inventory
+end
+
+---@param inventoryData table
+---@return Inventory
+function Inventory.deserialize(inventoryData)
+    local inventory = Inventory:new()
+    for _, itemData in ipairs(inventoryData) do
+        inventory:add(itemData.name, itemData.quantity)
+    end
+    return inventory
 end
 
 return Inventory

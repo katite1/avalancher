@@ -25,4 +25,13 @@ function ProgressionEntry:isCompleted()
     return false
 end
 
+function ProgressionEntry:serialize()
+    return { progress = self.progress, finalProgressValue = self.finalProgressValue }
+end
+
+---@param entryData {progress: integer | boolean, finalProgressValue: integer | nil}
+function ProgressionEntry.deserialize(entryData)
+    return ProgressionEntry:new(entryData.progress, entryData.finalProgressValue)
+end
+
 return ProgressionEntry

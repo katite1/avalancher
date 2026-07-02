@@ -1,3 +1,4 @@
+---@type {[string]: ItemTemplate}
 local items = {}
 
 items.carrot = require("data.items.carrot")

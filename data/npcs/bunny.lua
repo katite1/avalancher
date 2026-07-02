@@ -3,12 +3,12 @@ local bunny = {
     name = "mr. bunny",
     sprite = SPRITES.NPCS.BUNNY,
     dialogue = function(world, self)
-        if world.progressEntries.bunny:isCompleted() then
+        if world.progressEntries.entry.bunny:isCompleted() then
             return { LANG.misterBunny.goAway }
         end
         if world.inventory:get("carrot") then
             world.inventory:remove("carrot")
-            world.progressEntries.bunny.progress = true
+            world.progressEntries.entry.bunny.progress = true
             return { LANG.misterBunny.carrots }
         end
 
