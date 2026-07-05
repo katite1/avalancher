@@ -4,6 +4,7 @@ local Inventory        = require("game.inventory")
 local GameFSM          = require("game.game-fsm")
 local Background       = require("game.background")
 local ProgressEntries  = require("data.progression-entries")
+local TileMap          = require("core.map.tile-map")
 local json             = require("lib.json")
 
 ---@class World
@@ -52,17 +53,19 @@ function World:save()
     local saveData = {}
     saveData.inventory = self.inventory:serialize()
     saveData.progressEntries = self.progressEntries:serialize()
-    love.filesystem.write("save", json.encode(saveData))
+    saveData.tilemap = self.tileMap:serialize()
+    love.filesystem.write("save.json", json.encode(saveData))
 end
 
 function World:load()
-    local saveFile = love.filesystem.read("save")
+    local saveFile = love.filesystem.read("save.json")
     if not saveFile then
         return
     end
     local saveData = json.decode(saveFile)
     self.inventory = Inventory.deserialize(saveData.inventory)
     self.progressEntries = ProgressEntries.deserialize(saveData.progressEntries)
+    self.tileMap = TileMap.deserialize(saveData.tilemap)
 end
 
 return World

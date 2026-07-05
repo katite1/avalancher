@@ -1,14 +1,23 @@
 ---@class Tileset
+---@field imageDirectory string
+---@field imageFilename string
 ---@field image love.Image
 ---@field quads love.Quad[]
 local Tileset = {}
 Tileset.__index = Tileset
 
----@param image love.Image
+---@class SerializedTileset
+---@field imageDirectory string
+---@field imageFilename string
+
+---@param directory string
+---@param filename string
 ---@return Tileset
-function Tileset:new(image)
+function Tileset:new(directory, filename)
     local t = setmetatable({}, self)
-    t.image = image
+    t.imageDirectory = directory
+    t.imageFilename = filename
+    t.image = love.graphics.newImage(directory .. filename)
     t.quads = t:makeQuads()
     return t
 end
@@ -26,6 +35,20 @@ function Tileset:makeQuads()
         end
     end
     return quads
+end
+
+---@return SerializedTileset
+function Tileset:serialize()
+    ---@type SerializedTileset
+    return {
+        imageDirectory = self.imageDirectory,
+        imageFilename = self.imageFilename,
+    }
+end
+
+---@param data SerializedTileset
+function Tileset.deserialize(data)
+    return Tileset:new(data.imageDirectory, data.imageFilename)
 end
 
 return Tileset

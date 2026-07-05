@@ -1,54 +1,66 @@
 local Tile = require("core.map.tile")
 
 ---@class TileMapLayer
----@field width number
----@field height number
 ---@field tileMap TileMap tilemap this layer belongs to
----@field tileset Tileset
----@field cells Tile[][]|Tile[][][]
+---@field tilesetName string
+---@field cells Tile[][][]
 ---@field spriteBatch love.SpriteBatch
 ---@field tint [number, number, number]
 ---@field tags string[]
 local TileMapLayer = {}
 TileMapLayer.__index = TileMapLayer
 
----@param layer table
----@param width integer
----@param height integer
+---@class SerializedTileMapLayer
+---@field tilesetName string
+---@field cells SerializedTile[]
+---@field tint [number, number, number]
+---@field tags string[]
+
+---@param cells Tile[][][]
+---@param tags string[]
+---@param tileMap TileMap
+---@param tilesetName string
+---@return TileMapLayer
+function TileMapLayer:new(cells, tags, tileMap, tilesetName)
+    local t = setmetatable({}, { __index = self })
+    ---@cast t TileMapLayer
+
+    t.tileMap = tileMap
+    t.tilesetName = tilesetName
+    t.tint = { 1, 1, 1 }
+    t.tags = tags
+    t.spriteBatch = love.graphics.newSpriteBatch(t.tileMap:getTileset(t.tilesetName).image)
+
+    t.cells = cells
+
+    return t
+end
+
+---@param data table
+---@param tags string[]
 ---@param tileMap TileMap
 ---@return TileMapLayer
-function TileMapLayer:new(layer, width, height, tags, tileMap)
-    local t = setmetatable({}, { __index = self })
-    t.tileMap = tileMap
-    t.tileset = t.tileMap:getTileset(layer.__tilesetRelPath)
-    t.decorative = false
-    t.tint = { 1, 1, 1 }
-    t.width = width
-    t.height = height
-    t.tags = tags
-    t.spriteBatch = love.graphics.newSpriteBatch(t.tileset.image)
+function TileMapLayer:deserializeLdtk(data, tags, tileMap)
+    local tilesetName = data.__tilesetRelPath
+    local cells = {}
 
-    t.cells = {}
-
-    for i = 1, t.height, 1 do
-        table.insert(t.cells, {})
-        for j = 1, t.width, 1 do
-            table.insert(t.cells[i], {})
+    for i = 1, tileMap.height, 1 do
+        table.insert(cells, {})
+        for j = 1, tileMap.width, 1 do
+            table.insert(cells[i], {})
         end
     end
-
-    for i = 1, #layer.autoLayerTiles, 1 do
-        local tileData = layer.autoLayerTiles[i]
+    for i = 1, #data.autoLayerTiles, 1 do
+        local tileData = data.autoLayerTiles[i]
         local gridX = M.round(tileData.px[1] / 16 + 1)
         local gridY = M.round(tileData.px[2] / 16 + 1)
         local x = (gridX - 1) * 16
         local y = (gridY - 1) * 16
         local offsetX = tileData.px[1] - x
         local offsetY = tileData.px[2] - y
-        local cell = t.cells[gridY][gridX]
+        local cell = cells[gridY][gridX]
         local newTile = Tile:new(x, y, 16, 16, tileData.t, offsetX, offsetY)
         table.insert(cell, newTile)
-        -- so we store both tiles in a table now
         newTile.value = tileData.t
         if tileData.f == 1 then
             newTile.flipX = true
@@ -60,11 +72,13 @@ function TileMapLayer:new(layer, width, height, tags, tileMap)
         end
     end
 
-    return t
+    local layer = TileMapLayer:new(cells, tags, tileMap, tilesetName)
+    return layer
 end
 
 function TileMapLayer:draw()
     local tileSize = self.tileMap.tileSize
+    local tileset = self.tileMap:getTileset(self.tilesetName)
 
     love.graphics.push("all")
     love.graphics.setColor(self.tint)
@@ -74,8 +88,8 @@ function TileMapLayer:draw()
     for y, row in ipairs(self.cells) do
         for x, cell in ipairs(row) do
             for _, tile in ipairs(cell) do
-                if tile.value ~= -1 then
-                    local quad = self.tileset.quads[tile.value + 1]
+                if tile.value > -1 then
+                    local quad = tileset.quads[tile.value + 1]
 
                     local originOffset = 0
                     local scaleX = tile.flipX and -1 or 1
@@ -135,7 +149,7 @@ function TileMapLayer:getTilesInRectangle(x, y, w, h)
     local yCells = math.floor((y % tileSize + h - 1) / tileSize)
     for row = startY, yCells + startY, 1 do
         for column = startX, xCells + startX, 1 do
-            if row > 0 and column > 0 and row <= self.height and column <= self.width then
+            if row > 0 and column > 0 and row <= self.tileMap.height and column <= self.tileMap.width then
                 local cell = self.cells[row][column]
                 for _, tile in ipairs(cell) do
                     if tile.value ~= -1 then
@@ -146,6 +160,57 @@ function TileMapLayer:getTilesInRectangle(x, y, w, h)
         end
     end
     return tilesInRectangle
+end
+
+---@return SerializedTileMapLayer
+function TileMapLayer:serialize()
+    local layer = {}
+    ---@cast layer SerializedTileMapLayer
+    layer.tilesetName = self.tilesetName
+
+    layer.cells = {}
+    for i, cellRow in ipairs(self.cells) do
+        for j, cell in ipairs(cellRow) do
+            -- table.insert(layer.cells[i], {})
+            for _, tile in ipairs(cell) do
+                table.insert(layer.cells, tile:serialize())
+            end
+        end
+    end
+
+    layer.tint = self.tint
+    layer.tags = self.tags
+    return layer
+end
+
+---@param data SerializedTileMapLayer
+---@param tilemap TileMap
+---@return TileMapLayer
+function TileMapLayer.deserialize(data, tilemap)
+    local cells = {}
+
+    for i = 1, tilemap.height, 1 do
+        table.insert(cells, {})
+        for j = 1, tilemap.width, 1 do
+            table.insert(cells[i], {})
+        end
+    end
+    for i = 1, #data.cells, 1 do
+        local tileData = data.cells[i]
+        local gridX = M.round(tileData.x / 16 + 1)
+        local gridY = M.round(tileData.y / 16 + 1)
+        local x = (gridX - 1) * 16
+        local y = (gridY - 1) * 16
+        local offsetX = tileData.offsetX
+        local offsetY = tileData.offsetY
+        local cell = cells[gridY][gridX]
+        local newTile = Tile:new(x, y, 16, 16, tileData.value, offsetX, offsetY)
+        table.insert(cell, newTile)
+        newTile.flipX = tileData.flipX
+        newTile.flipY = tileData.flipY
+    end
+
+    return TileMapLayer:new(cells, data.tags, tilemap, data.tilesetName)
 end
 
 return TileMapLayer

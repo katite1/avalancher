@@ -37,8 +37,7 @@ function MapLoader:load(mapName)
     if map.layerInstances then
         for _, layer in ipairs(map.layerInstances) do
             if layer.__tilesetRelPath then
-                local image = love.graphics.newImage(self.directory .. layer.__tilesetRelPath)
-                tileMap:addTileset(layer.__tilesetRelPath, image)
+                tileMap:addTileset(self.directory, layer.__tilesetRelPath)
             end
             if layer.__type == "AutoLayer" then
                 local tags = {}
@@ -49,7 +48,7 @@ function MapLoader:load(mapName)
                         end
                     end
                 end
-                tileMap:addLayer(layer, tags)
+                tileMap:deserializeLdtkLayer(layer, tags)
             end
             if layer.__type == "Entities" then
                 self:createObjects(layer)
