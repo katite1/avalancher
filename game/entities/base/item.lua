@@ -13,12 +13,16 @@ local Item = {}
 Item.__index = Item
 setmetatable(Item, PhysicsEntity)
 
+---@class SerializedItem : SerializedPhysicsEntity
+---@field name string
+
 ---@param template ItemTemplate
 ---@return Item
 function Item:new(template)
     local t = setmetatable(PhysicsEntity:new(), self)
     ---@cast t Item
 
+    t.type = "item"
     t.name = template.name
     t.sprite = template.sprite
     t.template = template
@@ -26,17 +30,30 @@ function Item:new(template)
     return t
 end
 
-function Item:draw()
-    love.graphics.draw(self.sprite, self.x, self.y)
+---@return SerializedItem
+function Item:serialize()
+    local serializedItem = PhysicsEntity.serialize(self)
+    ---@cast serializedItem SerializedItem
+    serializedItem.name = self.name
+    return serializedItem
 end
 
----@param itemData {x: integer, y: integer, name: string}
-function Item.deserialize(itemData)
-    local item = Item:new(ItemTemplates[itemData.name])
-    item.x = itemData.x
-    item.y = itemData.y
+---@param serializedItem SerializedItem
+---@return Item
+function Item.deserialize(serializedItem)
+    local item = PhysicsEntity.deserialize(serializedItem)
+    setmetatable(item, Item)
+    ---@cast item Item
+    local template = ItemTemplates[serializedItem.name]
+    item.name = template.name
+    item.sprite = template.sprite
+    item.template = template
 
     return item
+end
+
+function Item:draw()
+    love.graphics.draw(self.sprite, self.x, self.y)
 end
 
 function Item.deserializeLdtk(ldtkEntity)
@@ -49,11 +66,7 @@ function Item.deserializeLdtk(ldtkEntity)
     if type == nil then
         error("No item type specified for item in LDtk!")
     end
-    return Item.deserialize({
-        x = 0,
-        y = 0,
-        name = type
-    })
+    return Item:new(ItemTemplates[type])
 end
 
 return Item

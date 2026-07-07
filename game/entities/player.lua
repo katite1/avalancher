@@ -6,13 +6,25 @@ local Player = {}
 Player.__index = Player
 setmetatable(Player, PhysicsEntity)
 
+---@class SerializedPlayer : SerializedPhysicsEntity
+
 ---@return Player
 function Player:new()
     local t = setmetatable(PhysicsEntity:new(), self)
+    t.type = "player"
     t.bb = { x = 2, y = 4, w = 12, h = 12 }
     t.sprite = SPRITES.PLAYER
     ---@cast t Player
     return t
+end
+
+function Player.deserialize(data)
+    local player = PhysicsEntity.deserialize(data)
+    setmetatable(player, Player)
+    ---@cast player Player
+    player.type = "player"
+    player.sprite = SPRITES.PLAYER
+    return player
 end
 
 function Player:update()

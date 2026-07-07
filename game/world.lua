@@ -54,6 +54,7 @@ function World:save()
     saveData.inventory = self.inventory:serialize()
     saveData.progressEntries = self.progressEntries:serialize()
     saveData.tilemap = self.tileMap:serialize()
+    saveData.entities = self.entityManager:serialize()
     love.filesystem.write("save.json", json.encode(saveData))
 end
 
@@ -66,6 +67,7 @@ function World:load()
     self.inventory = Inventory.deserialize(saveData.inventory)
     self.progressEntries = ProgressEntries.deserialize(saveData.progressEntries)
     self.tileMap = TileMap.deserialize(saveData.tilemap)
+    self.entityManager = EntityManager.deserialize(saveData.entities, self)
 end
 
 return World

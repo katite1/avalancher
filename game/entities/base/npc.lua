@@ -14,12 +14,16 @@ local Npc = {}
 Npc.__index = Npc
 setmetatable(Npc, Entity)
 
+---@class SerializedNpc : SerializedEntity
+---@field name string
+
 ---@param template NpcTemplate
 ---@return Npc
 function Npc:new(template)
     local t = setmetatable(Entity:new(), self)
     t.bb = { x = 2, y = 4, w = 12, h = 12 }
     ---@cast t Npc
+    t.type = "npc"
     t.name = template.name
     t.sprite = template.sprite
     t.dialogue = function()
@@ -28,20 +32,41 @@ function Npc:new(template)
     return t
 end
 
+---@return SerializedNpc
+function Npc:serialize()
+    local serializedNpc = Entity.serialize(self)
+    ---@cast serializedNpc SerializedNpc
+    serializedNpc.name = self.name
+    return serializedNpc
+end
+
+---@param serializedNpc SerializedNpc
+---@return Npc
+function Npc.deserialize(serializedNpc)
+    local npc = Entity.deserialize(serializedNpc)
+    setmetatable(npc, Npc)
+    ---@cast npc Npc
+    print(serializedNpc.name)
+    local template = NpcTemplates[serializedNpc.name]
+    npc.name = template.name
+    npc.sprite = template.sprite
+    npc.dialogue = function()
+        return template.dialogue(npc.world, npc)
+    end
+
+    return npc
+end
+
 function Npc:draw()
     love.graphics.draw(self.sprite, self.x, self.y)
 end
 
 function Npc.deserializeLdtk(ldtkEntity)
     local npcType = nil
-    local dialogueReference = nil
     for _, field in ipairs(ldtkEntity.fieldInstances) do
         if field.__identifier == "npc" then
             npcType = string.lower(field.__value)
         end
-        -- if field.__identifier == "dialogue_reference" then
-        --     dialogueReference = field.__value
-        -- end
     end
     local npc = Npc:new(NpcTemplates[npcType])
     -- npc.dialogueReference = dialogueReference

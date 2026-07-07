@@ -4,6 +4,9 @@
 local EntityManager = {}
 EntityManager.__index = EntityManager
 
+---@class SerializedEntityManager
+---@field entities SerializedEntity[]
+
 ---@param world World
 ---@return EntityManager
 function EntityManager:new(world)
@@ -11,6 +14,12 @@ function EntityManager:new(world)
     t.world = world
     t.entities = {}
     return t
+end
+
+---@param entity Entity
+function EntityManager:add(entity)
+    entity.world = self.world
+    table.insert(self.entities, entity)
 end
 
 ---@generic T : Entity
@@ -103,6 +112,28 @@ end
 
 function EntityManager:clearAll()
     self.entities = {}
+end
+
+---@return SerializedEntityManager
+function EntityManager:serialize()
+    local serializedEntities = {}
+    for _, entity in pairs(self.entities) do
+        table.insert(serializedEntities, entity:serialize())
+    end
+    return { entities = serializedEntities }
+end
+
+---@param data SerializedEntityManager
+---@param world World
+---@return EntityManager
+function EntityManager.deserialize(data, world)
+    local entityManager = EntityManager:new(world)
+    for _, entity in ipairs(data.entities) do
+        if ENTITY_TYPE[entity.type] then
+            entityManager:add(ENTITY_TYPE[entity.type].deserialize(entity))
+        end
+    end
+    return entityManager
 end
 
 return EntityManager

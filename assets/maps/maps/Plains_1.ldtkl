@@ -72,25 +72,6 @@
 					"__worldY": 240
 				},
 				{
-					"__identifier": "Sign",
-					"__grid": [15,14],
-					"__pivot": [0,0],
-					"__tags": [],
-					"__tile": { "tilesetUid": 90, "x": 16, "y": 32, "w": 16, "h": 16 },
-					"__smartColor": "#D77643",
-					"iid": "57292f60-48b0-11f1-a504-4d619cc5871e",
-					"width": 16,
-					"height": 16,
-					"defUid": 92,
-					"px": [240,224],
-					"fieldInstances": [{ "__identifier": "dialogue_reference", "__type": "String", "__value": "jumpTutorialSign", "__tile": null, "defUid": 93, "realEditorValues": [{
-						"id": "V_String",
-						"params": ["jumpTutorialSign"]
-					}] }],
-					"__worldX": 240,
-					"__worldY": 224
-				},
-				{
 					"__identifier": "Portal",
 					"__grid": [4,16],
 					"__pivot": [0,0],
