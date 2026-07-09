@@ -52,10 +52,6 @@ function Item.deserialize(serializedItem)
     return item
 end
 
-function Item:draw()
-    love.graphics.draw(self.sprite, self.x, self.y)
-end
-
 function Item.deserializeLdtk(ldtkEntity)
     local type = nil
     for _, field in ipairs(ldtkEntity.fieldInstances) do
@@ -67,6 +63,10 @@ function Item.deserializeLdtk(ldtkEntity)
         error("No item type specified for item in LDtk!")
     end
     return Item:new(ItemTemplates[type])
+end
+
+function Item:draw()
+    love.graphics.draw(self.sprite, self.x, self.y)
 end
 
 return Item

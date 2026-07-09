@@ -6,10 +6,6 @@
 local Tileset = {}
 Tileset.__index = Tileset
 
----@class SerializedTileset
----@field imageDirectory string
----@field imageFilename string
-
 ---@param directory string
 ---@param filename string
 ---@return Tileset
@@ -20,6 +16,24 @@ function Tileset:new(directory, filename)
     t.image = love.graphics.newImage(directory .. filename)
     t.quads = t:makeQuads()
     return t
+end
+
+---@class SerializedTileset
+---@field imageDirectory string
+---@field imageFilename string
+
+---@return SerializedTileset
+function Tileset:serialize()
+    ---@type SerializedTileset
+    return {
+        imageDirectory = self.imageDirectory,
+        imageFilename = self.imageFilename,
+    }
+end
+
+---@param data SerializedTileset
+function Tileset.deserialize(data)
+    return Tileset:new(data.imageDirectory, data.imageFilename)
 end
 
 ---@return love.Quad[]
@@ -35,20 +49,6 @@ function Tileset:makeQuads()
         end
     end
     return quads
-end
-
----@return SerializedTileset
-function Tileset:serialize()
-    ---@type SerializedTileset
-    return {
-        imageDirectory = self.imageDirectory,
-        imageFilename = self.imageFilename,
-    }
-end
-
----@param data SerializedTileset
-function Tileset.deserialize(data)
-    return Tileset:new(data.imageDirectory, data.imageFilename)
 end
 
 return Tileset

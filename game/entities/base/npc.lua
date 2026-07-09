@@ -57,10 +57,6 @@ function Npc.deserialize(serializedNpc)
     return npc
 end
 
-function Npc:draw()
-    love.graphics.draw(self.sprite, self.x, self.y)
-end
-
 function Npc.deserializeLdtk(ldtkEntity)
     local npcType = nil
     for _, field in ipairs(ldtkEntity.fieldInstances) do
@@ -71,6 +67,10 @@ function Npc.deserializeLdtk(ldtkEntity)
     local npc = Npc:new(NpcTemplates[npcType])
     -- npc.dialogueReference = dialogueReference
     return npc
+end
+
+function Npc:draw()
+    love.graphics.draw(self.sprite, self.x, self.y)
 end
 
 return Npc

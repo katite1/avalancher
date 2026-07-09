@@ -10,14 +10,6 @@ local Tileset = require("core.map.tileset")
 ---@field tilesets {[string]: Tileset}
 local TileMap = {}
 
----@class SerializedTileMap
----@field tileSize number
----@field width integer
----@field height integer
----@field tileProperties string[][]
----@field layers SerializedTileMapLayer[]
----@field tilesets SerializedTileset[]
-
 ---@param tileSize number
 ---@param width integer
 ---@param height integer
@@ -34,6 +26,60 @@ function TileMap:new(tileSize, width, height)
     return t
 end
 
+---@class SerializedTileMap
+---@field tileSize number
+---@field width integer
+---@field height integer
+---@field tileProperties string[][]
+---@field layers SerializedTileMapLayer[]
+---@field tilesets SerializedTileset[]
+
+---@return SerializedTileMap
+function TileMap:serialize()
+    local tilesets = {}
+    for _, tileset in pairs(self.tilesets) do
+        table.insert(tilesets, tileset:serialize())
+    end
+
+    local layers = {}
+    for _, layer in ipairs(self.layers) do
+        table.insert(layers, layer:serialize())
+    end
+
+    ---@type SerializedTileMap
+    return {
+        tileSize = self.tileSize,
+        width = self.width,
+        height = self.height,
+        tileProperties = self.tileProperties,
+        layers = layers,
+        tilesets = tilesets
+    }
+end
+
+---@param data SerializedTileMap
+---@return TileMap
+function TileMap.deserialize(data)
+    local tilemap = TileMap:new(data.tileSize, data.width, data.height)
+
+    for _, tileset in ipairs(data.tilesets) do
+        tilemap:addTileset(tileset.imageDirectory, tileset.imageFilename)
+    end
+    for i = #data.layers, 1, -1 do
+        tilemap:addLayer(TileMapLayer.deserialize(data.layers[i], tilemap))
+    end
+    return tilemap
+end
+
+---@param data table Tiled layer data
+---@param tags table<string>
+---@return TileMapLayer
+function TileMap:deserializeLdtkLayer(data, tags)
+    local layer = TileMapLayer:deserializeLdtk(data, tags, self)
+    table.insert(self.layers, 1, layer)
+    return layer
+end
+
 function TileMap:draw()
     for _, layer in ipairs(self.layers) do
         layer:draw()
@@ -43,15 +89,6 @@ end
 ---@param layer TileMapLayer
 ---@return TileMapLayer
 function TileMap:addLayer(layer)
-    table.insert(self.layers, 1, layer)
-    return layer
-end
-
----@param data table Tiled layer data
----@param tags table<string>
----@return TileMapLayer
-function TileMap:deserializeLdtkLayer(data, tags)
-    local layer = TileMapLayer:deserializeLdtk(data, tags, self)
     table.insert(self.layers, 1, layer)
     return layer
 end
@@ -89,43 +126,6 @@ function TileMap:getTilesInRectangle(x, y, w, h)
         end
     end
     return theTiles
-end
-
----@return SerializedTileMap
-function TileMap:serialize()
-    local tilesets = {}
-    for _, tileset in pairs(self.tilesets) do
-        table.insert(tilesets, tileset:serialize())
-    end
-
-    local layers = {}
-    for _, layer in ipairs(self.layers) do
-        table.insert(layers, layer:serialize())
-    end
-
-    ---@type SerializedTileMap
-    return {
-        tileSize = self.tileSize,
-        width = self.width,
-        height = self.height,
-        tileProperties = self.tileProperties,
-        layers = layers,
-        tilesets = tilesets
-    }
-end
-
----@param data SerializedTileMap
----@return TileMap
-function TileMap.deserialize(data)
-    local tilemap = TileMap:new(data.tileSize, data.width, data.height)
-
-    for _, tileset in ipairs(data.tilesets) do
-        tilemap:addTileset(tileset.imageDirectory, tileset.imageFilename)
-    end
-    for i = #data.layers, 1, -1 do
-        tilemap:addLayer(TileMapLayer.deserialize(data.layers[i], tilemap))
-    end
-    return tilemap
 end
 
 return TileMap

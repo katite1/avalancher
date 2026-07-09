@@ -53,6 +53,42 @@ function PhysicsEntity:new()
     return t
 end
 
+---@return SerializedPhysicsEntity
+function PhysicsEntity:serialize()
+    local entity = Entity.serialize(self)
+    ---@cast entity SerializedPhysicsEntity
+    entity.vx, entity.vy = self.vx, self.vy
+    entity.xRemainder, entity.yRemainder = self.xRemainder, self.yRemainder
+    entity.walkSpeed = self.walkSpeed
+    entity.friction = self.friction
+    entity.jumpStrength = self.jumpStrength
+    entity.jumpHoldStrength = self.jumpHoldStrength
+    entity.jumpHoldMaxFrames = self.jumpHoldMaxFrames
+    entity.jumpHoldCurrentFrame = self.jumpHoldCurrentFrame
+    entity.isJumping = self.isJumping
+    entity.maxFallSpeed = self.maxFallSpeed
+    return entity
+end
+
+---@param data SerializedPhysicsEntity
+---@return PhysicsEntity
+function PhysicsEntity.deserialize(data)
+    local entity = Entity.deserialize(data)
+    setmetatable(entity, PhysicsEntity) -- TODO: there should be a better way to do this
+    ---@cast entity PhysicsEntity
+    entity.vx, entity.vy = data.vx, data.vy
+    entity.xRemainder, entity.yRemainder = data.xRemainder, data.yRemainder
+    entity.walkSpeed = data.walkSpeed
+    entity.friction = data.friction
+    entity.jumpStrength = data.jumpStrength
+    entity.jumpHoldStrength = data.jumpHoldStrength
+    entity.jumpHoldMaxFrames = data.jumpHoldMaxFrames
+    entity.jumpHoldCurrentFrame = data.jumpHoldCurrentFrame
+    entity.isJumping = data.isJumping
+    entity.maxFallSpeed = data.maxFallSpeed
+    return entity
+end
+
 function PhysicsEntity:update()
     Entity.update(self)
 
@@ -152,42 +188,6 @@ function PhysicsEntity:moveY(amount)
         end
     end
     return false
-end
-
----@return SerializedPhysicsEntity
-function PhysicsEntity:serialize()
-    local entity = Entity.serialize(self)
-    ---@cast entity SerializedPhysicsEntity
-    entity.vx, entity.vy = self.vx, self.vy
-    entity.xRemainder, entity.yRemainder = self.xRemainder, self.yRemainder
-    entity.walkSpeed = self.walkSpeed
-    entity.friction = self.friction
-    entity.jumpStrength = self.jumpStrength
-    entity.jumpHoldStrength = self.jumpHoldStrength
-    entity.jumpHoldMaxFrames = self.jumpHoldMaxFrames
-    entity.jumpHoldCurrentFrame = self.jumpHoldCurrentFrame
-    entity.isJumping = self.isJumping
-    entity.maxFallSpeed = self.maxFallSpeed
-    return entity
-end
-
----@param data SerializedPhysicsEntity
----@return PhysicsEntity
-function PhysicsEntity.deserialize(data)
-    local entity = Entity.deserialize(data)
-    setmetatable(entity, PhysicsEntity) -- TODO: there should be a better way to do this
-    ---@cast entity PhysicsEntity
-    entity.vx, entity.vy = data.vx, data.vy
-    entity.xRemainder, entity.yRemainder = data.xRemainder, data.yRemainder
-    entity.walkSpeed = data.walkSpeed
-    entity.friction = data.friction
-    entity.jumpStrength = data.jumpStrength
-    entity.jumpHoldStrength = data.jumpHoldStrength
-    entity.jumpHoldMaxFrames = data.jumpHoldMaxFrames
-    entity.jumpHoldCurrentFrame = data.jumpHoldCurrentFrame
-    entity.isJumping = data.isJumping
-    entity.maxFallSpeed = data.maxFallSpeed
-    return entity
 end
 
 return PhysicsEntity

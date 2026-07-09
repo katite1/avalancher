@@ -11,17 +11,6 @@
 local Tile = {}
 Tile.__index = Tile
 
----@class SerializedTile
----@field x integer
----@field y integer
----@field width integer
----@field height integer
----@field value integer
----@field offsetX integer
----@field offsetY integer
----@field flipX boolean
----@field flipY boolean
-
 ---@param x integer
 ---@param y integer
 ---@param width integer
@@ -41,6 +30,17 @@ function Tile:new(x, y, width, height, value, offsetX, offsetY)
     t.offsetY = offsetY or 0
     return t
 end
+
+---@class SerializedTile
+---@field x integer
+---@field y integer
+---@field width integer
+---@field height integer
+---@field value integer
+---@field offsetX integer
+---@field offsetY integer
+---@field flipX boolean
+---@field flipY boolean
 
 ---@return SerializedTile
 function Tile:serialize()

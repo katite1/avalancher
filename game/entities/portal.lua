@@ -17,10 +17,6 @@ function Portal:new()
     return t
 end
 
-function Portal:draw()
-    love.graphics.draw(self.sprite, self.x, self.y)
-end
-
 function Portal.deserializeLdtk(ldtkEntity)
     local portal = Portal:new()
     for _, field in ipairs(ldtkEntity.fieldInstances) do
@@ -29,6 +25,10 @@ function Portal.deserializeLdtk(ldtkEntity)
         end
     end
     return portal
+end
+
+function Portal:draw()
+    love.graphics.draw(self.sprite, self.x, self.y)
 end
 
 return Portal

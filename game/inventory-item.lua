@@ -7,6 +7,10 @@ local itemTemplates = require("data.items.item-templates")
 local InventoryItem = {}
 InventoryItem.__index = InventoryItem
 
+---@class SerializedInventoryItem
+---@field name string
+---@field quantity integer
+
 ---@param name string
 ---@param quantity integer | nil
 ---@return InventoryItem
@@ -18,6 +22,7 @@ function InventoryItem:new(name, quantity)
     return t
 end
 
+---@return SerializedInventoryItem
 function InventoryItem:serialize()
     return {
         name = self.name,
@@ -25,11 +30,11 @@ function InventoryItem:serialize()
     }
 end
 
----@param itemData table
-function InventoryItem:deserialize(itemData)
-    local item = InventoryItem:new(itemData.name)
-    item.quantity = itemData.quantity
-    item.sprite = itemTemplates[itemData.name].sprite
+---@param serializedInventoryItem SerializedInventoryItem
+function InventoryItem:deserialize(serializedInventoryItem)
+    local item = InventoryItem:new(serializedInventoryItem.name)
+    item.quantity = serializedInventoryItem.quantity
+    item.sprite = itemTemplates[serializedInventoryItem.name].sprite
     return item
 end
 

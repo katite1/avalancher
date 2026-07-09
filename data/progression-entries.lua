@@ -7,16 +7,17 @@ ProgressionEntries.__index = ProgressionEntries
 ProgressionEntries.entry = {}
 ProgressionEntries.entry.bunny = ProgressionEntry:new(false)
 
----@return table
+---@return ProgressionEntry[]
 function ProgressionEntries:serialize()
     local entries = {}
     for entryName, entry in pairs(ProgressionEntries.entry) do
+        ---@cast entry ProgressionEntry
         entries[entryName] = entry:serialize()
     end
     return entries
 end
 
----@param entries {progress: integer | boolean, finalProgressValue: integer | nil}[]
+---@param entries SerializedProgressionEntry[]
 ---@return ProgressionEntries
 function ProgressionEntries.deserialize(entries)
     for entryName, entryData in pairs(entries) do
