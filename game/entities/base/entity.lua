@@ -40,9 +40,6 @@ function Entity:new()
     return t
 end
 
-function Entity:update()
-end
-
 ---@return SerializedEntity
 function Entity:serialize()
     ---@type SerializedEntity
@@ -68,6 +65,9 @@ function Entity.deserialize(data)
     entity.dialogueReference = data.dialogueReference
     entity.type = data.type
     return entity
+end
+
+function Entity:update()
 end
 
 return Entity

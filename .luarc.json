@@ -1,0 +1,6 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "workspace.library": ["${3rd}/lua/library","${3rd}/love2d/library"],
+  "workspace.ignoreDir" : ["${workspaceFolder}/lib/*"],
+  "runtime.version": "Lua 5.1"
+}

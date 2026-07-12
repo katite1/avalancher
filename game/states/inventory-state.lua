@@ -12,7 +12,6 @@ setmetatable(InventoryState, FSMState)
 ---@return InventoryState
 function InventoryState:new(world)
     local t = setmetatable(FSMState:new(), self)
-    t.progress = 1
     t.world = world
     ---@cast t InventoryState
 
