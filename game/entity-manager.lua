@@ -32,7 +32,7 @@ function EntityManager.deserialize(data, world)
     local entityManager = EntityManager:new(world)
     for _, entity in ipairs(data.entities) do
         if ENTITY_TYPE[entity.type] then
-            entityManager:add(ENTITY_TYPE[entity.type].deserialize(entity))
+            entityManager:add(ENTITY_TYPE[entity.type].deserialize(entity, world))
         end
     end
     return entityManager
@@ -46,9 +46,9 @@ function EntityManager:makeFromLdtk(entity, ldtkEntity)
     ---@cast entity Entity
     local e = nil
     if ldtkEntity and entity.deserializeLdtk then
-        e = entity.deserializeLdtk(ldtkEntity)
+        e = entity.deserializeLdtk(ldtkEntity, self.world)
     else
-        e = entity:new()
+        e = entity:new(self.world)
     end
 
     e.world = self.world

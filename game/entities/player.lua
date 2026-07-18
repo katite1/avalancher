@@ -8,9 +8,10 @@ setmetatable(Player, PhysicsEntity)
 
 ---@class SerializedPlayer : SerializedPhysicsEntity
 
+---@param world World
 ---@return Player
-function Player:new()
-    local t = setmetatable(PhysicsEntity:new(), self)
+function Player:new(world)
+    local t = setmetatable(PhysicsEntity:new(world), self)
     t.type = "player"
     t.bb = { x = 2, y = 4, w = 12, h = 12 }
     t.sprite = SPRITES.PLAYER
@@ -18,8 +19,8 @@ function Player:new()
     return t
 end
 
-function Player.deserialize(data)
-    local player = PhysicsEntity.deserialize(data)
+function Player.deserialize(data, world)
+    local player = PhysicsEntity.deserialize(data, world)
     setmetatable(player, Player)
     ---@cast player Player
     player.type = "player"

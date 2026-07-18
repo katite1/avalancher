@@ -17,9 +17,10 @@ setmetatable(Item, PhysicsEntity)
 ---@field name string
 
 ---@param template ItemTemplate
+---@param world World
 ---@return Item
-function Item:new(template)
-    local t = setmetatable(PhysicsEntity:new(), self)
+function Item:new(template, world)
+    local t = setmetatable(PhysicsEntity:new(world), self)
     ---@cast t Item
 
     t.type = "item"
@@ -39,9 +40,10 @@ function Item:serialize()
 end
 
 ---@param serializedItem SerializedItem
+---@param world World
 ---@return Item
-function Item.deserialize(serializedItem)
-    local item = PhysicsEntity.deserialize(serializedItem)
+function Item.deserialize(serializedItem, world)
+    local item = PhysicsEntity.deserialize(serializedItem, world)
     setmetatable(item, Item)
     ---@cast item Item
     local template = ItemTemplates[serializedItem.name]
@@ -52,7 +54,9 @@ function Item.deserialize(serializedItem)
     return item
 end
 
-function Item.deserializeLdtk(ldtkEntity)
+---@param ldtkEntity table
+---@param world World
+function Item.deserializeLdtk(ldtkEntity, world)
     local type = nil
     for _, field in ipairs(ldtkEntity.fieldInstances) do
         if field.__identifier == "type" then
@@ -62,7 +66,7 @@ function Item.deserializeLdtk(ldtkEntity)
     if type == nil then
         error("No item type specified for item in LDtk!")
     end
-    return Item:new(ItemTemplates[type])
+    return Item:new(ItemTemplates[type], world)
 end
 
 function Item:draw()

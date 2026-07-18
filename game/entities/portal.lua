@@ -7,9 +7,10 @@ local Portal = {}
 Portal.__index = Portal
 setmetatable(Portal, Entity)
 
+---@param world World
 ---@return Portal
-function Portal:new()
-    local t = setmetatable(Entity:new(), self)
+function Portal:new(world)
+    local t = setmetatable(Entity:new(world), self)
     ---@cast t Portal
     t.bb = { x = 0, y = 8, w = 32, h = 8 }
     t.sprite = SPRITES.PORTAL
@@ -17,8 +18,11 @@ function Portal:new()
     return t
 end
 
-function Portal.deserializeLdtk(ldtkEntity)
-    local portal = Portal:new()
+---@param ldtkEntity table
+---@param world World
+---@return Portal
+function Portal.deserializeLdtk(ldtkEntity, world)
+    local portal = Portal:new(world)
     for _, field in ipairs(ldtkEntity.fieldInstances) do
         if field.__identifier == "level" then
             portal.target = field.__value

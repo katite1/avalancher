@@ -12,7 +12,7 @@
 ---@field bb BoundingBox
 ---@field update function
 ---@field dialogueReference string | nil
----@field deserializeLdtk nil | fun(data): Entity
+---@field deserializeLdtk nil | fun(data, world: World): Entity
 ---@field draw function | nil
 ---@field queuedDeletion boolean
 local Entity = {}
@@ -28,14 +28,15 @@ Entity.__index = Entity
 ---@field bb SerializedBoundingBox
 ---@field dialogueReference string | nil
 
-function Entity:new()
+---@param world World
+function Entity:new(world)
     local t = setmetatable({}, self)
     t.x = 0
     t.y = 0
     t.w = 16
     t.h = 16
     t.bb = { x = t.x, y = t.y, w = t.w, h = t.h }
-    t.world = nil
+    t.world = world
     t.queuedDeletion = false
     return t
 end
@@ -56,9 +57,10 @@ function Entity:serialize()
 end
 
 ---@param data SerializedEntity
+---@param world World
 ---@return Entity
-function Entity.deserialize(data)
-    local entity = Entity:new()
+function Entity.deserialize(data, world)
+    local entity = Entity:new(world)
     entity.x, entity.y = data.x, data.y
     entity.w, entity.h = data.w, data.h
     entity.bb = data.bb

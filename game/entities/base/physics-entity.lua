@@ -33,8 +33,9 @@ setmetatable(PhysicsEntity, Entity)
 ---@field isJumping boolean
 ---@field maxFallSpeed number
 
-function PhysicsEntity:new()
-    local t = setmetatable(Entity:new(), self)
+---@param world World
+function PhysicsEntity:new(world)
+    local t = setmetatable(Entity:new(world), self)
     ---@cast t PhysicsEntity
     t.vx = 0
     t.vy = 0
@@ -72,8 +73,8 @@ end
 
 ---@param data SerializedPhysicsEntity
 ---@return PhysicsEntity
-function PhysicsEntity.deserialize(data)
-    local entity = Entity.deserialize(data)
+function PhysicsEntity.deserialize(data, world)
+    local entity = Entity.deserialize(data, world)
     setmetatable(entity, PhysicsEntity) -- TODO: there should be a better way to do this
     ---@cast entity PhysicsEntity
     entity.vx, entity.vy = data.vx, data.vy
