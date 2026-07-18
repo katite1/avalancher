@@ -6,9 +6,14 @@ love.graphics.setLineStyle("rough")
 local spritesAsseter = Asseter:new("assets/sprites/")
 SPRITES = {}
 SPRITES.PLAYER = spritesAsseter:load("player.png")
+SPRITES.MUSHROOM = spritesAsseter:load("enemies/mushroom.png")
 SPRITES.PORTAL = spritesAsseter:load("portal.png")
 SPRITES.SIGN = spritesAsseter:load("sign.png")
 SPRITES.PANEL = spritesAsseter:load("test-9-panel.png")
+
+local particleAsseter = Asseter:new("assets/sprites/particles/")
+SPRITES.PARTICLES = {}
+SPRITES.PARTICLES.LEAF = particleAsseter:load("leaf.png")
 
 local itemAsseter = Asseter:new("assets/sprites/items/")
 SPRITES.ITEMS = {}

@@ -1,6 +1,7 @@
 local json        = require("lib.json")
 local TileMap     = require("core.map.tile-map")
 local Player      = require("game.entities.player")
+local Mushroom    = require("game.entities.mushroom")
 local Portal      = require("game.entities.portal")
 local Item        = require("game.entities.base.item")
 local Npc         = require("game.entities.base.npc")
@@ -65,6 +66,9 @@ function MapLoader:createObjects(layer)
         if entity.__identifier == "Player" then
             e = self.world.entityManager:makeFromLdtk(Player)
         end
+        -- if entity.__identifier == "Mushroom" then
+        --     e = self.world.entityManager:makeFromLdtk(Mushroom)
+        -- end
         if entity.__identifier == "Portal" then
             e = self.world.entityManager:makeFromLdtk(Portal, entity)
         end

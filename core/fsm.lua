@@ -1,4 +1,5 @@
 ---@class FSM
+---@field context table
 ---@field currentState FSMState
 ---@field queuedState FSMState
 ---@field queuedStateArgs any
@@ -7,8 +8,10 @@ local FSM = {}
 FSM.__index = FSM
 
 ---@return FSM
-function FSM:new()
+---@param context table
+function FSM:new(context)
     local t = setmetatable({}, self)
+    t.context = context
     return t
 end
 
@@ -40,7 +43,7 @@ function FSM:update()
         if self.currentState:exit(self.queuedState) then
             local previousState = self.currentState
             if self.queuedState.enter then
-                self.queuedState:enter(previousState, self.queuedStateArgs)
+                self.queuedState:enter(self.context, previousState, self.queuedStateArgs)
             end
             self.currentState = self.queuedState
             self.queuedState = nil

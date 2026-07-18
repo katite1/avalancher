@@ -8,7 +8,7 @@ local Item           = require("game.entities.base.item")
 local Npc            = require("game.entities.base.npc")
 
 ---@class GameFSM: FSM
----@field world World
+---@field context World
 ---@field playState FSMState
 ---@field dialogueState DialogueState
 ---@field inventoryState InventoryState
@@ -19,59 +19,61 @@ setmetatable(GameFSM, FSM)
 ---@param world World
 ---@return GameFSM
 function GameFSM:new(world)
-    local t = setmetatable(FSM:new(), self)
+    local t = setmetatable(FSM:new({}), self)
     ---@cast t GameFSM
-    t.world = world
-    t.playState = FSMState:new()
-    t.dialogueState = DialogueState:new(t.world)
-    t.inventoryState = InventoryState:new(t.world)
-
-    function t.playState:update()
-        if Buttons.save.justPressed then
-            t.world:save()
-        end
-        if Buttons.load.justPressed then
-            t.world:load()
-        end
-
-        t.world.entityManager:update()
-        if Buttons.inventory.justPressed then
-            t:gotoState(t.inventoryState)
-        end
-
-        local player = t.world.entityManager:getFirst(Player)
-        if player then
-            local npc = t.world.entityManager:getClosest(player.x, player.y, Npc)
-            if npc then
-                if t.world.collisionManager:areOverlapping(player, npc) then
-                    if Buttons.action.justPressed then
-                        -- t:gotoState(t.dialogueState, DialogueItems[npc.dialogueReference])
-                        t:gotoState(t.dialogueState, npc.dialogue())
-                    end
-                end
-            end
-            local portal = t.world.entityManager:getClosest(player.x, player.y, Portal)
-            if portal then
-                if t.world.collisionManager:areOverlapping(player, portal) then
-                    if Buttons.action.justPressed then
-                        t.world:travel(portal.target)
-                    end
-                end
-            end
-            local item = t.world.entityManager:getClosest(player.x, player.y, Item)
-            if item then
-                if t.world.collisionManager:areOverlapping(player, item) then
-                    if Buttons.action.justPressed then
-                        t.world:pickUp(item)
-                    end
-                end
-            end
-        end
-    end
+    t.context = world
+    t.playState = FSMState:new(t.context)
+    t.playState.update = t.playStateUpdate
+    t.dialogueState = DialogueState:new(t.context)
+    t.inventoryState = InventoryState:new(t.context)
 
     t:gotoState(t.playState)
 
     return t
+end
+
+function GameFSM:playStateUpdate()
+    local world = self.context
+    if Buttons.save.justPressed then
+        world:save()
+    end
+    if Buttons.load.justPressed then
+        world:load()
+    end
+
+    world.entityManager:update()
+    if Buttons.inventory.justPressed then
+        world.fsm:gotoState(world.fsm.inventoryState)
+    end
+
+    local player = world.entityManager:getFirst(Player)
+    if player then
+        local npc = world.entityManager:getClosest(player.x, player.y, Npc)
+        if npc then
+            if world.collisionManager:areOverlapping(player, npc) then
+                if Buttons.action.justPressed then
+                    -- t:gotoState(t.dialogueState, DialogueItems[npc.dialogueReference])
+                    world.fsm:gotoState(world.fsm.dialogueState, npc.dialogue())
+                end
+            end
+        end
+        local portal = world.fsm.context.entityManager:getClosest(player.x, player.y, Portal)
+        if portal then
+            if world.fsm.context.collisionManager:areOverlapping(player, portal) then
+                if Buttons.action.justPressed then
+                    world.fsm.context:travel(portal.target)
+                end
+            end
+        end
+        local item = world.fsm.context.entityManager:getClosest(player.x, player.y, Item)
+        if item then
+            if world.fsm.context.collisionManager:areOverlapping(player, item) then
+                if Buttons.action.justPressed then
+                    world.fsm.context:pickUp(item)
+                end
+            end
+        end
+    end
 end
 
 function GameFSM:draw()

@@ -81,8 +81,21 @@ local function restart()
 end
 
 
-function love.update()
+local psystem = love.graphics.newParticleSystem(SPRITES.PARTICLES.LEAF, 128)
+psystem:setParticleLifetime(10, 12) -- Particles live at least 2s and at most 5s.
+psystem:setEmissionRate(5)
+psystem:setSizeVariation(1)
+psystem:setLinearAcceleration(-3, -10, 3, 10) -- Random movement in all directions.
+psystem:setEmissionArea("uniform", SCREEN.WIDTH, SCREEN.HEIGHT)
+psystem:setSpeed(100, 160)
+psystem:setRotation(0, 2 * math.pi)
+
+
+
+function love.update(dt)
 	require("lib.lurker").update()
+	psystem:update(dt)
+
 	if Buttons.debugSpeedUp.pressed then
 		TICK.rate = TICK.rate * 1.01
 	end
@@ -136,9 +149,16 @@ function love.draw()
 	Draw.start()
 	world.background:draw()
 	camera:drawStart()
+	love.graphics.draw(psystem, 0, SCREEN.HEIGHT / 2)
 	world.tileMap:draw()
 	world.entityManager:draw()
 	camera:drawEnd()
+	love.graphics.push("all")
+	love.graphics.setColor(1, 0.5, 0.55, 0.05)
+	love.graphics.rectangle("fill", 0, 0, SCREEN.WIDTH, SCREEN.HEIGHT)
+	love.graphics.setColor(1, 1, 1, 0.02)
+	love.graphics.rectangle("fill", 0, 0, SCREEN.WIDTH, SCREEN.HEIGHT)
+	love.graphics.pop()
 	world.fsm:draw()
 	Draw.stop()
 	-- love.graphics.setShader()
