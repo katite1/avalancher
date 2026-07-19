@@ -140,6 +140,8 @@ function love.update(dt)
 	end
 end
 
+love.window.setFullscreen(true)
+
 local t = 0
 Draw.init()
 function love.draw()
@@ -160,5 +162,6 @@ function love.draw()
 	love.graphics.pop()
 	world.fsm:draw()
 	Draw.stop()
+	love.graphics.print(1 / love.timer.getDelta(), 0, 0)
 	-- love.graphics.setShader()
 end

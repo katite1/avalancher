@@ -7,6 +7,7 @@ local Tile = require("core.map.tile")
 ---@field spriteBatch love.SpriteBatch
 ---@field tint [number, number, number]
 ---@field tags string[]
+---@field dirty boolean whether tilemap has changed and needs to remake the spritebatch
 local TileMapLayer = {}
 TileMapLayer.__index = TileMapLayer
 
@@ -24,6 +25,7 @@ function TileMapLayer:new(cells, tags, tileMap, tilesetName)
     t.tags = tags
     t.spriteBatch = love.graphics.newSpriteBatch(t.tileMap:getTileset(t.tilesetName).image)
     t.cells = cells
+    t.dirty = true
     return t
 end
 
@@ -130,6 +132,11 @@ function TileMapLayer:draw()
 
     love.graphics.push("all")
     love.graphics.setColor(self.tint)
+    if self.dirty == false then
+        love.graphics.draw(self.spriteBatch)
+        love.graphics.pop()
+        return
+    end
 
     self.spriteBatch:clear()
 
@@ -161,6 +168,7 @@ function TileMapLayer:draw()
     end
     love.graphics.draw(self.spriteBatch)
     love.graphics.pop()
+    self.dirty = false
 end
 
 ---@param tag string
