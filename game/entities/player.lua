@@ -42,6 +42,13 @@ function Player:update()
     if not Buttons.jump.justPressed and Buttons.jump.pressed then
         self:jumpHold()
     end
+
+    local collidingEntities = self.world.entityManager:getOverlapping(self)
+    D:write(#collidingEntities)
+    D:write(collidingEntities)
+    if #collidingEntities > 0 then
+        D:breakpoint()
+    end
 end
 
 function Player:draw()

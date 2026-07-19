@@ -112,15 +112,12 @@ function TileMap:getTileset(name)
     error("No valid tileset exists")
 end
 
----@param x number
----@param y number
----@param w number
----@param h number
+---@param rectangle Rectangle
 ---@return Tile[]
-function TileMap:getTilesInRectangle(x, y, w, h)
+function TileMap:getInRectangle(rectangle)
     local theTiles = {}
     for _, layer in ipairs(self.layers) do
-        local tiles = layer:getTilesInRectangle(x, y, w, h)
+        local tiles = layer:getTilesInRectangle(rectangle)
         for _, tile in ipairs(tiles) do
             table.insert(theTiles, tile)
         end

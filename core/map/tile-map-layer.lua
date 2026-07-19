@@ -182,12 +182,13 @@ function TileMapLayer:hasTag(tag)
     return false
 end
 
----@param x number
----@param y number
----@param w number
----@param h number
+---@param rectangle Rectangle
 ---@return Tile[]
-function TileMapLayer:getTilesInRectangle(x, y, w, h)
+function TileMapLayer:getTilesInRectangle(rectangle)
+    local x = rectangle.x
+    local y = rectangle.y
+    local w = rectangle.w
+    local h = rectangle.h
     if self:hasTag("decoration") then
         return {}
     end

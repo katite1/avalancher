@@ -82,6 +82,16 @@ function EntityManager:draw()
     end
 end
 
+function EntityManager:drawCollisionAreas()
+    love.graphics.push("all")
+    love.graphics.setColor(1, 0, 0, 1)
+    for _, entity in pairs(self.entities) do
+        local rectangle = entity:getCollisionArea()
+        love.graphics.rectangle("line", rectangle.x, rectangle.y, rectangle.w, rectangle.h)
+    end
+    love.graphics.pop()
+end
+
 ---@generic T
 ---@param class T
 ---@return T[] | false
@@ -125,6 +135,24 @@ function EntityManager:getClosest(x, y, class)
         end
     end
     return closestEntity
+end
+
+---@param entity Entity
+---@return Entity[]
+function EntityManager:getOverlapping(entity)
+    local entityCollisionArea = entity:getCollisionArea()
+    local entities = {}
+    for _, otherEntity in pairs(self.entities) do
+        if entity ~= otherEntity then
+            if self.world.collisionManager:AABB(
+                    entityCollisionArea,
+                    otherEntity:getCollisionArea()
+                ) then
+                table.insert(entities, otherEntity)
+            end
+        end
+    end
+    return entities
 end
 
 ---@param entity Entity

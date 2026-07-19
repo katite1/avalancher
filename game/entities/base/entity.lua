@@ -72,4 +72,15 @@ end
 function Entity:update()
 end
 
+---@return Rectangle
+function Entity:getCollisionArea()
+    ---@type Rectangle
+    return {
+        x = self.x + self.bb.x,
+        y = self.y + self.bb.y,
+        w = self.bb.w,
+        h = self.bb.h
+    }
+end
+
 return Entity

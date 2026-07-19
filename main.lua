@@ -7,6 +7,8 @@ require("data.images")
 LANG = require("assets.i18n.en")
 DialogueItems = require("data.dialogue-items")
 ENTITY_TYPE = require("game.entities.base.entity-type")
+Debug = require("core.debug")
+D = Debug:new()
 local Draw = require("core.draw")
 local Input = require("core.input")
 local InputButton = require("core.input-button")
@@ -50,6 +52,7 @@ Buttons = {
 	debugSpeedDown = InputButton:new({ "1" }),
 	debugSpeedUp = InputButton:new({ "2" }),
 	debugSpeedReset = InputButton:new({ "3" }),
+	debugSpeedStop = InputButton:new({ "4" }),
 	save = InputButton:new({ "-" }),
 	load = InputButton:new({ "=" })
 }
@@ -94,6 +97,7 @@ psystem:setRotation(0, 2 * math.pi)
 function love.update(dt)
 	require("lib.lurker").update()
 	psystem:update(dt)
+	input:update()
 
 	if Buttons.debugSpeedUp.pressed then
 		TICK.rate = TICK.rate * 1.01
@@ -101,13 +105,27 @@ function love.update(dt)
 	if Buttons.debugSpeedDown.pressed then
 		TICK.rate = TICK.rate / 1.01
 	end
+	if Buttons.debugSpeedStop.pressed then
+		TICK.rate = 0
+	end
 	if Buttons.debugSpeedReset.pressed then
 		TICK.rate = 1
 	end
 	TICK.current = TICK.current + 1 * TICK.rate
+
+	if Buttons.restart.justPressed then
+		restart()
+	end
+	if Buttons.quit.justPressed then
+		love.event.quit()
+	end
 	if TICK.current < 1 then
+		input:updateEnd()
 		return
 	end
+
+	D:clear()
+	D:write(1 / love.timer.getDelta())
 
 	local iterations = math.floor(TICK.current)
 	if TICK.current >= 1 then
@@ -115,8 +133,6 @@ function love.update(dt)
 	end
 
 	for _ = 1, iterations, 1 do
-		input:update()
-
 		world.fsm:update()
 
 		local players = world.entityManager:getAll(Player)
@@ -128,16 +144,8 @@ function love.update(dt)
 			world.background.parallaxX = -camera.x
 			world.background.parallaxY = -camera.y
 		end
-
-		if Buttons.restart.justPressed then
-			restart()
-		end
-		if Buttons.quit.justPressed then
-			love.event.quit()
-		end
-
-		input:updateEnd()
 	end
+	input:updateEnd()
 end
 
 love.window.setFullscreen(true)
@@ -153,6 +161,7 @@ function love.draw()
 	love.graphics.draw(psystem, 0, SCREEN.HEIGHT / 2)
 	world.tileMap:draw()
 	world.entityManager:draw()
+	world.entityManager:drawCollisionAreas()
 	camera:drawEnd()
 	love.graphics.push("all")
 	love.graphics.setColor(1, 0.5, 0.55, 0.05)
@@ -162,6 +171,6 @@ function love.draw()
 	love.graphics.pop()
 	world.fsm:draw()
 	Draw.stop()
-	love.graphics.print(1 / love.timer.getDelta(), 0, 0)
+	D:draw(2)
 	-- love.graphics.setShader()
 end

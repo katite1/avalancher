@@ -118,7 +118,7 @@ end
 ---@return boolean
 function PhysicsEntity:onFloor()
     self.y = self.y + 1;
-    local collisions = self.world.collisionManager:getCollisions(self)
+    local collisions = self.world.collisionManager:getTerrainCollisions(self)
     self.y = self.y - 1;
     return collisions
 end
@@ -126,7 +126,7 @@ end
 ---@return boolean
 function PhysicsEntity:onCeiling()
     self.y = self.y - 1;
-    local collisions = self.world.collisionManager:getCollisions(self)
+    local collisions = self.world.collisionManager:getTerrainCollisions(self)
     self.y = self.y + 1;
     return collisions
 end
@@ -161,7 +161,7 @@ function PhysicsEntity:moveX(amount)
         local sign = M.sign(move)
         while move ~= 0 do
             self.x = self.x + sign;
-            if not self.world.collisionManager:getCollisions(self) then
+            if not self.world.collisionManager:getTerrainCollisions(self) then
                 move = move - sign
             else
                 self.x = self.x - sign;
@@ -180,7 +180,7 @@ function PhysicsEntity:moveY(amount)
         local sign = M.sign(move)
         while move ~= 0 do
             self.y = self.y + sign;
-            if not self.world.collisionManager:getCollisions(self) then
+            if not self.world.collisionManager:getTerrainCollisions(self) then
                 move = move - sign
             else
                 self.y = self.y - sign;
