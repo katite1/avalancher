@@ -7,6 +7,7 @@ local spritesAsseter = Asseter:new("assets/sprites/")
 SPRITES = {}
 SPRITES.PLAYER = spritesAsseter:load("player.png")
 SPRITES.MUSHROOM = spritesAsseter:load("enemies/mushroom.png")
+SPRITES.MUSHROOM_STOMPED = spritesAsseter:load("enemies/mushroom-stomped.png")
 SPRITES.PORTAL = spritesAsseter:load("portal.png")
 SPRITES.SIGN = spritesAsseter:load("sign.png")
 SPRITES.PANEL = spritesAsseter:load("test-9-panel.png")

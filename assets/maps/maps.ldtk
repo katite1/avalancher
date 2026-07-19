@@ -3422,7 +3422,7 @@
 			"tileRect": { "tilesetUid": 90, "x": 224, "y": 800, "w": 16, "h": 16 },
 			"uiTileRect": null,
 			"nineSliceBorders": [],
-			"maxCount": 1,
+			"maxCount": 0,
 			"limitScope": "PerLevel",
 			"limitBehavior": "MoveLastOne",
 			"pivotX": 0,

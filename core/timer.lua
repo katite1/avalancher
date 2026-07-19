@@ -44,4 +44,8 @@ function Timer:restart()
     self.expired = false
 end
 
+function Timer:stop()
+    self.running = false
+end
+
 return Timer

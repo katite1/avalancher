@@ -1,4 +1,5 @@
 local PhysicsEntity = require("game.entities.base.physics-entity")
+local Mushroom = require("game.entities.mushroom")
 
 ---@class Player: PhysicsEntity
 ---@field sprite love.Image
@@ -43,11 +44,15 @@ function Player:update()
         self:jumpHold()
     end
 
-    local collidingEntities = self.world.entityManager:getOverlapping(self)
-    D:write(#collidingEntities)
-    D:write(collidingEntities)
-    if #collidingEntities > 0 then
-        D:breakpoint()
+
+    local collidingMushrooms = self.world.entityManager:getOverlapping(self, Mushroom)
+    if self.vy > 0 then
+        for _, mushroom in ipairs(collidingMushrooms) do
+            local didStomp = mushroom:stomp()
+            if didStomp then
+                self:bounce()
+            end
+        end
     end
 end
 

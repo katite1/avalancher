@@ -138,6 +138,10 @@ function PhysicsEntity:jump()
     end
 end
 
+function PhysicsEntity:bounce()
+    self.vy = -self.jumpStrength
+end
+
 function PhysicsEntity:jumpHold()
     if self.isJumping and self:onFloor() == false and self.jumpHoldCurrentFrame < self.jumpHoldMaxFrames then
         self.vy = self.vy - self.jumpHoldStrength

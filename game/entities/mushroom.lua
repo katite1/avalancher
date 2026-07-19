@@ -10,6 +10,8 @@ local Timer = require("core.timer")
 ---@field patrolEnd {x: number, y: number}
 ---@field sprite love.Image
 ---@field patrolState FSMState
+---@field patrolWaitState FSMState
+---@field stompedState FSMState
 ---@field patrolWaitTimer Timer
 local Mushroom = {}
 Mushroom.__index = Mushroom
@@ -28,11 +30,14 @@ function Mushroom:new(world)
     t.sprite = SPRITES.MUSHROOM
     t.patrolStart = { x = 0, y = 0 }
     t.patrolEnd = { x = 0, y = 0 }
+    t.walkSpeed = 0.35
     t.fsm = FSM:new(t)
     t.patrolState = FSMState:new(t)
     setmetatable(t.patrolState, { __index = Mushroom.patrolState })
     t.patrolWaitState = FSMState:new(t)
     setmetatable(t.patrolWaitState, { __index = Mushroom.patrolWaitState })
+    t.stompedState = FSMState:new(t)
+    setmetatable(t.stompedState, { __index = Mushroom.stompedState })
     t.fsm:gotoState(t.patrolState)
     return t
 end
@@ -60,6 +65,7 @@ function Mushroom.deserializeLdtk(ldtkEntity, world)
     return mushroom
 end
 
+---@type FSMState
 ---@diagnostic disable-next-line: missing-fields
 Mushroom.patrolState = {}
 function Mushroom.patrolState:update()
@@ -83,6 +89,7 @@ function Mushroom.patrolState:update()
     end
 end
 
+---@class patrolWaitState FSMState
 ---@diagnostic disable-next-line: missing-fields
 Mushroom.patrolWaitState = {}
 function Mushroom.patrolWaitState:enter()
@@ -100,6 +107,48 @@ end
 function Mushroom.patrolWaitState:update()
     self.waitTimer:update()
     self.jumpTimer:update()
+end
+
+function Mushroom.patrolWaitState:exit()
+    self.waitTimer:stop()
+    self.jumpTimer:stop()
+    return true
+end
+
+---@class stompedState FSMState
+---@diagnostic disable-next-line: missing-fields
+Mushroom.stompedState = {}
+function Mushroom.stompedState:enter(previousState)
+    local mushroom = self.context
+    ---@cast mushroom Mushroom
+
+    mushroom.sprite = SPRITES.MUSHROOM_STOMPED
+    if previousState then
+        self.unstompTimer = Timer:new(120, function()
+            mushroom.fsm:gotoState(previousState)
+        end)
+    end
+end
+
+function Mushroom.stompedState:update()
+    self.unstompTimer:update()
+end
+
+function Mushroom.stompedState:exit()
+    local mushroom = self.context
+    ---@cast mushroom Mushroom
+    mushroom.sprite = SPRITES.MUSHROOM
+
+    self.unstompTimer:stop()
+    return true
+end
+
+function Mushroom:stomp()
+    if self.fsm.currentState ~= self.stompedState then
+        self.fsm:gotoState(self.stompedState)
+        return true
+    end
+    return false
 end
 
 function Mushroom:update()

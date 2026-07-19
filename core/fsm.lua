@@ -43,7 +43,7 @@ function FSM:update()
         if self.currentState:exit(self.queuedState) then
             local previousState = self.currentState
             if self.queuedState.enter then
-                self.queuedState:enter(self.context, previousState, self.queuedStateArgs)
+                self.queuedState:enter(previousState, self.queuedStateArgs)
             end
             self.currentState = self.queuedState
             self.queuedState = nil

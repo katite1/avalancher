@@ -57,7 +57,7 @@
 			"entityInstances": [
 				{
 					"__identifier": "Player",
-					"__grid": [23,15],
+					"__grid": [11,13],
 					"__pivot": [0,0],
 					"__tags": [],
 					"__tile": { "tilesetUid": 90, "x": 0, "y": 240, "w": 16, "h": 16 },
@@ -66,10 +66,10 @@
 					"width": 16,
 					"height": 16,
 					"defUid": 89,
-					"px": [368,240],
+					"px": [176,208],
 					"fieldInstances": [],
-					"__worldX": 368,
-					"__worldY": 240
+					"__worldX": 176,
+					"__worldY": 208
 				},
 				{
 					"__identifier": "Portal",
@@ -215,6 +215,31 @@
 					],
 					"__worldX": 192,
 					"__worldY": 224
+				},
+				{
+					"__identifier": "Mushroom",
+					"__grid": [22,15],
+					"__pivot": [0,0],
+					"__tags": [],
+					"__tile": { "tilesetUid": 90, "x": 224, "y": 800, "w": 16, "h": 16 },
+					"__smartColor": "#BE4A2F",
+					"iid": "24b5f8b0-6fc0-11f1-aaa3-c1887faa79a3",
+					"width": 16,
+					"height": 16,
+					"defUid": 260,
+					"px": [352,240],
+					"fieldInstances": [
+						{ "__identifier": "patrolStart", "__type": "Point", "__value": { "cx": 23, "cy": 15 }, "__tile": null, "defUid": 261, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["23,15"]
+						}] },
+						{ "__identifier": "patrolEnd", "__type": "Point", "__value": { "cx": 22, "cy": 15 }, "__tile": null, "defUid": 262, "realEditorValues": [{
+							"id": "V_String",
+							"params": ["22,15"]
+						}] }
+					],
+					"__worldX": 352,
+					"__worldY": 240
 				}
 			]
 		},

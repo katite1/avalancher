@@ -137,13 +137,15 @@ function EntityManager:getClosest(x, y, class)
     return closestEntity
 end
 
+---@generic T
 ---@param entity Entity
----@return Entity[]
-function EntityManager:getOverlapping(entity)
+---@param class T
+---@return T[] | {}
+function EntityManager:getOverlapping(entity, class)
     local entityCollisionArea = entity:getCollisionArea()
     local entities = {}
     for _, otherEntity in pairs(self.entities) do
-        if entity ~= otherEntity then
+        if entity ~= otherEntity and O.isInstance(otherEntity, class) then
             if self.world.collisionManager:AABB(
                     entityCollisionArea,
                     otherEntity:getCollisionArea()
