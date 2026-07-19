@@ -1,6 +1,7 @@
 local PhysicsEntity = require("game.entities.base.physics-entity")
 local FSM = require("core.fsm")
 local FSMState = require("core.fsm-state")
+local Timer = require("core.timer")
 
 ---@class Mushroom: PhysicsEntity
 ---@field fsm FSM
@@ -9,6 +10,7 @@ local FSMState = require("core.fsm-state")
 ---@field patrolEnd {x: number, y: number}
 ---@field sprite love.Image
 ---@field patrolState FSMState
+---@field patrolWaitTimer Timer
 local Mushroom = {}
 Mushroom.__index = Mushroom
 setmetatable(Mushroom, PhysicsEntity)
@@ -28,7 +30,9 @@ function Mushroom:new(world)
     t.patrolEnd = { x = 0, y = 0 }
     t.fsm = FSM:new(t)
     t.patrolState = FSMState:new(t)
-    t.patrolState.update = Mushroom.patrolState.update
+    setmetatable(t.patrolState, { __index = Mushroom.patrolState })
+    t.patrolWaitState = FSMState:new(t)
+    setmetatable(t.patrolWaitState, { __index = Mushroom.patrolWaitState })
     t.fsm:gotoState(t.patrolState)
     return t
 end
@@ -44,10 +48,8 @@ end
 
 function Mushroom.deserializeLdtk(ldtkEntity, world)
     local mushroom = Mushroom:new(world)
-    print("epic sex")
     for _, field in ipairs(ldtkEntity.fieldInstances) do
         if field.__identifier == "patrolStart" then
-            print("epic sex")
             mushroom.patrolStart = { x = field.__value.cx * 16, y = field.__value.cy * 16 }
         end
         if field.__identifier == "patrolEnd" then
@@ -60,22 +62,44 @@ end
 
 ---@diagnostic disable-next-line: missing-fields
 Mushroom.patrolState = {}
-
 function Mushroom.patrolState:update()
     local mushroom = self.context
     ---@cast mushroom Mushroom
-    if math.abs(mushroom.x - mushroom.patrolStart.x) < 4 then
-        mushroom.target = mushroom.patrolEnd
-    end
-    if math.abs(mushroom.x - mushroom.patrolEnd.x) < 4 then
-        mushroom.target = mushroom.patrolStart
-    end
     if mushroom.x > mushroom.target.x then
         mushroom:walkLeft()
     end
     if mushroom.x < mushroom.target.x then
         mushroom:walkRight()
     end
+
+    if math.abs(mushroom.x - mushroom.target.x) < 4 then
+        if mushroom.target.x == mushroom.patrolStart.x then
+            mushroom.target = mushroom.patrolEnd
+        else
+            mushroom.target = mushroom.patrolStart
+        end
+
+        mushroom.fsm:gotoState(mushroom.patrolWaitState)
+    end
+end
+
+---@diagnostic disable-next-line: missing-fields
+Mushroom.patrolWaitState = {}
+function Mushroom.patrolWaitState:enter()
+    local mushroom = self.context
+    ---@cast mushroom Mushroom
+
+    self.jumpTimer = Timer:new(50, function()
+        mushroom:jump()
+    end)
+    self.waitTimer = Timer:new(100, function()
+        mushroom.fsm:gotoState(mushroom.patrolState)
+    end)
+end
+
+function Mushroom.patrolWaitState:update()
+    self.waitTimer:update()
+    self.jumpTimer:update()
 end
 
 function Mushroom:update()

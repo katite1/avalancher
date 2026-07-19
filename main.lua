@@ -14,7 +14,7 @@ local MapLoader = require("core.map.map-loader")
 local Camera = require("core.camera")
 local World = require("game.world")
 local Player = require("game.entities.player")
-local Inventory = require("game.inventory")
+local Timer = require("core.timer")
 
 local function init()
 	local font = love.graphics.newFont("assets/font/monogram.ttf", 16)
@@ -89,7 +89,6 @@ psystem:setLinearAcceleration(-3, -10, 3, 10) -- Random movement in all directio
 psystem:setEmissionArea("uniform", SCREEN.WIDTH, SCREEN.HEIGHT)
 psystem:setSpeed(100, 160)
 psystem:setRotation(0, 2 * math.pi)
-
 
 
 function love.update(dt)

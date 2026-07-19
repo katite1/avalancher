@@ -41,12 +41,12 @@ function Npc:serialize()
 end
 
 ---@param serializedNpc SerializedNpc
+---@param world World
 ---@return Npc
-function Npc.deserialize(serializedNpc)
-    local npc = Entity.deserialize(serializedNpc)
+function Npc.deserialize(serializedNpc, world)
+    local npc = Entity.deserialize(serializedNpc, world)
     setmetatable(npc, Npc)
     ---@cast npc Npc
-    print(serializedNpc.name)
     local template = NpcTemplates[serializedNpc.name]
     npc.name = template.name
     npc.sprite = template.sprite
