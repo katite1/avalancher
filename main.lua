@@ -125,7 +125,6 @@ function love.update(dt)
 	end
 
 	D:clear()
-	D:write(1 / love.timer.getDelta())
 
 	local iterations = math.floor(TICK.current)
 	if TICK.current >= 1 then

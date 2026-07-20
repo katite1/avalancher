@@ -14,6 +14,7 @@ local Entity = require("game.entities.base.entity")
 ---@field jumpHoldCurrentFrame number
 ---@field isJumping boolean
 ---@field maxFallSpeed number
+---@field facingLeft boolean
 local PhysicsEntity = {}
 PhysicsEntity.__index = PhysicsEntity
 setmetatable(PhysicsEntity, Entity)
@@ -51,6 +52,7 @@ function PhysicsEntity:new(world)
     t.jumpHoldCurrentFrame = 0
     t.jumpHoldMaxFrames = 8
     t.maxFallSpeed = 10
+    t.facingLeft = false
     return t
 end
 
@@ -151,10 +153,12 @@ end
 
 function PhysicsEntity:walkLeft()
     self.vx = self.vx - self.walkSpeed
+    self.facingLeft = true
 end
 
 function PhysicsEntity:walkRight()
     self.vx = self.vx + self.walkSpeed
+    self.facingLeft = false
 end
 
 function PhysicsEntity:moveX(amount)

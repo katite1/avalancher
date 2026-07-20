@@ -2,23 +2,22 @@
 ---@field currentFrame integer
 ---@field frames integer
 ---@field fn any
----@field args any
 ---@field expired boolean
 ---@field running boolean
+---@field loop boolean
 local Timer = {}
 Timer.__index = Timer
 
 ---@param frames integer
 ---@param fn function|nil
----@param args any
 ---@return Timer
-function Timer:new(frames, fn, args)
+function Timer:new(frames, fn, loop)
     local t = setmetatable({}, self)
     ---@cast t Timer
     t.frames = frames
     t.currentFrame = 0
     t.fn = fn
-    t.args = args
+    t.loop = loop or false
     t.expired = false
     t.running = true
     return t
@@ -31,7 +30,11 @@ function Timer:update()
     self.currentFrame = self.currentFrame + 1
     if self.currentFrame >= self.frames then
         if self.fn then
-            self.fn(self.args)
+            self.fn()
+        end
+        if self.loop then
+            self.currentFrame = 1
+            return
         end
         self.expired = true
         self.running = false
