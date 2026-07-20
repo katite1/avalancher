@@ -6,6 +6,8 @@ function patrolWaitState:enter()
     local mushroom = self.context
     ---@cast mushroom Mushroom
 
+    mushroom.sprite = mushroom.idleSprite
+
     self.jumpTimer = Timer:new(50, function()
         mushroom:jump()
     end)
@@ -20,8 +22,12 @@ function patrolWaitState:update()
 end
 
 function patrolWaitState:exit()
+    local mushroom = self.context
+    ---@cast mushroom Mushroom
+
     self.waitTimer:stop()
     self.jumpTimer:stop()
+    mushroom.sprite = mushroom.patrolSprite
     return true
 end
 

@@ -29,6 +29,10 @@ function Sprite:new(image, frameWidth, frameHeight, animationSpeed)
     t.currentFrame = 1
     t.totalFrames = #t.quads
     t.flipX = false
+    if animationSpeed == 0 then
+        t.timer = nil
+        return t
+    end
     t.timer = Timer:new(animationSpeed, function()
         t.currentFrame = t.currentFrame + 1
         if t.currentFrame > t.totalFrames then
@@ -52,6 +56,9 @@ function Sprite:makeQuads()
 end
 
 function Sprite:update()
+    if self.animationSpeed == 0 then
+        return
+    end
     self.timer:update()
 end
 

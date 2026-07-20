@@ -12,6 +12,9 @@ local Sprite = require("game.sprite")
 ---@field patrolStart {x: number, y: number}
 ---@field patrolEnd {x: number, y: number}
 ---@field sprite Sprite
+---@field patrolSprite Sprite
+---@field stompedSprite Sprite
+---@field idleSprite Sprite
 ---@field patrolState FSMState
 ---@field patrolWaitState FSMState
 ---@field stompedState FSMState
@@ -30,17 +33,14 @@ function Mushroom:new(world)
     ---@cast t Mushroom
     t.type = "mushroom"
     t.bb = { x = 2, y = 4, w = 12, h = 12 }
-    t.sprite = Sprite:new(SPRITES.MUSHROOM_WALK, 16, 16, 6)
+    t.patrolSprite = Sprite:new(SPRITES.MUSHROOM_WALK, 16, 16, 6)
+    t.stompedSprite = Sprite:new(SPRITES.MUSHROOM_STOMPED, 16, 16, 0)
+    t.idleSprite = Sprite:new(SPRITES.MUSHROOM_IDLE, 16, 16, 18)
+    t.sprite = t.patrolSprite
     t.patrolStart = { x = 0, y = 0 }
     t.patrolEnd = { x = 0, y = 0 }
     t.walkSpeed = 0.35
     t.fsm = FSM:new(t)
-    t.patrolState = FSMState:new(t)
-    -- setmetatable(t.patrolState, { __index = Mushroom.patrolState })
-    -- t.patrolWaitState = FSMState:new(t)
-    -- setmetatable(t.patrolWaitState, { __index = Mushroom.patrolWaitState })
-    -- t.stompedState = FSMState:new(t)
-    -- setmetatable(t.stompedState, { __index = Mushroom.stompedState })
     t.patrolState = FSMState:new(t)
     setmetatable(t.patrolState, { __index = PatrolState })
     t.patrolWaitState = FSMState:new(t)

@@ -6,7 +6,7 @@ function stompedState:enter(previousState)
     local mushroom = self.context
     ---@cast mushroom Mushroom
 
-    -- mushroom.sprite = SPRITES.MUSHROOM_STOMPED
+    mushroom.sprite = mushroom.stompedSprite
     if previousState then
         self.unstompTimer = Timer:new(120, function()
             mushroom.fsm:gotoState(previousState)
@@ -21,7 +21,7 @@ end
 function stompedState:exit()
     ---@type Mushroom
     local mushroom = self.context
-    -- mushroom.sprite = SPRITES.MUSHROOM
+    mushroom.sprite = mushroom.patrolSprite
 
     self.unstompTimer:stop()
     return true
