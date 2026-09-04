@@ -1,6 +1,8 @@
 local FSMState        = require("core.fsm-state")
 local Panel           = require("game.ui.panel")
 
+---@alias Dialogue string[]
+
 ---@class DialogueState: FSMState
 ---@field progress integer
 ---@field previousState FSMState

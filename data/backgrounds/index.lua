@@ -1,8 +1,8 @@
----@alias BackgroundMap {[string]: BackgroundStruct}
+---@alias BackgroundIndex {[string]: BackgroundStruct}
 
----@type BackgroundMap
-local BACKGROUND_MAP = {
+---@type BackgroundIndex
+local BACKGROUND_INDEX = {
     Plains = require("data.backgrounds.plains")
 }
 
-return BACKGROUND_MAP
+return BACKGROUND_INDEX

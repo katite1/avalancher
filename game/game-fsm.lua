@@ -52,7 +52,6 @@ function GameFSM:playStateUpdate()
         if npc then
             if world.collisionManager:areOverlapping(player, npc) then
                 if Buttons.action.justPressed then
-                    -- t:gotoState(t.dialogueState, DialogueItems[npc.dialogueReference])
                     world.fsm:gotoState(world.fsm.dialogueState, npc.dialogue())
                 end
             end
