@@ -32,7 +32,10 @@ function EntityManager.deserialize(data, world)
     local entityManager = EntityManager:new(world)
     for _, entity in ipairs(data.entities) do
         if ENTITY_TYPE[entity.type] then
-            entityManager:add(ENTITY_TYPE[entity.type].deserialize(entity, world))
+            local class = ENTITY_TYPE[entity.type]
+            local e = class:new(entityManager.world)
+            e:applyDeserialize(entity)
+            entityManager:add(e)
         end
     end
     return entityManager

@@ -63,7 +63,6 @@ end)
 
 local camera = Camera:new()
 local world = World:new()
-world.background:register("Plains", require("data.backgrounds.plains"))
 
 local mapLoader = MapLoader:new(
 	"assets/maps/",
@@ -95,6 +94,7 @@ psystem:setRotation(0, 2 * math.pi)
 
 
 function love.update(dt)
+	Inspect({ sad = "sasda" })
 	require("lib.lurker").update()
 	psystem:update(dt)
 	input:update()
@@ -140,8 +140,6 @@ function love.update(dt)
 			camera.y = players[1].y - SCREEN.HEIGHT / 2
 			camera.x = M.clamp(camera.x, 0, world.tileMap.width - SCREEN.WIDTH)
 			camera.y = M.clamp(camera.y, 0, world.tileMap.height - SCREEN.HEIGHT)
-			world.background.parallaxX = -camera.x
-			world.background.parallaxY = -camera.y
 		end
 	end
 	input:updateEnd()
@@ -155,7 +153,7 @@ function love.draw()
 	t = t + 1
 	-- love.graphics.setShader(shader)
 	Draw.start()
-	world.background:draw()
+	world.background:draw(-camera.x, -camera.y)
 	camera:drawStart()
 	love.graphics.draw(psystem, 0, SCREEN.HEIGHT / 2)
 	world.tileMap:draw()

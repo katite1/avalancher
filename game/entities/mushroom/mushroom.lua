@@ -23,8 +23,9 @@ local Mushroom = {}
 Mushroom.__index = Mushroom
 setmetatable(Mushroom, PhysicsEntity)
 
-
 ---@class SerializedMushroom : SerializedPhysicsEntity
+---@field patrolStart {x: number, y: number}
+---@field patrolEnd {x: number, y: number}
 
 ---@param world World
 ---@return Mushroom
@@ -58,6 +59,13 @@ function Mushroom.deserialize(data)
     mushroom.type = "mushroom"
     mushroom.sprite = SPRITES.MUSHROOM
     return mushroom
+end
+
+---@param data SerializedMushroom
+function Mushroom:applyDeserialize(data)
+    PhysicsEntity.applyDeserialize(self, data)
+    self.patrolStart = data.patrolStart
+    self.patrolStart = data.patrolEnd
 end
 
 function Mushroom.deserializeLdtk(ldtkEntity, world)

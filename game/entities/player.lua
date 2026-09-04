@@ -29,6 +29,11 @@ function Player.deserialize(data, world)
     return player
 end
 
+---@param data table
+function Player:applyDeserialize(data)
+    PhysicsEntity.applyDeserialize(self, data)
+end
+
 function Player:update()
     PhysicsEntity.update(self)
     if Buttons.left.pressed then

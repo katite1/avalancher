@@ -92,6 +92,21 @@ function PhysicsEntity.deserialize(data, world)
     return entity
 end
 
+---@param data SerializedPhysicsEntity
+function PhysicsEntity:applyDeserialize(data)
+    Entity.applyDeserialize(self, data)
+    self.vx, self.vy = data.vx, data.vy
+    self.xRemainder, self.yRemainder = data.xRemainder, data.yRemainder
+    self.walkSpeed = data.walkSpeed
+    self.friction = data.friction
+    self.jumpStrength = data.jumpStrength
+    self.jumpHoldStrength = data.jumpHoldStrength
+    self.jumpHoldMaxFrames = data.jumpHoldMaxFrames
+    self.jumpHoldCurrentFrame = data.jumpHoldCurrentFrame
+    self.isJumping = data.isJumping
+    self.maxFallSpeed = data.maxFallSpeed
+end
+
 function PhysicsEntity:update()
     Entity.update(self)
 

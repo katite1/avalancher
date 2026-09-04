@@ -1,18 +1,13 @@
-Reorganize file structure as we have a shit fuck ton of files at this point
+priority
 
-# game
+- make serialization not ass - object has "serializable" table that gets populated based on a config and then we do some dynamic type checking shenanigans to (de)serialize each key
+- write some kind of basic doc for the structure of the project
+- make tile size a global const
+- look through the code and remember what is doodoo
+- maybe an actual class system (maybe classic or another lib that supports luals)
+- might wanna more some more stuff to the data approach as it is kinda nice
+- more config oriented might also help with lurker hot reloading
 
-- ui
-  -- element
-  -- panel
-  -- text
+would be cool at some point
 
-- entities
-  -- base
-  --- entity
-  --- physics-entity
-  -- player
-  -- portal
-  -- sign
-
--
+- swinging platform (need to add some kind of carrying mechanic)

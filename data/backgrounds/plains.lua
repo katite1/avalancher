@@ -1,4 +1,4 @@
----@type BackgroundData
+---@type BackgroundStruct
 local background = {
     fillColor = { 0.3, 0.3, 0.5 },
     opacity = 0.7,

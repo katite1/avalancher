@@ -8,9 +8,9 @@ local Npc = require("game.entities.base.npc")
 local ENTITY_TYPE = {
     player = Player,
     mushroom = Mushroom,
-    portal = Portal,
-    item = Item,
-    npc = Npc,
+    -- portal = Portal,
+    -- item = Item,
+    -- npc = Npc,
 }
 
 return ENTITY_TYPE

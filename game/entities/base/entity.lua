@@ -69,6 +69,15 @@ function Entity.deserialize(data, world)
     return entity
 end
 
+---@param data SerializedEntity
+function Entity:applyDeserialize(data)
+    self.x, self.y = data.x, data.y
+    self.w, self.h = data.w, data.h
+    self.bb = data.bb
+    self.dialogueReference = data.dialogueReference
+    self.type = data.type
+end
+
 function Entity:update()
 end
 

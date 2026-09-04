@@ -9,3 +9,5 @@ we do need some sort of persistence for things in levels but we will get to that
 so the bunny is like "please i need this" so you go searching for carrots. maybe you find like the green carrot ends sticking out of the ground and you use the action button to pull them out.
 there needs to be some way for you to see what you have in your inventory
 would be neat if you could drop and throw any item in your inventory but what if you throw it somewhere where you can't reach? then i guess there need to be fail-safes as in infinite sources of the items, but that seems very lame.
+
+ok i think i want some kind of adventure, like smb3 style but a bit more open ended? i don't know yet
