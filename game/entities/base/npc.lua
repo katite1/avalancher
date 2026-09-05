@@ -1,5 +1,5 @@
 local Entity = require("game.entities.base.entity")
-local NpcTemplates = require("data.npcs.npc-templates")
+local NPC_INDEX = require("data.npcs.index")
 
 ---@class NpcTemplate
 ---@field name string
@@ -18,9 +18,10 @@ setmetatable(Npc, Entity)
 ---@field name string
 
 ---@param template NpcTemplate
+---@param world World
 ---@return Npc
-function Npc:new(template)
-    local t = setmetatable(Entity:new(), self)
+function Npc:new(template, world)
+    local t = setmetatable(Entity:new(world), self) -- TODO: check this shit out
     t.bb = { x = 2, y = 4, w = 12, h = 12 }
     ---@cast t Npc
     t.type = "npc"
@@ -47,7 +48,7 @@ function Npc.deserialize(serializedNpc, world)
     local npc = Entity.deserialize(serializedNpc, world)
     setmetatable(npc, Npc)
     ---@cast npc Npc
-    local template = NpcTemplates[serializedNpc.name]
+    local template = NPC_INDEX[serializedNpc.name]
     npc.name = template.name
     npc.sprite = template.sprite
     npc.dialogue = function()
@@ -57,15 +58,17 @@ function Npc.deserialize(serializedNpc, world)
     return npc
 end
 
-function Npc.deserializeLdtk(ldtkEntity)
+---@param ldtkEntity table
+---@param world World
+---@return Npc
+function Npc.deserializeLdtk(ldtkEntity, world)
     local npcType = nil
     for _, field in ipairs(ldtkEntity.fieldInstances) do
         if field.__identifier == "npc" then
             npcType = string.lower(field.__value)
         end
     end
-    local npc = Npc:new(NpcTemplates[npcType])
-    -- npc.dialogueReference = dialogueReference
+    local npc = Npc:new(NPC_INDEX[npcType], world)
     return npc
 end
 

@@ -15,7 +15,7 @@ function Player:new(world)
     local t = setmetatable(PhysicsEntity:new(world), self)
     t.type = "player"
     t.bb = { x = 2, y = 4, w = 12, h = 12 }
-    t.sprite = SPRITES.PLAYER
+    t.sprite = IMAGES.SPRITES.PLAYER
     ---@cast t Player
     return t
 end
@@ -25,7 +25,7 @@ function Player.deserialize(data, world)
     setmetatable(player, Player)
     ---@cast player Player
     player.type = "player"
-    player.sprite = SPRITES.PLAYER
+    player.sprite = IMAGES.SPRITES.PLAYER
     return player
 end
 

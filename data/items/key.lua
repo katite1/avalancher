@@ -1,7 +1,7 @@
 ---@type ItemTemplate
 local key = {
     name = "key",
-    sprite = SPRITES.ITEMS.KEY
+    sprite = IMAGES.SPRITES.ITEMS.KEY
 }
 
 return key

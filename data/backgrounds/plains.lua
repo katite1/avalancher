@@ -6,19 +6,19 @@ local background = {
     -- opacity = 1,
     static = {
         {
-            image = BACKGROUNDS.PLAINS.BASE,
+            image = IMAGES.BACKGROUNDS.PLAINS.BASE,
             repeatX = true,
             repeatY = true
         }
     },
     parallax = {
         {
-            image = BACKGROUNDS.PLAINS.MOUNTAINS,
+            image = IMAGES.BACKGROUNDS.PLAINS.MOUNTAINS,
             scaleX = 0.05,
             scaleY = 0
         },
         {
-            image = BACKGROUNDS.PLAINS.GRASS,
+            image = IMAGES.BACKGROUNDS.PLAINS.GRASS,
             scaleX = 0.1,
             scaleY = 0
         }

@@ -10,7 +10,7 @@ local ENTITY_TYPE = {
     mushroom = Mushroom,
     -- portal = Portal,
     -- item = Item,
-    -- npc = Npc,
+    npc = Npc,
 }
 
 return ENTITY_TYPE

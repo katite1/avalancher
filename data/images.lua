@@ -3,32 +3,33 @@ local Asseter = require("core.asseter")
 love.graphics.setDefaultFilter("nearest", "nearest")
 love.graphics.setLineStyle("rough")
 
+IMAGES = {}
 local spritesAsseter = Asseter:new("assets/sprites/")
-SPRITES = {}
-SPRITES.PLAYER = spritesAsseter:load("player.png")
-SPRITES.MUSHROOM_WALK = spritesAsseter:load("enemies/mushroom/mushroom-walk.png")
-SPRITES.MUSHROOM_IDLE = spritesAsseter:load("enemies/mushroom/mushroom-idle.png")
-SPRITES.MUSHROOM_STOMPED = spritesAsseter:load("enemies/mushroom/mushroom-stomped.png")
-SPRITES.PORTAL = spritesAsseter:load("portal.png")
-SPRITES.SIGN = spritesAsseter:load("sign.png")
-SPRITES.PANEL = spritesAsseter:load("test-9-panel.png")
+IMAGES.SPRITES = {}
+IMAGES.SPRITES.PLAYER = spritesAsseter:load("player.png")
+IMAGES.SPRITES.MUSHROOM_WALK = spritesAsseter:load("enemies/mushroom/mushroom-walk.png")
+IMAGES.SPRITES.MUSHROOM_IDLE = spritesAsseter:load("enemies/mushroom/mushroom-idle.png")
+IMAGES.SPRITES.MUSHROOM_STOMPED = spritesAsseter:load("enemies/mushroom/mushroom-stomped.png")
+IMAGES.SPRITES.PORTAL = spritesAsseter:load("portal.png")
+IMAGES.SPRITES.SIGN = spritesAsseter:load("sign.png")
+IMAGES.SPRITES.PANEL = spritesAsseter:load("test-9-panel.png")
 
 local particleAsseter = Asseter:new("assets/sprites/particles/")
-SPRITES.PARTICLES = {}
-SPRITES.PARTICLES.LEAF = particleAsseter:load("leaf.png")
+IMAGES.SPRITES.PARTICLES = {}
+IMAGES.SPRITES.PARTICLES.LEAF = particleAsseter:load("leaf.png")
 
 local itemAsseter = Asseter:new("assets/sprites/items/")
-SPRITES.ITEMS = {}
-SPRITES.ITEMS.CARROT = itemAsseter:load("carrot.png")
-SPRITES.ITEMS.KEY = itemAsseter:load("key.png")
+IMAGES.SPRITES.ITEMS = {}
+IMAGES.SPRITES.ITEMS.CARROT = itemAsseter:load("carrot.png")
+IMAGES.SPRITES.ITEMS.KEY = itemAsseter:load("key.png")
 
 local npcAsseter = Asseter:new("assets/sprites/npcs/")
-SPRITES.NPCS = {}
-SPRITES.NPCS.BUNNY = npcAsseter:load("bunny/bunny.png")
+IMAGES.SPRITES.NPCS = {}
+IMAGES.SPRITES.NPCS.BUNNY = npcAsseter:load("bunny/bunny.png")
 
 local backgroundsAsseter = Asseter:new("assets/backgrounds/")
-BACKGROUNDS = {}
-BACKGROUNDS.PLAINS = {}
-BACKGROUNDS.PLAINS.BASE = backgroundsAsseter:load("plains/plains-base.png", true)
-BACKGROUNDS.PLAINS.MOUNTAINS = backgroundsAsseter:load("plains/mountains.png", true)
-BACKGROUNDS.PLAINS.GRASS = backgroundsAsseter:load("plains/grass.png", true)
+IMAGES.BACKGROUNDS = {}
+IMAGES.BACKGROUNDS.PLAINS = {}
+IMAGES.BACKGROUNDS.PLAINS.BASE = backgroundsAsseter:load("plains/plains-base.png", true)
+IMAGES.BACKGROUNDS.PLAINS.MOUNTAINS = backgroundsAsseter:load("plains/mountains.png", true)
+IMAGES.BACKGROUNDS.PLAINS.GRASS = backgroundsAsseter:load("plains/grass.png", true)

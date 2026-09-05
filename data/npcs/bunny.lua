@@ -1,7 +1,7 @@
 ---@type NpcTemplate
 local bunny = {
     name = "bunny",
-    sprite = SPRITES.NPCS.BUNNY,
+    sprite = IMAGES.SPRITES.NPCS.BUNNY,
     dialogue = function(world, self)
         if world.progressEntries.entry.bunny:isCompleted() then
             return { LANG.misterBunny.goAway }

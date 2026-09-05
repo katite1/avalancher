@@ -15,7 +15,6 @@ local MapLoader = require("core.map.map-loader")
 local Camera = require("core.camera")
 local World = require("game.world")
 local Player = require("game.entities.player")
-local Timer = require("core.timer")
 
 local function init()
 	local font = love.graphics.newFont("assets/font/monogram.ttf", 16)
@@ -82,7 +81,7 @@ local function restart()
 end
 
 
-local psystem = love.graphics.newParticleSystem(SPRITES.PARTICLES.LEAF, 128)
+local psystem = love.graphics.newParticleSystem(IMAGES.SPRITES.PARTICLES.LEAF, 128)
 psystem:setParticleLifetime(10, 12) -- Particles live at least 2s and at most 5s.
 psystem:setEmissionRate(5)
 psystem:setSizeVariation(1)

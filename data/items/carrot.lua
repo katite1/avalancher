@@ -1,7 +1,7 @@
 ---@type ItemTemplate
 local carrot = {
     name = "carrot",
-    sprite = SPRITES.ITEMS.CARROT
+    sprite = IMAGES.SPRITES.ITEMS.CARROT
 }
 
 return carrot

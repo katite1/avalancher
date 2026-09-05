@@ -13,7 +13,7 @@ function Portal:new(world)
     local t = setmetatable(Entity:new(world), self)
     ---@cast t Portal
     t.bb = { x = 0, y = 8, w = 32, h = 8 }
-    t.sprite = SPRITES.PORTAL
+    t.sprite = IMAGES.SPRITES.PORTAL
     t.target = ""
     return t
 end

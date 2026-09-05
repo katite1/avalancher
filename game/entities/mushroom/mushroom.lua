@@ -34,9 +34,9 @@ function Mushroom:new(world)
     ---@cast t Mushroom
     t.type = "mushroom"
     t.bb = { x = 2, y = 4, w = 12, h = 12 }
-    t.patrolSprite = Sprite:new(SPRITES.MUSHROOM_WALK, 16, 16, 6)
-    t.stompedSprite = Sprite:new(SPRITES.MUSHROOM_STOMPED, 16, 16, 0)
-    t.idleSprite = Sprite:new(SPRITES.MUSHROOM_IDLE, 16, 16, 18)
+    t.patrolSprite = Sprite:new(IMAGES.SPRITES.MUSHROOM_WALK, 16, 16, 6)
+    t.stompedSprite = Sprite:new(IMAGES.SPRITES.MUSHROOM_STOMPED, 16, 16, 0)
+    t.idleSprite = Sprite:new(IMAGES.SPRITES.MUSHROOM_IDLE, 16, 16, 18)
     t.sprite = t.patrolSprite
     t.patrolStart = { x = 0, y = 0 }
     t.patrolEnd = { x = 0, y = 0 }
@@ -57,7 +57,7 @@ function Mushroom.deserialize(data)
     setmetatable(mushroom, Mushroom)
     ---@cast mushroom Mushroom
     mushroom.type = "mushroom"
-    mushroom.sprite = SPRITES.MUSHROOM
+    mushroom.sprite = IMAGES.SPRITES.MUSHROOM
     return mushroom
 end
 

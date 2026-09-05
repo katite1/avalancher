@@ -54,7 +54,6 @@ function EntityManager:makeFromLdtk(entity, ldtkEntity)
         e = entity:new(self.world)
     end
 
-    e.world = self.world
     table.insert(self.entities, e)
 
     return e

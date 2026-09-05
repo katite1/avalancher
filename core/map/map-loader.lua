@@ -30,7 +30,7 @@ function MapLoader:load(mapName)
     if map.fieldInstances then
         for _, fieldInstance in ipairs(map.fieldInstances) do
             if fieldInstance.__identifier == "Background" then
-                self.world.background:set(fieldInstance.__value)
+                self.world.background:set(string.lower(fieldInstance.__value))
             end
         end
     end

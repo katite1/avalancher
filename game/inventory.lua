@@ -10,7 +10,7 @@ Inventory.__index   = Inventory
 
 function Inventory:new()
     local t = setmetatable({}, self)
-    t.inventoryPanel = Panel:new(SPRITES.PANEL, 8)
+    t.inventoryPanel = Panel:new(IMAGES.SPRITES.PANEL, 8)
     t.items = {}
     return t
 end

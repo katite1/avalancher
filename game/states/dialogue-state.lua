@@ -17,7 +17,7 @@ function DialogueState:new(world)
     local t = setmetatable(FSMState:new(world), self)
     t.progress = 1
     t.context = world
-    t.dialoguePanel = Panel:new(SPRITES.PANEL, 8)
+    t.dialoguePanel = Panel:new(IMAGES.SPRITES.PANEL, 8)
     ---@cast t DialogueState
 
     return t
