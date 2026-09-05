@@ -159,6 +159,20 @@ function EntityManager:getOverlapping(entity, class)
     return entities
 end
 
+---@generic T
+---@param entity Entity
+---@param class T
+---@return T | nil
+function EntityManager:getClosestOverlapping(entity, class)
+    local otherEntity = self:getClosest(entity.x, entity.y, class)
+    if otherEntity == nil then
+        return nil
+    end
+    if self.world.collisionManager:areOverlapping(entity, otherEntity) then
+        return otherEntity
+    end
+end
+
 ---@param entity Entity
 function EntityManager:delete(entity)
     entity.queuedDeletion = true

@@ -48,29 +48,15 @@ function GameFSM:playStateUpdate()
 
     local player = world.entityManager:getFirst(Player)
     if player then
-        local npc = world.entityManager:getClosest(player.x, player.y, Npc)
-        if npc then
-            if world.collisionManager:areOverlapping(player, npc) then
-                if Buttons.action.justPressed then
-                    world.fsm:gotoState(world.fsm.dialogueState, npc.dialogue())
-                end
-            end
-        end
-        local portal = world.fsm.context.entityManager:getClosest(player.x, player.y, Portal)
-        if portal then
-            if world.fsm.context.collisionManager:areOverlapping(player, portal) then
-                if Buttons.action.justPressed then
-                    world.fsm.context:travel(portal.target)
-                end
-            end
-        end
-        local item = world.fsm.context.entityManager:getClosest(player.x, player.y, Item)
-        if item then
-            if world.fsm.context.collisionManager:areOverlapping(player, item) then
-                if Buttons.action.justPressed then
-                    world.fsm.context:pickUp(item)
-                end
-            end
+        if Buttons.action.justPressed then
+            local npc = world.entityManager:getClosestOverlapping(player, Npc)
+            if npc then world.fsm:gotoState(world.fsm.dialogueState, npc.dialogue()) end
+
+            local portal = world.entityManager:getClosestOverlapping(player, Portal)
+            if portal then world.fsm.context:travel(portal.target) end
+
+            local item = world.fsm.context.entityManager:getClosestOverlapping(player, Item)
+            if item then world.fsm.context:pickUp(item) end
         end
     end
 end
