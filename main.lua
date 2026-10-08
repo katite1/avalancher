@@ -1,3 +1,5 @@
+Debug = require("core.debug")
+D = Debug:new()
 F = require("util.f")
 M = require("util.m")
 O = require("util.o")
@@ -5,14 +7,15 @@ S = require("util.s")
 Inspect = require("lib.inspect")
 require("data.images")
 LANG = require("assets.i18n.en")
+
+local CameraClass = require("core.camera")
+Camera = CameraClass:new()
+
 ENTITY_TYPE = require("game.entities.base.entity-type")
-Debug = require("core.debug")
-D = Debug:new()
 local Draw = require("core.draw")
 local Input = require("core.input")
 local InputButton = require("core.input-button")
 local MapLoader = require("core.map.map-loader")
-local Camera = require("core.camera")
 local World = require("game.world")
 local Player = require("game.entities.player")
 
@@ -51,6 +54,8 @@ Buttons = {
 	debugSpeedUp = InputButton:new({ "2" }),
 	debugSpeedReset = InputButton:new({ "3" }),
 	debugSpeedStop = InputButton:new({ "4" }),
+	debugScrollUp = InputButton:new({ "pageup" }),
+	debugScrollDown = InputButton:new({ "pagedown" }),
 	save = InputButton:new({ "-" }),
 	load = InputButton:new({ "=" })
 }
@@ -59,7 +64,6 @@ F.forEach(Buttons, function(_, button)
 	input:register(button)
 end)
 
-local camera = Camera:new()
 local world = World:new()
 
 local mapLoader = MapLoader:new(
@@ -70,7 +74,7 @@ local mapLoader = MapLoader:new(
 world.mapLoader = mapLoader
 mapLoader:load("maps/Plains_1.ldtkl")
 local function restart()
-	camera = Camera:new()
+	Camera = Camera:new()
 	world = World:new()
 	mapLoader = MapLoader:new(
 		"assets/maps/",
@@ -134,10 +138,10 @@ function love.update(dt)
 
 		local players = world.entityManager:getAll(Player)
 		if players then
-			camera.x = players[1].x - SCREEN.WIDTH / 2
-			camera.y = players[1].y - SCREEN.HEIGHT / 2
-			camera.x = M.clamp(camera.x, 0, world.tileMap.width - SCREEN.WIDTH)
-			camera.y = M.clamp(camera.y, 0, world.tileMap.height - SCREEN.HEIGHT)
+			Camera.x = players[1].x - SCREEN.WIDTH / 2
+			Camera.y = players[1].y - SCREEN.HEIGHT / 2
+			Camera.x = M.clamp(Camera.x, 0, world.tileMap.width - SCREEN.WIDTH)
+			Camera.y = M.clamp(Camera.y, 0, world.tileMap.height - SCREEN.HEIGHT)
 		end
 	end
 	input:updateEnd()
@@ -151,13 +155,13 @@ function love.draw()
 	t = t + 1
 	-- love.graphics.setShader(shader)
 	Draw.start()
-	world.background:draw(-camera.x, -camera.y)
-	camera:drawStart()
+	world.background:draw(-Camera.x, -Camera.y)
+	Camera:drawStart()
 	love.graphics.draw(psystem, 0, SCREEN.HEIGHT / 2)
 	world.tileMap:draw()
 	world.entityManager:draw()
 	-- world.entityManager:drawCollisionAreas()
-	camera:drawEnd()
+	Camera:drawEnd()
 	love.graphics.push("all")
 	love.graphics.setColor(1, 0.5, 0.55, 0.05)
 	love.graphics.rectangle("fill", 0, 0, SCREEN.WIDTH, SCREEN.HEIGHT)

@@ -1,30 +1,29 @@
+local FSMState = require("core.fsm-state")
 local Timer = require("core.timer")
 
----@class stompedState : FSMState
-local stompedState = {}
-function stompedState:enter(previousState)
+---@class StompedState : FSMState
+local StompedState = setmetatable({}, { __index = FSMState })
+StompedState.__index = StompedState
+
+function StompedState:enter(previousState)
     local mushroom = self.context
     ---@cast mushroom Mushroom
 
     mushroom.sprite = mushroom.stompedSprite
     if previousState then
-        self.unstompTimer = Timer:new(120, function()
+        mushroom.timers.unstomp = Timer:new(120, function()
             mushroom.fsm:gotoState(previousState)
         end)
     end
 end
 
-function stompedState:update()
-    self.unstompTimer:update()
-end
-
-function stompedState:exit()
+function StompedState:exit()
     ---@type Mushroom
     local mushroom = self.context
     mushroom.sprite = mushroom.patrolSprite
 
-    self.unstompTimer:stop()
+    mushroom.timers.unstomp:stop()
     return true
 end
 
-return stompedState
+return StompedState

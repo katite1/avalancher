@@ -5,7 +5,6 @@
 ---@field enter fun(self: FSMState, previousState: FSMState | nil, ...) | nil
 ---@field exit (fun(self: FSMState, nextState: FSMState) : boolean) | nil
 local FSMState = {}
-
 FSMState.__index = FSMState
 
 ---@param context table | nil

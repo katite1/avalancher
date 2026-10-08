@@ -20,18 +20,9 @@ function Player:new(world)
     return t
 end
 
-function Player.deserialize(data, world)
-    local player = PhysicsEntity.deserialize(data, world)
-    setmetatable(player, Player)
-    ---@cast player Player
-    player.type = "player"
-    player.sprite = IMAGES.SPRITES.PLAYER
-    return player
-end
-
 ---@param data table
-function Player:applyDeserialize(data)
-    PhysicsEntity.applyDeserialize(self, data)
+function Player:applyDeserializedData(data)
+    PhysicsEntity.applyDeserializedData(self, data)
 end
 
 function Player:update()

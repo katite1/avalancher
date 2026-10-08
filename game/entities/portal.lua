@@ -19,16 +19,12 @@ function Portal:new(world)
 end
 
 ---@param ldtkEntity table
----@param world World
----@return Portal
-function Portal.deserializeLdtk(ldtkEntity, world)
-    local portal = Portal:new(world)
+function Portal:applyLdtkData(ldtkEntity)
     for _, field in ipairs(ldtkEntity.fieldInstances) do
         if field.__identifier == "level" then
-            portal.target = field.__value
+            self.target = field.__value
         end
     end
-    return portal
 end
 
 function Portal:draw()

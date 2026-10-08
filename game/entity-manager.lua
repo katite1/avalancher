@@ -34,7 +34,7 @@ function EntityManager.deserialize(data, world)
         if ENTITY_TYPE[entity.type] then
             local class = ENTITY_TYPE[entity.type]
             local e = class:new(entityManager.world)
-            e:applyDeserialize(entity)
+            e:applyDeserializedData(entity)
             entityManager:add(e)
         end
     end
@@ -43,15 +43,13 @@ end
 
 ---@generic T : Entity
 ---@param entity T
----@param ldtkEntity table | nil
+---@param ldtkData table | nil
 ---@return T
-function EntityManager:makeFromLdtk(entity, ldtkEntity)
+function EntityManager:makeFromLdtk(entity, ldtkData)
     ---@cast entity Entity
-    local e = nil
-    if ldtkEntity and entity.deserializeLdtk then
-        e = entity.deserializeLdtk(ldtkEntity, self.world)
-    else
-        e = entity:new(self.world)
+    local e = entity:new(self.world)
+    if ldtkData and entity.applyLdtkData then
+        e:applyLdtkData(ldtkData)
     end
 
     table.insert(self.entities, e)

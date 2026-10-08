@@ -1,34 +1,26 @@
-local Timer = require("core.timer")
+local FSMState = require("core.fsm-state")
 
 ---@class PatrolWaitState : FSMState
-local patrolWaitState = {}
-function patrolWaitState:enter()
+local PatrolWaitState = setmetatable({}, { __index = FSMState })
+PatrolWaitState.__index = PatrolWaitState
+
+function PatrolWaitState:enter()
     local mushroom = self.context
     ---@cast mushroom Mushroom
 
     mushroom.sprite = mushroom.idleSprite
 
-    self.jumpTimer = Timer:new(50, function()
-        mushroom:jump()
-    end)
-    self.waitTimer = Timer:new(100, function()
-        mushroom.fsm:gotoState(mushroom.patrolState)
-    end)
+    mushroom.timers.jump:restart()
+    mushroom.timers.wait:restart()
 end
 
-function patrolWaitState:update()
-    self.waitTimer:update()
-    self.jumpTimer:update()
-end
-
-function patrolWaitState:exit()
+function PatrolWaitState:exit()
     local mushroom = self.context
     ---@cast mushroom Mushroom
-
-    self.waitTimer:stop()
-    self.jumpTimer:stop()
+    mushroom.timers.jump:stop()
+    mushroom.timers.wait:stop()
     mushroom.sprite = mushroom.patrolSprite
     return true
 end
 
-return patrolWaitState
+return PatrolWaitState

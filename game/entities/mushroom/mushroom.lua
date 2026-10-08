@@ -5,6 +5,7 @@ local PatrolState = require("game.entities.mushroom.states.patrol")
 local PatrolWaitState = require("game.entities.mushroom.states.patrol-wait")
 local StompedState = require("game.entities.mushroom.states.stomped")
 local Sprite = require("game.sprite")
+local Timer = require("core.timer")
 
 ---@class Mushroom: PhysicsEntity
 ---@field fsm FSM
@@ -21,11 +22,16 @@ local Sprite = require("game.sprite")
 ---@field patrolWaitTimer Timer
 local Mushroom = {}
 Mushroom.__index = Mushroom
+Mushroom.patrolSprite = Sprite:new(IMAGES.SPRITES.MUSHROOM_WALK, 16, 16, 6)
+Mushroom.stompedSprite = Sprite:new(IMAGES.SPRITES.MUSHROOM_STOMPED, 16, 16, 0)
+Mushroom.idleSprite = Sprite:new(IMAGES.SPRITES.MUSHROOM_IDLE, 16, 16, 18)
+
 setmetatable(Mushroom, PhysicsEntity)
 
 ---@class SerializedMushroom : SerializedPhysicsEntity
 ---@field patrolStart {x: number, y: number}
 ---@field patrolEnd {x: number, y: number}
+---@field target {x: number, y: number}
 
 ---@param world World
 ---@return Mushroom
@@ -34,52 +40,58 @@ function Mushroom:new(world)
     ---@cast t Mushroom
     t.type = "mushroom"
     t.bb = { x = 2, y = 4, w = 12, h = 12 }
-    t.patrolSprite = Sprite:new(IMAGES.SPRITES.MUSHROOM_WALK, 16, 16, 6)
-    t.stompedSprite = Sprite:new(IMAGES.SPRITES.MUSHROOM_STOMPED, 16, 16, 0)
-    t.idleSprite = Sprite:new(IMAGES.SPRITES.MUSHROOM_IDLE, 16, 16, 18)
     t.sprite = t.patrolSprite
     t.patrolStart = { x = 0, y = 0 }
     t.patrolEnd = { x = 0, y = 0 }
     t.walkSpeed = 0.35
-    t.fsm = FSM:new(t)
-    t.patrolState = FSMState:new(t)
-    setmetatable(t.patrolState, { __index = PatrolState })
-    t.patrolWaitState = FSMState:new(t)
-    setmetatable(t.patrolWaitState, { __index = PatrolWaitState })
-    t.stompedState = FSMState:new(t)
-    setmetatable(t.stompedState, { __index = StompedState })
+    t.timers.jump = Timer:new(50, function()
+        t:jump()
+    end)
+    t.timers.wait = Timer:new(100, function()
+        t.fsm:gotoState(t.patrolState)
+    end)
+    t.timers.unstomp = Timer:new(120, function()
+    end)
+
+    t.patrolState = PatrolState:new(t)
+    t.patrolWaitState = PatrolWaitState:new(t)
+    t.stompedState = StompedState:new(t)
+    t.fsm:registerState(t.patrolState, "patrol")
+    t.fsm:registerState(t.patrolWaitState, "wait")
+    t.fsm:registerState(t.stompedState, "stomped")
     t.fsm:gotoState(t.patrolState)
     return t
 end
 
-function Mushroom.deserialize(data)
-    local mushroom = PhysicsEntity.deserialize(data)
-    setmetatable(mushroom, Mushroom)
-    ---@cast mushroom Mushroom
-    mushroom.type = "mushroom"
-    mushroom.sprite = IMAGES.SPRITES.MUSHROOM
+---@return SerializedPhysicsEntity
+function Mushroom:serialize()
+    local mushroom = PhysicsEntity.serialize(self)
+    ---@cast mushroom SerializedMushroom
+    mushroom.patrolStart = self.patrolStart
+    mushroom.patrolEnd = self.patrolEnd
+    mushroom.target = self.target
     return mushroom
 end
 
 ---@param data SerializedMushroom
-function Mushroom:applyDeserialize(data)
-    PhysicsEntity.applyDeserialize(self, data)
+function Mushroom:applyDeserializedData(data)
+    PhysicsEntity.applyDeserializedData(self, data)
     self.patrolStart = data.patrolStart
     self.patrolStart = data.patrolEnd
+    self.target = data.target
 end
 
-function Mushroom.deserializeLdtk(ldtkEntity, world)
-    local mushroom = Mushroom:new(world)
-    for _, field in ipairs(ldtkEntity.fieldInstances) do
+---@param ldtkData table
+function Mushroom:applyLdtkData(ldtkData)
+    for _, field in ipairs(ldtkData.fieldInstances) do
         if field.__identifier == "patrolStart" then
-            mushroom.patrolStart = { x = field.__value.cx * 16, y = field.__value.cy * 16 }
+            self.patrolStart = { x = field.__value.cx * 16, y = field.__value.cy * 16 }
         end
         if field.__identifier == "patrolEnd" then
-            mushroom.patrolEnd = { x = field.__value.cx * 16, y = field.__value.cy * 16 }
+            self.patrolEnd = { x = field.__value.cx * 16, y = field.__value.cy * 16 }
         end
     end
-    mushroom.target = mushroom.patrolStart
-    return mushroom
+    self.target = self.patrolStart
 end
 
 function Mushroom:stomp()
@@ -92,7 +104,6 @@ end
 
 function Mushroom:update()
     PhysicsEntity.update(self)
-    self.fsm:update()
     if self.facingLeft then
         self.sprite.flipX = true
     else
@@ -103,6 +114,7 @@ end
 
 function Mushroom:draw()
     self.sprite:draw(self.x, self.y)
+    self:d(self.target, self.x, self.y, self.fsm:getCurrentStateName())
 end
 
 return Mushroom

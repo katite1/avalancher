@@ -1,5 +1,5 @@
 local PhysicsEntity = require("game.entities.base.physics-entity")
-local ItemTemplates = require("data.items.item-templates")
+local ITEM_INDEX = require("data.items.index")
 
 ---@class ItemTemplate
 ---@field sprite love.Image
@@ -16,19 +16,27 @@ setmetatable(Item, PhysicsEntity)
 ---@class SerializedItem : SerializedPhysicsEntity
 ---@field name string
 
----@param template ItemTemplate
 ---@param world World
+---@param template ItemTemplate
 ---@return Item
-function Item:new(template, world)
+function Item:new(world, template)
     local t = setmetatable(PhysicsEntity:new(world), self)
     ---@cast t Item
-
     t.type = "item"
-    t.name = template.name
-    t.sprite = template.sprite
-    t.template = template
+    if template == nil then
+        template = ITEM_INDEX["carrot"] -- TODO: add proper placeholder item for no template
+    end
+
+    t:applyTemplate(template)
 
     return t
+end
+
+---@param template table
+function Item:applyTemplate(template)
+    self.name = template.name
+    self.sprite = template.sprite
+    self.template = template
 end
 
 ---@return SerializedItem
@@ -40,33 +48,25 @@ function Item:serialize()
 end
 
 ---@param serializedItem SerializedItem
----@param world World
 ---@return Item
-function Item.deserialize(serializedItem, world)
-    local item = PhysicsEntity.deserialize(serializedItem, world)
-    setmetatable(item, Item)
-    ---@cast item Item
-    local template = ItemTemplates[serializedItem.name]
-    item.name = template.name
-    item.sprite = template.sprite
-    item.template = template
-
-    return item
+function Item:applyDeserializedData(serializedItem)
+    PhysicsEntity.applyDeserializedData(self, serializedItem)
+    local template = ITEM_INDEX[serializedItem.name]
+    self:applyTemplate(template)
 end
 
 ---@param ldtkEntity table
----@param world World
-function Item.deserializeLdtk(ldtkEntity, world)
-    local type = nil
+function Item:applyLdtkData(ldtkEntity)
+    local template = nil
     for _, field in ipairs(ldtkEntity.fieldInstances) do
         if field.__identifier == "type" then
-            type = string.lower(field.__value)
+            template = string.lower(field.__value)
         end
     end
-    if type == nil then
+    if template == nil then
         error("No item type specified for item in LDtk!")
     end
-    return Item:new(ItemTemplates[type], world)
+    self:applyTemplate(ITEM_INDEX[template])
 end
 
 function Item:draw()

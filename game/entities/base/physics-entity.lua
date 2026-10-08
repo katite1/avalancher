@@ -74,27 +74,8 @@ function PhysicsEntity:serialize()
 end
 
 ---@param data SerializedPhysicsEntity
----@return PhysicsEntity
-function PhysicsEntity.deserialize(data, world)
-    local entity = Entity.deserialize(data, world)
-    setmetatable(entity, PhysicsEntity) -- TODO: there should be a better way to do this
-    ---@cast entity PhysicsEntity
-    entity.vx, entity.vy = data.vx, data.vy
-    entity.xRemainder, entity.yRemainder = data.xRemainder, data.yRemainder
-    entity.walkSpeed = data.walkSpeed
-    entity.friction = data.friction
-    entity.jumpStrength = data.jumpStrength
-    entity.jumpHoldStrength = data.jumpHoldStrength
-    entity.jumpHoldMaxFrames = data.jumpHoldMaxFrames
-    entity.jumpHoldCurrentFrame = data.jumpHoldCurrentFrame
-    entity.isJumping = data.isJumping
-    entity.maxFallSpeed = data.maxFallSpeed
-    return entity
-end
-
----@param data SerializedPhysicsEntity
-function PhysicsEntity:applyDeserialize(data)
-    Entity.applyDeserialize(self, data)
+function PhysicsEntity:applyDeserializedData(data)
+    Entity.applyDeserializedData(self, data)
     self.vx, self.vy = data.vx, data.vy
     self.xRemainder, self.yRemainder = data.xRemainder, data.yRemainder
     self.walkSpeed = data.walkSpeed

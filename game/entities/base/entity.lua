@@ -1,3 +1,6 @@
+local FSM = require("core.fsm")
+local Debug = require("core.debug")
+
 ---@alias BoundingBox {x: number, y: number, w: number, h: number}
 ---@alias SerializedBoundingBox BoundingBox
 
@@ -11,10 +14,13 @@
 ---@field type EntityType
 ---@field bb BoundingBox
 ---@field update function
----@field dialogueReference string | nil
----@field deserializeLdtk nil | fun(data, world: World): Entity
+---@field timers {[string]: Timer}
+---@field fsm FSM
+---@field applyLdtkData nil | fun(self, data)
+---@field applyDeserializedData nil | fun(self, data)
 ---@field draw function | nil
 ---@field queuedDeletion boolean
+---@field debug Debug
 local Entity = {}
 Entity.__index = Entity
 
@@ -26,7 +32,8 @@ Entity.__index = Entity
 ---@field w number
 ---@field h number
 ---@field bb SerializedBoundingBox
----@field dialogueReference string | nil
+---@field timers {[string]: SerializedTimer}
+---@field fsm SerializedFSM
 
 ---@param world World
 function Entity:new(world)
@@ -38,6 +45,9 @@ function Entity:new(world)
     t.bb = { x = t.x, y = t.y, w = t.w, h = t.h }
     t.world = world
     t.queuedDeletion = false
+    t.timers = {}
+    t.fsm = FSM:new(t)
+    t.debug = Debug:new()
     return t
 end
 
@@ -52,33 +62,46 @@ function Entity:serialize()
         w = self.w,
         h = self.h,
         bb = self.bb,
-        dialogueReference = self.dialogueReference,
+        timers = self:serializeTimers(),
+        fsm = self.fsm:serialize(),
     }
 end
 
 ---@param data SerializedEntity
----@param world World
----@return Entity
-function Entity.deserialize(data, world)
-    local entity = Entity:new(world)
-    entity.x, entity.y = data.x, data.y
-    entity.w, entity.h = data.w, data.h
-    entity.bb = data.bb
-    entity.dialogueReference = data.dialogueReference
-    entity.type = data.type
-    return entity
-end
-
----@param data SerializedEntity
-function Entity:applyDeserialize(data)
+function Entity:applyDeserializedData(data)
     self.x, self.y = data.x, data.y
     self.w, self.h = data.w, data.h
     self.bb = data.bb
-    self.dialogueReference = data.dialogueReference
     self.type = data.type
+    self:deserializeTimers(data.timers)
+    if self.fsm.registeredStates[data.fsm.currentState] then
+        self.fsm:gotoState(self.fsm.registeredStates[data.fsm.currentState])
+    end
+end
+
+---@return {[string]: SerializedTimer}
+function Entity:serializeTimers()
+    local timers = {}
+    for name, timer in pairs(self.timers) do
+        timers[name] = timer:serialize()
+    end
+    return timers
+end
+
+---@param timers SerializedTimer[]
+function Entity:deserializeTimers(timers)
+    for name, timer in pairs(timers) do
+        assert(self.timers[name],
+            string.format("Entity of type '%s' has no timer with name '%s'!!", self.type, name))
+        self.timers[name]:applyDeserializedData(timer)
+    end
 end
 
 function Entity:update()
+    self.fsm:update()
+    for _, timer in pairs(self.timers) do
+        timer:update()
+    end
 end
 
 ---@return Rectangle
@@ -90,6 +113,14 @@ function Entity:getCollisionArea()
         w = self.bb.w,
         h = self.bb.h
     }
+end
+
+---@param ... any
+function Entity:d(...)
+    self.debug:at(self.x, self.y)
+    self.debug:write({ ... }, 3)
+    self.debug:draw(1)
+    self.debug:clear()
 end
 
 return Entity

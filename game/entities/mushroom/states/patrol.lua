@@ -1,6 +1,11 @@
+local FSMState = require("core.fsm-state")
+
 ---@class PatrolState : FSMState
-local patrolState = {}
-function patrolState:update()
+local PatrolState = setmetatable({}, { __index = FSMState })
+PatrolState.__index = PatrolState
+
+function PatrolState:update()
+    D:write("walking lol")
     local mushroom = self.context
     ---@cast mushroom Mushroom
     if mushroom.x > mushroom.target.x then
@@ -21,4 +26,4 @@ function patrolState:update()
     end
 end
 
-return patrolState
+return PatrolState

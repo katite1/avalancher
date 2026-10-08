@@ -1,4 +1,4 @@
-local itemTemplates = require("data.items.item-templates")
+local ITEM_INDEX = require("data.items.index")
 
 ---@class InventoryItem
 ---@field sprite love.Image
@@ -17,7 +17,7 @@ InventoryItem.__index = InventoryItem
 function InventoryItem:new(name, quantity)
     local t = setmetatable({}, self)
     t.name = name
-    t.sprite = itemTemplates[name].sprite
+    t.sprite = ITEM_INDEX[name].sprite
     t.quantity = quantity or 1
     return t
 end
@@ -34,7 +34,7 @@ end
 function InventoryItem:deserialize(serializedInventoryItem)
     local item = InventoryItem:new(serializedInventoryItem.name)
     item.quantity = serializedInventoryItem.quantity
-    item.sprite = itemTemplates[serializedInventoryItem.name].sprite
+    item.sprite = ITEM_INDEX[serializedInventoryItem.name].sprite
     return item
 end
 

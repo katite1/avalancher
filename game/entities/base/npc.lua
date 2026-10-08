@@ -17,20 +17,28 @@ setmetatable(Npc, Entity)
 ---@class SerializedNpc : SerializedEntity
 ---@field name string
 
----@param template NpcTemplate
 ---@param world World
+---@param template NpcTemplate | nil
 ---@return Npc
-function Npc:new(template, world)
-    local t = setmetatable(Entity:new(world), self) -- TODO: check this shit out
+function Npc:new(world, template)
+    local t = setmetatable(Entity:new(world), self)
     t.bb = { x = 2, y = 4, w = 12, h = 12 }
     ---@cast t Npc
     t.type = "npc"
-    t.name = template.name
-    t.sprite = template.sprite
-    t.dialogue = function()
-        return template.dialogue(t.world, t)
+    if template == nil then
+        template = NPC_INDEX["bunny"] -- TODO: we need a default here
     end
+    t:applyTemplate(template)
     return t
+end
+
+---@param template table
+function Npc:applyTemplate(template)
+    self.name = template.name
+    self.sprite = template.sprite
+    self.dialogue = function()
+        return template.dialogue(self.world, self)
+    end
 end
 
 ---@return SerializedNpc
@@ -41,35 +49,24 @@ function Npc:serialize()
     return serializedNpc
 end
 
----@param serializedNpc SerializedNpc
----@param world World
----@return Npc
-function Npc.deserialize(serializedNpc, world)
-    local npc = Entity.deserialize(serializedNpc, world)
-    setmetatable(npc, Npc)
-    ---@cast npc Npc
-    local template = NPC_INDEX[serializedNpc.name]
-    npc.name = template.name
-    npc.sprite = template.sprite
-    npc.dialogue = function()
-        return template.dialogue(npc.world, npc)
-    end
-
-    return npc
+---@param data SerializedNpc
+function Npc:applyDeserializedData(data)
+    Entity.applyDeserializedData(self, data)
+    local template = NPC_INDEX[data.name]
+    self:applyTemplate(template)
 end
 
 ---@param ldtkEntity table
----@param world World
----@return Npc
-function Npc.deserializeLdtk(ldtkEntity, world)
-    local npcType = nil
+function Npc:applyLdtkData(ldtkEntity)
+    local template = nil
     for _, field in ipairs(ldtkEntity.fieldInstances) do
         if field.__identifier == "npc" then
-            npcType = string.lower(field.__value)
+            template = string.lower(field.__value)
         end
     end
-    local npc = Npc:new(NPC_INDEX[npcType], world)
-    return npc
+
+    assert(template, "Missing template name for NPC from LDtk")
+    self:applyTemplate(NPC_INDEX[template])
 end
 
 function Npc:draw()
