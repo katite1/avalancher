@@ -134,7 +134,7 @@ function love.update(dt)
 	end
 
 	for _ = 1, iterations, 1 do
-		world.fsm:update()
+		world:update()
 
 		local players = world.entityManager:getAll(Player)
 		if players then
@@ -168,7 +168,7 @@ function love.draw()
 	love.graphics.setColor(1, 1, 1, 0.02)
 	love.graphics.rectangle("fill", 0, 0, SCREEN.WIDTH, SCREEN.HEIGHT)
 	love.graphics.pop()
-	world.fsm:draw()
+	world:draw()
 	Draw.stop()
 	D:draw(2)
 	-- love.graphics.setShader()

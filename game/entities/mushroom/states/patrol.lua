@@ -4,10 +4,8 @@ local FSMState = require("core.fsm-state")
 local PatrolState = setmetatable({}, { __index = FSMState })
 PatrolState.__index = PatrolState
 
-function PatrolState:update()
-    D:write("walking lol")
-    local mushroom = self.context
-    ---@cast mushroom Mushroom
+---@param mushroom Mushroom
+function PatrolState.update(mushroom)
     if mushroom.x > mushroom.target.x then
         mushroom:walkLeft()
     end

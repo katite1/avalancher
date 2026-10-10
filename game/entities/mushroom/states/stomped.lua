@@ -5,10 +5,9 @@ local Timer = require("core.timer")
 local StompedState = setmetatable({}, { __index = FSMState })
 StompedState.__index = StompedState
 
-function StompedState:enter(previousState)
-    local mushroom = self.context
+---@param mushroom Mushroom
+function StompedState.enter(mushroom, previousState)
     ---@cast mushroom Mushroom
-
     mushroom.sprite = mushroom.stompedSprite
     if previousState then
         mushroom.timers.unstomp = Timer:new(120, function()
@@ -17,9 +16,8 @@ function StompedState:enter(previousState)
     end
 end
 
-function StompedState:exit()
-    ---@type Mushroom
-    local mushroom = self.context
+---@param mushroom Mushroom
+function StompedState.exit(mushroom)
     mushroom.sprite = mushroom.patrolSprite
 
     mushroom.timers.unstomp:stop()

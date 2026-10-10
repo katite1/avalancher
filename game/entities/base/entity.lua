@@ -74,9 +74,18 @@ function Entity:applyDeserializedData(data)
     self.bb = data.bb
     self.type = data.type
     self:deserializeTimers(data.timers)
-    if self.fsm.registeredStates[data.fsm.currentState] then
-        self.fsm:gotoState(self.fsm.registeredStates[data.fsm.currentState])
+
+    local previousState = self.fsm.registeredStates[data.fsm.previousState]
+    local currentState = self.fsm.registeredStates[data.fsm.currentState]
+    local queuedState = self.fsm.registeredStates[data.fsm.queuedState]
+    if previousState then
+        self.fsm.previousState = previousState
+        self.fsm.currentState = currentState
+        self.fsm.queuedState = queuedState
     end
+    -- if self.fsm.registeredStates[data.fsm.currentState] then
+    -- self.fsm:gotoState(self.fsm.registeredStates[data.fsm.currentState])
+    -- end
 end
 
 ---@return {[string]: SerializedTimer}
@@ -104,6 +113,12 @@ function Entity:update()
     end
 end
 
+function Entity:drawEnd()
+    self.debug:at(self.x, self.y)
+    self.debug:draw(1)
+    self.debug:clear()
+end
+
 ---@return Rectangle
 function Entity:getCollisionArea()
     ---@type Rectangle
@@ -117,10 +132,7 @@ end
 
 ---@param ... any
 function Entity:d(...)
-    self.debug:at(self.x, self.y)
     self.debug:write({ ... }, 3)
-    self.debug:draw(1)
-    self.debug:clear()
 end
 
 return Entity

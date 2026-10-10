@@ -1,0 +1,3 @@
+---@class DialogueProgress
+---@field dialogue Dialogue | nil
+---@field progress integer

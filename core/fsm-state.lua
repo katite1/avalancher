@@ -1,18 +1,9 @@
 ---@class FSMState
----@field context table | nil
----@field update fun(self: FSMState) | nil
----@field draw fun(self: FSMState) | nil
----@field enter fun(self: FSMState, previousState: FSMState | nil, ...) | nil
----@field exit (fun(self: FSMState, nextState: FSMState) : boolean) | nil
+---@field update fun(context: any) | nil
+---@field draw fun(context: any) | nil
+---@field enter fun(context, previousState: FSMState | nil, ...) | nil
+---@field exit (fun(context, nextState: FSMState) : boolean) | nil
 local FSMState = {}
 FSMState.__index = FSMState
-
----@param context table | nil
----@return FSMState
-function FSMState:new(context)
-    local t = setmetatable({}, self)
-    t.context = context
-    return t
-end
 
 return FSMState

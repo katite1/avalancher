@@ -1,6 +1,7 @@
 ---@class FSM
 ---@field context table
 ---@field registeredStates {[string]: FSMState}
+---@field previousState FSMState
 ---@field currentState FSMState
 ---@field queuedState FSMState
 ---@field queuedStateArgs any
@@ -8,6 +9,7 @@ local FSM = {}
 FSM.__index = FSM
 
 ---@class SerializedFSM
+---@field previousState string | nil
 ---@field currentState string | nil
 ---@field queuedState string | nil
 
@@ -36,9 +38,13 @@ end
 
 ---@return SerializedFSM
 function FSM:serialize()
+    local previousStateName = nil
     local currentStateName = nil
     local queuedStateName = nil
     for name, state in pairs(self.registeredStates) do
+        if state == self.previousState then
+            previousStateName = name
+        end
         if state == self.currentState then
             currentStateName = name
         end
@@ -48,6 +54,7 @@ function FSM:serialize()
     end
     ---@type SerializedFSM
     return {
+        previousState = previousStateName,
         currentState = currentStateName,
         queuedState = queuedStateName,
     }
@@ -59,7 +66,7 @@ function FSM:gotoState(state, ...)
     if self.currentState == nil then
         self.currentState = state
         if self.currentState.enter then
-            self.currentState:enter(nil, ...)
+            self.currentState.enter(self.context, nil, ...)
         end
         return
     end
@@ -73,23 +80,23 @@ function FSM:update()
     end
     if self.queuedState == nil then
         if self.currentState.update then
-            self.currentState:update()
+            self.currentState.update(self.context)
         end
         return
     end
     if self.currentState.exit then
-        if self.currentState:exit(self.queuedState) then
-            local previousState = self.currentState
+        if self.currentState.exit(self.context, self.queuedState) then
+            self.previousState = self.currentState
             if self.queuedState.enter then
-                self.queuedState:enter(previousState, self.queuedStateArgs)
+                self.queuedState.enter(self.context, self.previousState, self.queuedStateArgs)
             end
             self.currentState = self.queuedState
             self.queuedState = nil
         end
     else
-        local previousState = self.currentState
+        self.previousState = self.currentState
         if self.queuedState.enter then
-            self.queuedState:enter(previousState, self.queuedStateArgs)
+            self.queuedState.enter(self.context, self.previousState, self.queuedStateArgs)
         end
         self.currentState = self.queuedState
         self.queuedState = nil

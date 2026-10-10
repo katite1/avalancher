@@ -80,6 +80,9 @@ function EntityManager:draw()
     for _, entity in pairs(self.entities) do
         if entity.draw then entity:draw() end
     end
+    for _, entity in pairs(self.entities) do
+        if entity.drawEnd then entity:drawEnd() end
+    end
 end
 
 function EntityManager:drawCollisionAreas()

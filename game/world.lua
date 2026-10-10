@@ -18,6 +18,7 @@ local json             = require("lib.json")
 ---@field properties {gravity: number}
 ---@field update function
 ---@field progressEntries ProgressionEntries
+---@field dialogueProgress DialogueProgress
 local World            = {}
 World.__index          = World
 
@@ -33,7 +34,16 @@ function World:new()
     t.properties = {}
     t.properties.gravity = 0.15
     t.progressEntries = ProgressEntries
+    t.dialogueProgress = { dialogue = nil, progress = 0 }
     return t
+end
+
+function World:update()
+    self.fsm:update()
+end
+
+function World:draw()
+    self.fsm:draw()
 end
 
 ---@param target string

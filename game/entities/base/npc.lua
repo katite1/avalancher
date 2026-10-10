@@ -1,15 +1,18 @@
 local Entity = require("game.entities.base.entity")
 local NPC_INDEX = require("data.npcs.index")
 
+---@alias Dialogue string[]
+
+
 ---@class NpcTemplate
 ---@field name string
 ---@field sprite love.Image
----@field dialogue fun(world: World, self: Npc): string[]
+---@field dialogue fun(world: World, self: Npc): Dialogue
 
 ---@class Npc: Entity
 ---@field name string
 ---@field sprite love.Image
----@field dialogue fun(): string[]
+---@field dialogue fun(): Dialogue
 local Npc = {}
 Npc.__index = Npc
 setmetatable(Npc, Entity)

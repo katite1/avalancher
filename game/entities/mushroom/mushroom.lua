@@ -53,9 +53,9 @@ function Mushroom:new(world)
     t.timers.unstomp = Timer:new(120, function()
     end)
 
-    t.patrolState = PatrolState:new(t)
-    t.patrolWaitState = PatrolWaitState:new(t)
-    t.stompedState = StompedState:new(t)
+    t.patrolState = PatrolState
+    t.patrolWaitState = PatrolWaitState
+    t.stompedState = StompedState
     t.fsm:registerState(t.patrolState, "patrol")
     t.fsm:registerState(t.patrolWaitState, "wait")
     t.fsm:registerState(t.stompedState, "stomped")
@@ -77,7 +77,7 @@ end
 function Mushroom:applyDeserializedData(data)
     PhysicsEntity.applyDeserializedData(self, data)
     self.patrolStart = data.patrolStart
-    self.patrolStart = data.patrolEnd
+    self.patrolEnd = data.patrolEnd
     self.target = data.target
 end
 
@@ -110,11 +110,11 @@ function Mushroom:update()
         self.sprite.flipX = false
     end
     self.sprite:update()
+    self:d(self.fsm:getCurrentStateName(), { self.x, self.y }, { self.target })
 end
 
 function Mushroom:draw()
     self.sprite:draw(self.x, self.y)
-    self:d(self.target, self.x, self.y, self.fsm:getCurrentStateName())
 end
 
 return Mushroom

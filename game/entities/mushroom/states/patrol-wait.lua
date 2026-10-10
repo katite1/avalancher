@@ -4,18 +4,16 @@ local FSMState = require("core.fsm-state")
 local PatrolWaitState = setmetatable({}, { __index = FSMState })
 PatrolWaitState.__index = PatrolWaitState
 
-function PatrolWaitState:enter()
-    local mushroom = self.context
-    ---@cast mushroom Mushroom
-
+---@param mushroom Mushroom
+function PatrolWaitState.enter(mushroom)
     mushroom.sprite = mushroom.idleSprite
 
     mushroom.timers.jump:restart()
     mushroom.timers.wait:restart()
 end
 
-function PatrolWaitState:exit()
-    local mushroom = self.context
+---@param mushroom Mushroom
+function PatrolWaitState.exit(mushroom)
     ---@cast mushroom Mushroom
     mushroom.timers.jump:stop()
     mushroom.timers.wait:stop()
